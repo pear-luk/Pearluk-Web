@@ -32,12 +32,19 @@ const fontSize = {
 };
 
 const color = {
-  black: `#000000`,
-  white: `#ffffff`,
-  warn,
-  error,
-  primary: `#FDE11D`,
-  secondary,
+  grey: {
+    black: `#000000`,
+    grey080: `#2B2B2B`,
+    grey070: `#333333`,
+    grey050: `#8F8C8C`,
+    grey020: `CCCCCC`,
+    white: `#ffffff`,
+  },
+  yellow: {
+    yellow: `#FDE11D`,
+    yellow080: `#FDE74A`,
+    yellow020: `#FFF9D2`,
+  },
 };
 
 const backgroundColor = {
