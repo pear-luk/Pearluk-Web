@@ -47,24 +47,16 @@ const color = {
   },
 };
 
-const backgroundColor = {
-  black: `#000000`,
-  white: `#ffffff`,
-  dark: `#2B2B2B`,
-};
-
 const theme: DefaultTheme = {
   mediaSize,
   size,
   fontSize,
   color,
-  backgroundColor,
 };
 
 export type MediaSize = typeof mediaSize;
 export type Size = typeof size;
 export type FontSize = typeof fontSize;
 export type Color = typeof color;
-export type BackgroundColor = typeof backgroundColor;
 
 export default theme;
