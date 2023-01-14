@@ -8,6 +8,18 @@ const mediaSize = {
   desktop: '1240px',
 };
 
+const fontWeight = {
+  thin: `100`,
+  extraLight: `200`,
+  light: `300`,
+  normal: `400`,
+  medium: `500`,
+  semiBold: `600`,
+  bold: `700`,
+  extraBold: `800`,
+  heavy: `900`,
+};
+
 const size = {
   space: {
     xs: `0.8 rem`,
@@ -48,12 +60,14 @@ const color = {
 };
 
 const theme: DefaultTheme = {
+  fontWeight,
   mediaSize,
   size,
   fontSize,
   color,
 };
 
+export type FontWeight = typeof fontWeight;
 export type MediaSize = typeof mediaSize;
 export type Size = typeof size;
 export type FontSize = typeof fontSize;
