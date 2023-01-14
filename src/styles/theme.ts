@@ -8,7 +8,18 @@ const mediaSize = {
   desktop: '1240px',
 };
 
-const size = {};
+const size = {
+  space: {
+    xs: `0.8 rem`,
+    s: `1.6 rem`,
+    base: `2.4 rem`,
+    md: `3.2 rem`,
+    l: `4.0 rem`,
+    xl: `4.8 rem`,
+    xxl: `6.4 rem`,
+    sl: `8.0 rem`,
+  },
+};
 
 const fontSize = {
   primary,
