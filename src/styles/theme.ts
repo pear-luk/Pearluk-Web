@@ -17,18 +17,18 @@ const size = {
     l: `4.0 rem`,
     xl: `4.8 rem`,
     xxl: `6.4 rem`,
-    sl: `8.0 rem`,
+    sl: `8.0 rem`, //super larger
   },
 };
 
 const fontSize = {
-  primary,
-  secondary,
-  xlarge,
-  large,
-  medium,
-  small,
-  xsmall,
+  primary: `1.4 rem`,
+  secondary: `2.0 rem`,
+  xlarge: `4.0 rem`,
+  large: `2.4 rem`,
+  medium: `1.6 rem`,
+  small: '1.2 rem',
+  xsmall: `1 rem`,
 };
 
 const color = {
@@ -37,7 +37,7 @@ const color = {
     grey080: `#2B2B2B`,
     grey070: `#333333`,
     grey050: `#8F8C8C`,
-    grey020: `CCCCCC`,
+    grey020: `#CCCCCC`,
     white: `#ffffff`,
   },
   yellow: {
