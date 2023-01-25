@@ -6,6 +6,9 @@ ${reset};
 
 html,
 body {
+
+  font-size: 62.5%;
+
   width: 100%;
   height: 100%;
 }
@@ -15,7 +18,9 @@ body {
 }
 
 html {
+  background-color: black;
   font-size: 62.5%;
+  min-width: 320px;
 }
 
 * {

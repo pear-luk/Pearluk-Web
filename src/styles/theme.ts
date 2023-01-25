@@ -22,26 +22,36 @@ const fontWeight = {
 
 const size = {
   space: {
-    xs: `0.8 rem`,
-    s: `1.6 rem`,
-    base: `2.4 rem`,
-    md: `3.2 rem`,
-    l: `4.0 rem`,
-    xl: `4.8 rem`,
-    xxl: `6.4 rem`,
-    sl: `8.0 rem`, //super larger
+    xxsmall: `0.5rem`,
+    xsmall: `0.8rem`,
+    small: `1.6rem`,
+    base: `2.4rem`,
+    medium: `3.2rem`,
+    large: `4.0rem`,
+    xlarge: `4.8rem`,
+    xxlarge: `6.4rem`,
+    superLarge: `8.0rem`, //super larger
+  },
+  font: {
+    primary: `1.4rem`,
+    secondary: `2.0rem`,
+    xlarge: `4.0rem`,
+    large: `2.4rem`,
+    medium: `1.6rem`,
+    small: '1.2rem',
+    xsmall: `1rem`,
   },
 };
 
-const fontSize = {
-  primary: `1.4 rem`,
-  secondary: `2.0 rem`,
-  xlarge: `4.0 rem`,
-  large: `2.4 rem`,
-  medium: `1.6 rem`,
-  small: '1.2 rem',
-  xsmall: `1 rem`,
-};
+// const fontSize = {
+//   primary: `1.4 rem`,
+//   secondary: `2.0 rem`,
+//   xlarge: `4.0 rem`,
+//   large: `2.4 rem`,
+//   medium: `1.6 rem`,
+//   small: '1.2 rem',
+//   xsmall: `1 rem`,
+// };
 
 const color = {
   grey: {
@@ -63,14 +73,13 @@ const theme: DefaultTheme = {
   fontWeight,
   mediaSize,
   size,
-  fontSize,
   color,
 };
 
 export type FontWeight = typeof fontWeight;
 export type MediaSize = typeof mediaSize;
 export type Size = typeof size;
-export type FontSize = typeof fontSize;
+// export type FontSize = typeof fontSize;
 export type Color = typeof color;
 
 export default theme;
