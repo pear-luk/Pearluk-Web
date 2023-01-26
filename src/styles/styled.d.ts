@@ -23,14 +23,15 @@ declare module 'styled-components' {
 
     size: {
       space: {
-        xs: string;
-        s: string;
+        xxsmall: string;
+        xsmall: string;
+        small: string;
         base: string;
-        md: string;
-        l: string;
-        xl: string;
-        xxl: string;
-        sl: string;
+        medium: string;
+        large: string;
+        xlarge: string;
+        xxlarge: string;
+        superLarge: string;
       };
       font: {
         primary: string;
