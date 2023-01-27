@@ -4,12 +4,13 @@ import styled from 'styled-components';
 
 // export interface MenuProps {}
 
-export const Menu = ({ ...props }) => {
+export const MenuToggle = ({ menuStatus, ...props }) => {
   const [menuFocus, setMenuFocus] = useState<string | null>(null);
-
+  const { menuClickHandler } = props;
+  console.log(menuClickHandler);
   useEffect(() => {
-    console.log(menuFocus);
-  }, [menuFocus]);
+    console.log(menuStatus);
+  }, [menuStatus]);
 
   const itemClickHandler = (e) => {
     if (e.target.title === menuFocus || !e.target.title) {
@@ -18,7 +19,12 @@ export const Menu = ({ ...props }) => {
     setMenuFocus(e.target.title);
   };
   return (
-    <Wrapper>
+    <Wrapper
+      menuStatus={menuStatus}
+      onClick={(e) => {
+        if (e.target !== e.currentTarget) return;
+        menuClickHandler();
+      }}>
       <Container {...props}>
         <LogoBox>
           <Image src="./logo/black/home.svg" width={30} height={30} alt="home logo" />
@@ -26,34 +32,34 @@ export const Menu = ({ ...props }) => {
         <LoginBox>LOG IN</LoginBox>
         <MenuBox>
           <MenuItemBox>
-            <MenuItem menuFocus={menuFocus} title={'ABOUT'}>
+            <MenuItem menuFocus={menuFocus} menuStatus={menuStatus} title={'ABOUT'}>
               <Item onClick={itemClickHandler} menuFocus={menuFocus} title={'ABOUT'}>
                 ABOUT
               </Item>
             </MenuItem>
           </MenuItemBox>
           <MenuItemBox>
-            <MenuItem menuFocus={menuFocus} title={'ARCHIVE'}>
-              <Item onClick={itemClickHandler} menuFocus={menuFocus} title={'ARCHIVE'}>
+            <MenuItem menuFocus={menuFocus} menuStatus={menuStatus} title={'ARCHIVE'}>
+              <Item onClick={itemClickHandler} menuFocus={menuFocus} menuStatus={menuStatus} title={'ARCHIVE'}>
                 ARCHIVE
               </Item>
               {/* 아카이브 모아보기 map 돌려야함. */}
-              <ArchiveItem onClick={itemClickHandler} menuFocus={menuFocus} title={'ALL'}>
+              <ArchiveItem onClick={menuClickHandler} menuFocus={menuFocus} title={'ALL'}>
                 ALL
               </ArchiveItem>
-              <ArchiveItem onClick={itemClickHandler} menuFocus={menuFocus} title={'22 F/W'}>
+              <ArchiveItem onClick={menuClickHandler} menuFocus={menuFocus} title={'22 F/W'}>
                 22 F/W
               </ArchiveItem>
-              <ArchiveItem onClick={itemClickHandler} menuFocus={menuFocus} title={'22 S/S'}>
+              <ArchiveItem onClick={menuClickHandler} menuFocus={menuFocus} title={'22 S/S'}>
                 22 S/S
               </ArchiveItem>
-              <ArchiveItem onClick={itemClickHandler} menuFocus={menuFocus} title={'OFF'}>
+              <ArchiveItem onClick={menuClickHandler} menuFocus={menuFocus} title={'OFF'}>
                 OFF
               </ArchiveItem>
             </MenuItem>
           </MenuItemBox>
           <MenuItemBox>
-            <MenuItem menuFocus={menuFocus} title={'QA'}>
+            <MenuItem menuFocus={menuFocus} menuStatus={menuStatus} title={'QA'}>
               <Item onClick={itemClickHandler} menuFocus={menuFocus} title={'QA'}>
                 QA
               </Item>
@@ -61,15 +67,20 @@ export const Menu = ({ ...props }) => {
           </MenuItemBox>
         </MenuBox>
       </Container>
-      <></>
     </Wrapper>
   );
 };
+const Other = styled.div``;
 const Wrapper = styled.div`
-  display: flex;
-  position: fixed;
-  height: 100%;
+  transition: all 0.5s;
+  position: absolute;
   width: 100%;
+  height: 100%;
+  top: 0;
+  left: -100%;
+  ${({ menuStatus }) => {
+    return menuStatus ? 'left:0;' : null;
+  }}/* background-color: red; */
 `;
 const Container = styled.div`
   position: fixed;
@@ -111,7 +122,7 @@ const ArchiveItem = styled.div`
   transition: all 0.3s;
   ${({ title, menuFocus, theme }) => {
     if (menuFocus === 'ARCHIVE') {
-      return `
+      return ` 
       height: 3.2rem;
       display: block;
       padding: 1rem 3rem;
@@ -126,21 +137,14 @@ const MenuItem = styled.div`
   transition: all 0.3s;
 
   background-color: ${({ theme }) => theme.color.yellow.yellow};
-  ${({ title, menuFocus, theme }) =>
-    title === menuFocus
+  ${({ title, menuFocus, theme, menuStatus }) =>
+    title === menuFocus && menuStatus
       ? `
       background-color:${theme.color.grey.grey070};
       color : ${theme.color.yellow.yellow};
       `
       : `
       `}
-  ${ArchiveItem} {
-    /* display: block;
-    transition: all 0.3s;
-    padding: 1rem 3rem;
-    height: 3.2rem;  */
-    /* background-color: ${({ theme }) => theme.color.grey.grey070}; */
-  }
 
   font-size: 2rem;
 `;

@@ -1,5 +1,52 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-const menuPath = '';
+import { MenuToggle } from '../Menu';
+
+export const Nav = ({ mode = 'dark', logo = true, menu = true, ...props }) => {
+  const [menuStatus, setMenuStatus] = useState(false);
+  const menuClickHandler = (e) => {
+    setMenuStatus(!menuStatus);
+  };
+
+  useEffect(() => {
+    console.log(menuStatus);
+  }, [menuStatus]);
+  return (
+    <>
+      <NavContainer mode={mode}>
+        <SideBox>
+          <ItemBox>
+            {menu === true ? (
+              mode === 'dark' ? (
+                <img src={'./logo/white/menu.svg'} onClick={menuClickHandler}></img>
+              ) : (
+                <img src={'./logo/black/menu.svg'} onClick={menuClickHandler}></img>
+              )
+            ) : mode === 'dark' ? (
+              <img src={'./logo/white/back.svg'}></img>
+            ) : (
+              <img src={'./logo/black/back.svg'}></img>
+            )}
+          </ItemBox>
+        </SideBox>
+        <LogoBox>
+          <Logo>
+            {logo ? <img src={mode === 'dark' ? `./logo/white/home.svg` : `./logo/black/home.svg`}></img> : 'LUK'}
+          </Logo>
+        </LogoBox>
+        <SideBox>
+          <ItemBox>
+            {mode === 'dark' ? <img src={'./logo/white/my.svg'}></img> : <img src={'./logo/black/my.svg'}></img>}
+          </ItemBox>
+          <ItemBox>
+            {mode === 'dark' ? <img src={'./logo/white/cart.svg'}></img> : <img src={'./logo/black/cart.svg'}></img>}
+          </ItemBox>
+        </SideBox>
+      </NavContainer>
+      <MenuToggle menuClickHandler={menuClickHandler} menuStatus={menuStatus}></MenuToggle>
+    </>
+  );
+};
 const NavContainer = styled.nav<{ mode: string }>`
   position: sticky;
   top: 0;
@@ -55,38 +102,3 @@ const Logo = styled.h1`
   color: ${({ theme }) => theme.color.yellow.yellow};
   line-height: ${({ theme }) => theme.size.font.xlarge};
 `;
-
-export const Nav = ({ mode = 'dark', logo = true, menu = true, ...props }) => {
-  return (
-    <NavContainer mode={mode}>
-      <SideBox>
-        <ItemBox>
-          {menu === true ? (
-            mode === 'dark' ? (
-              <img src={'./logo/white/menu.svg'}></img>
-            ) : (
-              <img src={'./logo/black/menu.svg'}></img>
-            )
-          ) : mode === 'dark' ? (
-            <img src={'./logo/white/back.svg'}></img>
-          ) : (
-            <img src={'./logo/black/back.svg'}></img>
-          )}
-        </ItemBox>
-      </SideBox>
-      <LogoBox>
-        <Logo>
-          {logo ? <img src={mode === 'dark' ? `./logo/white/home.svg` : `./logo/black/home.svg`}></img> : 'LUK'}
-        </Logo>
-      </LogoBox>
-      <SideBox>
-        <ItemBox>
-          {mode === 'dark' ? <img src={'./logo/white/my.svg'}></img> : <img src={'./logo/black/my.svg'}></img>}
-        </ItemBox>
-        <ItemBox>
-          {mode === 'dark' ? <img src={'./logo/white/cart.svg'}></img> : <img src={'./logo/black/cart.svg'}></img>}
-        </ItemBox>
-      </SideBox>
-    </NavContainer>
-  );
-};

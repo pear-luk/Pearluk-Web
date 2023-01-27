@@ -1,17 +1,7 @@
-import Axios from 'axios';
 import Head from 'next/head';
-import { useEffect } from 'react';
-import { Button } from '../components/Button';
+import { Nav } from '../components/Nav';
 
 function Home({ props }) {
-  function getData() {
-    Axios.get('http://localhost:3000/api/hello').then((res) => {
-      console.log(res.data);
-    });
-  }
-  useEffect(() => {
-    getData();
-  });
   return (
     <div>
       <Head>
@@ -19,7 +9,7 @@ function Home({ props }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <Button label="ok"></Button>
+        <Nav></Nav>
       </div>
     </div>
   );
