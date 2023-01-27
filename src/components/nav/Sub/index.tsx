@@ -55,7 +55,8 @@ const Logo = styled.h1`
   color: ${({ theme }) => theme.color.yellow.yellow};
   line-height: ${({ theme }) => theme.size.font.xlarge};
 `;
-export const Nav = ({ ...props }) => {
+
+export const NavSub = ({ ...props }) => {
   return (
     <NavContainer>
       <SideBox>

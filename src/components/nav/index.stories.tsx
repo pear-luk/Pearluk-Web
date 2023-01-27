@@ -1,17 +1,22 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { Nav } from '.';
+import { NavMain } from './Main';
 
 export default {
   title: 'Components/Nav',
-  component: Nav,
+  component: NavMain,
   argTypes: {
     backgroundColor: { control: 'color' },
   },
-} as ComponentMeta<typeof Nav>;
+} as ComponentMeta<typeof NavMain>;
 
-const Template: ComponentStory<typeof Nav> = (args) => <Nav {...args} />;
+const Template: ComponentStory<typeof NavMain> = (args) => <NavMain {...args} />;
 
 export const Primary = Template.bind({});
+Primary.args = {
+  // primary: true,
+};
+
+export const e = Template.bind({});
 Primary.args = {
   // primary: true,
 };
