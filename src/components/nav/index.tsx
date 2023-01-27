@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 const menuPath = '';
-const NavContainer = styled.nav`
+const NavContainer = styled.nav<{ mode: string }>`
   position: sticky;
   top: 0;
 
@@ -14,7 +14,7 @@ const NavContainer = styled.nav`
 
   padding: 0 ${({ theme }) => theme.size.space.xxsmall};
 
-  background-color: ${({ theme }) => theme.color.grey.black};
+  background-color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.grey.black : theme.color.yellow.yellow)};
 `;
 
 const Box = styled.div`
@@ -56,23 +56,35 @@ const Logo = styled.h1`
   line-height: ${({ theme }) => theme.size.font.xlarge};
 `;
 
-export const NavSub = ({ ...props }) => {
+export const Nav = ({ mode = 'dark', logo = true, menu = true, ...props }) => {
   return (
-    <NavContainer>
+    <NavContainer mode={mode}>
       <SideBox>
         <ItemBox>
-          <img src={'./logo/menu.png'}></img>
+          {menu === true ? (
+            mode === 'dark' ? (
+              <img src={'./logo/white/menu.svg'}></img>
+            ) : (
+              <img src={'./logo/black/menu.svg'}></img>
+            )
+          ) : mode === 'dark' ? (
+            <img src={'./logo/white/back.svg'}></img>
+          ) : (
+            <img src={'./logo/black/back.svg'}></img>
+          )}
         </ItemBox>
       </SideBox>
       <LogoBox>
-        <Logo>LUK</Logo>
+        <Logo>
+          {logo ? <img src={mode === 'dark' ? `./logo/white/home.svg` : `./logo/black/home.svg`}></img> : 'LUK'}
+        </Logo>
       </LogoBox>
       <SideBox>
         <ItemBox>
-          <img src={'./logo/my.png'}></img>
+          {mode === 'dark' ? <img src={'./logo/white/my.svg'}></img> : <img src={'./logo/black/my.svg'}></img>}
         </ItemBox>
         <ItemBox>
-          <img src={'./logo/cart.png'}></img>
+          {mode === 'dark' ? <img src={'./logo/white/cart.svg'}></img> : <img src={'./logo/black/cart.svg'}></img>}
         </ItemBox>
       </SideBox>
     </NavContainer>
