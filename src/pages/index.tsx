@@ -1,17 +1,27 @@
 import Head from 'next/head';
-import { Nav } from '../components/Nav';
+import { LayOut } from '../components/layout';
 
 function Home({ props }) {
   return (
-    <div>
-      <Head>
-        <title>setting-practice</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <div>
-        <Nav></Nav>
+    <LayOut>
+      <div
+        style={{
+          width: '100%',
+          height: '100vw',
+          backgroundColor: 'black',
+          backgroundImage: 'url(./main_background.svg)',
+          backgroundRepeat: ' no-repeat',
+          backgroundSize: 'auto 100%',
+          backgroundPosition: 'right top',
+        }}>
+        <Head>
+          <title>setting-practice</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+
+        <div></div>
       </div>
-    </div>
+    </LayOut>
   );
 }
 

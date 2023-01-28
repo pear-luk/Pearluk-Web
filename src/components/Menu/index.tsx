@@ -24,6 +24,7 @@ export const MenuToggle = ({ menuStatus, ...props }) => {
       onClick={(e) => {
         if (e.target !== e.currentTarget) return;
         menuClickHandler();
+        setMenuFocus(null);
       }}>
       <Container {...props}>
         <LogoBox>

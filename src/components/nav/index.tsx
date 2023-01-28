@@ -48,7 +48,7 @@ export const Nav = ({ mode = 'dark', logo = true, menu = true, ...props }) => {
   );
 };
 const NavContainer = styled.nav<{ mode: string }>`
-  position: sticky;
+  position: fixed;
   top: 0;
 
   display: flexbox;
