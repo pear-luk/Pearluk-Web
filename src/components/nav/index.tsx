@@ -1,16 +1,30 @@
-import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import styled from 'styled-components';
+import { ModeType } from '../../recoil/config/configState';
+import { INavIconType } from '../../recoil/Nav/navState';
 import { MenuToggle } from '../Menu';
+type SetType<T> = (t: T) => void;
+export interface INavProps {
+  mode: ModeType;
+  icon: INavIconType;
+  menuState: boolean;
+  setMenuState: SetType<any>;
+}
 
-export const Nav = ({ mode = 'dark', logo = true, menu = true, ...props }) => {
-  const [menuStatus, setMenuStatus] = useState(false);
-  const menuClickHandler = (e) => {
-    setMenuStatus(!menuStatus);
+export const Nav = ({ mode, icon, menuState, setMenuState, ...props }: INavProps) => {
+  // mode 다크모드인지. 아닌지
+  // const [mode, setMode] = useRecoilState(modeAtom);
+
+  // nav 아이콘
+  const { menu, logo } = icon;
+
+  // 메뉴
+
+  const menuClickHandler = () => {
+    setMenuState(!menuState);
   };
 
-  useEffect(() => {
-    console.log(menuStatus);
-  }, [menuStatus]);
   return (
     <>
       <NavContainer mode={mode}>
@@ -18,36 +32,64 @@ export const Nav = ({ mode = 'dark', logo = true, menu = true, ...props }) => {
           <ItemBox>
             {menu === true ? (
               mode === 'dark' ? (
-                <img src={'./logo/white/menu.svg'} onClick={menuClickHandler}></img>
+                <Image
+                  alt="다크모드 메뉴버튼"
+                  src={'./logo/white/menu.svg'}
+                  onClick={menuClickHandler}
+                  width={24}
+                  height={24}></Image>
               ) : (
-                <img src={'./logo/black/menu.svg'} onClick={menuClickHandler}></img>
+                <Image
+                  alt="화이트모드 메뉴버튼"
+                  src={'./logo/black/menu.svg'}
+                  onClick={menuClickHandler}
+                  width={24}
+                  height={24}></Image>
               )
             ) : mode === 'dark' ? (
-              <img src={'./logo/white/back.svg'}></img>
+              <Image alt="다크모드 뒤로가기버튼" src={'./logo/white/back.svg'} width={24} height={24}></Image>
             ) : (
-              <img src={'./logo/black/back.svg'}></img>
+              <Image alt="화이트모드 뒤로가기버튼" src={'./logo/black/back.svg'} width={24} height={24}></Image>
             )}
           </ItemBox>
         </SideBox>
         <LogoBox>
           <Logo>
-            {logo ? <img src={mode === 'dark' ? `./logo/white/home.svg` : `./logo/black/home.svg`}></img> : 'LUK'}
+            {logo ? (
+              <Link href={'/'}>
+                <Image
+                  alt="홈 버튼"
+                  src={mode === 'dark' ? `./logo/white/home.svg` : `./logo/black/home.svg`}
+                  width={30}
+                  height={30}></Image>
+              </Link>
+            ) : (
+              'LUK'
+            )}
           </Logo>
         </LogoBox>
         <SideBox>
           <ItemBox>
-            {mode === 'dark' ? <img src={'./logo/white/my.svg'}></img> : <img src={'./logo/black/my.svg'}></img>}
+            {mode === 'dark' ? (
+              <Image alt="다크모드 마이페이지 버튼" src={'./logo/white/my.svg'} width={24} height={24}></Image>
+            ) : (
+              <Image alt="화이트모드 마이페이지 버튼" src={'./logo/black/my.svg'} width={24} height={24}></Image>
+            )}
           </ItemBox>
           <ItemBox>
-            {mode === 'dark' ? <img src={'./logo/white/cart.svg'}></img> : <img src={'./logo/black/cart.svg'}></img>}
+            {mode === 'dark' ? (
+              <Image alt="다크모드 장바구니 버튼" src={'./logo/white/cart.svg'} width={24} height={24}></Image>
+            ) : (
+              <Image alt="다크모드 장바구니 버튼" src={'./logo/black/cart.svg'} width={24} height={24}></Image>
+            )}
           </ItemBox>
         </SideBox>
       </NavContainer>
-      <MenuToggle menuClickHandler={menuClickHandler} menuStatus={menuStatus}></MenuToggle>
+      <MenuToggle mode={mode} menuState={menuState} setMenuState={setMenuState}></MenuToggle>
     </>
   );
 };
-const NavContainer = styled.nav<{ mode: string }>`
+const NavContainer = styled.nav<{ mode: ModeType }>`
   position: fixed;
   top: 0;
 
@@ -94,6 +136,7 @@ const ItemBox = styled.div`
   height: 100%;
 
   margin: 0 0.8rem;
+  cursor: pointer;
 `;
 
 const Logo = styled.h1`

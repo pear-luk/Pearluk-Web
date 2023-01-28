@@ -1,3 +1,4 @@
+import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from '../src/styles/globalStyle';
 import theme from '../src/styles/theme';
@@ -14,10 +15,12 @@ export const parameters = {
 
 const withGlobalStyle = (Story) => (
   <>
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <Story />
-    </ThemeProvider>
+    <RecoilRoot>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Story />
+      </ThemeProvider>
+    </RecoilRoot>
   </>
 );
 

@@ -1,30 +1,44 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { ModeType } from '../../recoil/config/configState';
+import { MenuSelectType } from '../../recoil/Nav/navState';
 
 // export interface MenuProps {}
+type SetType<T> = (t: T) => void;
+export interface IMenuToggle {
+  mode: ModeType;
 
-export const MenuToggle = ({ menuStatus, ...props }) => {
-  const [menuFocus, setMenuFocus] = useState<string | null>(null);
-  const { menuClickHandler } = props;
-  console.log(menuClickHandler);
-  useEffect(() => {
-    console.log(menuStatus);
-  }, [menuStatus]);
+  menuState: boolean;
+  setMenuState: SetType<any>;
+}
+export const MenuToggle = ({ mode, menuState, setMenuState, ...props }: IMenuToggle) => {
+  // 메뉴
+
+  //
+  const [menuSelect, setMenuSelect] = useState<MenuSelectType>(null);
 
   const itemClickHandler = (e) => {
-    if (e.target.title === menuFocus || !e.target.title) {
-      return setMenuFocus(null);
-    }
-    setMenuFocus(e.target.title);
+    if (e.target.title === menuSelect || !e.target.title) {
+      setMenuSelect(null);
+    } else setMenuSelect(e.target.title);
   };
+  const menuClickHandler = () => {
+    setMenuState(!menuState);
+  };
+
+  useEffect(() => {
+    console.log(menuSelect);
+  }, [menuSelect]);
+
   return (
     <Wrapper
-      menuStatus={menuStatus}
+      menuState={menuState}
       onClick={(e) => {
         if (e.target !== e.currentTarget) return;
-        menuClickHandler();
-        setMenuFocus(null);
+        setMenuState(!menuState);
+        setMenuSelect(null);
       }}>
       <Container {...props}>
         <LogoBox>
@@ -33,35 +47,35 @@ export const MenuToggle = ({ menuStatus, ...props }) => {
         <LoginBox>LOG IN</LoginBox>
         <MenuBox>
           <MenuItemBox>
-            <MenuItem menuFocus={menuFocus} menuStatus={menuStatus} title={'ABOUT'}>
-              <Item onClick={itemClickHandler} menuFocus={menuFocus} title={'ABOUT'}>
-                ABOUT
+            <MenuItem onClick={itemClickHandler} menuSelect={menuSelect} menuState={menuState} title={'ABOUT'}>
+              <Item menuSelect={menuSelect} title={'ABOUT'}>
+                <Link href={'/about'}>ABOUT</Link>
               </Item>
             </MenuItem>
           </MenuItemBox>
           <MenuItemBox>
-            <MenuItem menuFocus={menuFocus} menuStatus={menuStatus} title={'ARCHIVE'}>
-              <Item onClick={itemClickHandler} menuFocus={menuFocus} menuStatus={menuStatus} title={'ARCHIVE'}>
+            <MenuItem onClick={itemClickHandler} menuSelect={menuSelect} menuState={menuState} title={'ARCHIVE'}>
+              <Item menuSelect={menuSelect} title={'ARCHIVE'}>
                 ARCHIVE
               </Item>
               {/* 아카이브 모아보기 map 돌려야함. */}
-              <ArchiveItem onClick={menuClickHandler} menuFocus={menuFocus} title={'ALL'}>
+              <ArchiveItem menuSelect={menuSelect} onClick={menuClickHandler} title={'ALL'}>
                 ALL
               </ArchiveItem>
-              <ArchiveItem onClick={menuClickHandler} menuFocus={menuFocus} title={'22 F/W'}>
+              <ArchiveItem menuSelect={menuSelect} onClick={menuClickHandler} title={'22 F/W'}>
                 22 F/W
               </ArchiveItem>
-              <ArchiveItem onClick={menuClickHandler} menuFocus={menuFocus} title={'22 S/S'}>
+              <ArchiveItem menuSelect={menuSelect} onClick={menuClickHandler} title={'22 S/S'}>
                 22 S/S
               </ArchiveItem>
-              <ArchiveItem onClick={menuClickHandler} menuFocus={menuFocus} title={'OFF'}>
+              <ArchiveItem menuSelect={menuSelect} onClick={menuClickHandler} title={'OFF'}>
                 OFF
               </ArchiveItem>
             </MenuItem>
           </MenuItemBox>
           <MenuItemBox>
-            <MenuItem menuFocus={menuFocus} menuStatus={menuStatus} title={'QA'}>
-              <Item onClick={itemClickHandler} menuFocus={menuFocus} title={'QA'}>
+            <MenuItem onClick={itemClickHandler} menuSelect={menuSelect} menuState={menuState} title={'QA'}>
+              <Item menuSelect={menuSelect} title={'QA'}>
                 QA
               </Item>
             </MenuItem>
@@ -72,7 +86,7 @@ export const MenuToggle = ({ menuStatus, ...props }) => {
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ menuState: boolean }>`
   z-index: 9999;
   transition: all 0.5s;
   position: fixed;
@@ -80,8 +94,8 @@ const Wrapper = styled.div`
   height: 100%;
   top: 0;
   left: -100%;
-  ${({ menuStatus }) => {
-    return menuStatus ? 'left:0;' : null;
+  ${({ menuState }) => {
+    return menuState ? 'left:0;' : null;
   }}/* background-color: red; */
 `;
 const Container = styled.div`
@@ -113,44 +127,67 @@ const MenuItemBox = styled.div`
   /* background-color: blue; */
 `;
 
-const ArchiveItem = styled.div`
+const ArchiveItem = styled.div<{ menuSelect: MenuSelectType }>`
   overflow: hidden;
   font-size: 1.4rem;
   align-content: center;
-  color: ${({ theme }) => theme.color.yellow.yellow};
+
   height: 0;
   padding: 0 3rem;
   width: 29.6rem;
   transition: all 0.3s;
-  ${({ title, menuFocus, theme }) => {
-    if (menuFocus === 'ARCHIVE') {
+
+  ${({ title, menuSelect, theme }) => {
+    if (menuSelect === 'ARCHIVE') {
       return ` 
       height: 3.2rem;
       display: block;
       padding: 1rem 3rem;
+
       color:${theme.color.yellow.yellow};
       `;
     }
   }}
 `;
 
-const MenuItem = styled.div`
+const MenuItem = styled.div<{ menuSelect: MenuSelectType; menuState: boolean }>`
   padding: 3rem 0;
   transition: all 0.3s;
-
+  a {
+    color: ${({ theme }) => theme.color.grey.black};
+  }
+  a:visited {
+    color: ${({ theme }) => theme.color.grey.black};
+  }
   background-color: ${({ theme }) => theme.color.yellow.yellow};
-  ${({ title, menuFocus, theme, menuStatus }) =>
-    title === menuFocus && menuStatus
+  ${({ title, menuSelect, theme, menuState }) =>
+    title === menuSelect && menuState
       ? `
       background-color:${theme.color.grey.grey070};
       color : ${theme.color.yellow.yellow};
+      a {
+        color : ${theme.color.yellow.yellow};
+      }
+      a:visited {
+        color : ${theme.color.yellow.yellow};
+      }
       `
       : `
       `}
 
   font-size: 2rem;
+  /* :hover {
+    background-color: ${({ theme }) => theme.color.grey.grey070};
+    color: ${({ theme }) => theme.color.yellow.yellow};
+    a {
+      color: ${({ theme }) => theme.color.yellow.yellow};
+    }
+    a:visited {
+      color: ${({ theme }) => theme.color.yellow.yellow};
+    }
+  } */
 `;
-const Item = styled.div<{ title: string; menuFocus: string | null }>`
+const Item = styled.div<{ title: string; menuSelect: string | null }>`
   margin: 1rem 0;
   padding: 0 3rem;
 `;
