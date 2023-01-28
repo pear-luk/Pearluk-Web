@@ -12,7 +12,8 @@ body {
 
   width: 100%;
   height: 100%;
-  max-width: 360px;
+
+  /* max-width: 360px; */
 }
 
 #root {

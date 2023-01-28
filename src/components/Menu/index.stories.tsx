@@ -1,22 +1,22 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import { Menu } from '.';
+import { MenuToggle } from '.';
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
+
 export default {
   title: 'Components/Menu',
-  component: Menu,
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
+  component: MenuToggle,
+
   argTypes: {
     backgroundColor: { control: 'color' },
   },
-} as ComponentMeta<typeof Menu>;
+} as ComponentMeta<typeof MenuToggle>;
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Menu> = (args) => <Menu {...args} />;
+
+const Template: ComponentStory<typeof MenuToggle> = (args) => <MenuToggle {...args} />;
 
 export const Primary = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
+
 Primary.args = {
   primary: true,
   label: 'Button',

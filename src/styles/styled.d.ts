@@ -60,4 +60,3 @@ declare module 'styled-components' {
       };
     };
   }
-}
