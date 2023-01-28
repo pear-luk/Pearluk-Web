@@ -17,10 +17,12 @@ export const Footer = ({ ...props }) => {
 
 const Container = styled.div`
   width: 100%;
-
+  height: 20rem;
   display: flex;
+  z-index: 0;
+  transform: translateY(-100%);
   justify-content: center;
-
+  position: absolute;
   padding: 1.6rem;
 
   color: #8f8c8c;

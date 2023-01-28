@@ -71,10 +71,11 @@ export const MenuToggle = ({ menuStatus, ...props }) => {
     </Wrapper>
   );
 };
-const Other = styled.div``;
+
 const Wrapper = styled.div`
+  z-index: 9999;
   transition: all 0.5s;
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   top: 0;
