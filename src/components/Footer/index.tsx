@@ -27,7 +27,7 @@ const Container = styled.div<{ mode: ModeType }>`
   height: 20rem;
   display: flex;
   z-index: 0;
-  transform: translateY(-100%);
+  /* transform: translateY(-100%); */
   justify-content: center;
   position: absolute;
   padding: 1.6rem;
