@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { ModeType } from '../../recoil/config/configState';
 import { INavIconType } from '../../recoil/Nav/navState';
 import { MenuToggle } from '../Menu';
+
 type SetType<T> = (t: T) => void;
 export interface INavProps {
   mode: ModeType;

@@ -44,7 +44,9 @@ export const MenuToggle = ({ mode, menuState, setMenuState, ...props }: IMenuTog
         <LogoBox>
           <Image src="./logo/black/home.svg" width={30} height={30} alt="home logo" />
         </LogoBox>
-        <LoginBox>LOG IN</LoginBox>
+        <LoginBox>
+          <Link href={'/login'}>LOG IN</Link>
+        </LoginBox>
         <MenuBox>
           <MenuItemBox>
             <MenuItem onClick={itemClickHandler} menuSelect={menuSelect} menuState={menuState} title={'ABOUT'}>
