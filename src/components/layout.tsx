@@ -32,10 +32,9 @@ const ContentContainer = styled.main<{ mode: ModeType }>`
   /* padding-bottom: 20rem; */
 
   background-color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.grey.black : theme.color.yellow.yellow)};
-  /* display: flex;
-  justify-content: center; */
+  display: flex;
+  justify-content: center;
 `;
 const Content = styled.div`
-  width: 29.4rem;
-  margin: auto;
+  /* width: 29.4rem; */
 `;
