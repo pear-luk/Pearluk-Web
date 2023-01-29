@@ -78,7 +78,7 @@ export const MenuToggle = ({ mode, menuState, setMenuState, ...props }: IMenuTog
           <MenuItemBox>
             <MenuItem onClick={itemClickHandler} menuSelect={menuSelect} menuState={menuState} title={'QA'}>
               <Item menuSelect={menuSelect} title={'QA'}>
-                QA
+                <Link href={'/qa'}>QA</Link>
               </Item>
             </MenuItem>
           </MenuItemBox>
