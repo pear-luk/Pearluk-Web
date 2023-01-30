@@ -13,11 +13,11 @@ function NewQA({ props }) {
     logo: true,
     menu: false,
   });
-  const [write] = useState(false);
+  const [QA_mode] = useState('write');
   return (
     <LayOut mode={mode} icon={icon}>
       <>
-        <QA_top write={write} />
+        <QA_top QA_mode={QA_mode} />
         <QA_InputCard mode={mode}></QA_InputCard>
       </>
     </LayOut>

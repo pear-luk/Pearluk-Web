@@ -13,6 +13,7 @@ export const QA_InputCard = ({ mode, ...props }) => {
   const [currentValue, setCurrentValue] = useState('');
   const [images, setImages] = useState<File[]>([]);
 
+  const [action, setAction] = useState<'ADD' | 'DELETE' | null>(null);
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = '0px';
@@ -21,8 +22,7 @@ export const QA_InputCard = ({ mode, ...props }) => {
     }
   }, [currentValue]);
   useEffect(() => {
-    if (imageAreaRef.current) {
-      console.log(imageAreaRef.current.scrollWidth);
+    if (imageAreaRef.current && action === 'ADD') {
       imageAreaRef.current.scrollTo({ left: imageAreaRef.current.scrollWidth });
     }
   }, [images]);
@@ -56,6 +56,7 @@ export const QA_InputCard = ({ mode, ...props }) => {
                     imgs.splice(i, 1);
 
                     setImages([...imgs]);
+                    setAction('DELETE');
                   }}>
                   X
                 </ImageDelete>
@@ -71,7 +72,10 @@ export const QA_InputCard = ({ mode, ...props }) => {
             <Input
               type={'file'}
               onChange={(e) => {
-                if (e.currentTarget.files) setImages([...images, ...Array.from(e.currentTarget.files)]);
+                if (e.currentTarget.files) {
+                  setImages([...images, ...Array.from(e.currentTarget.files)]);
+                  setAction('ADD');
+                }
               }}></Input>
           </ImageLable>
         ) : null}

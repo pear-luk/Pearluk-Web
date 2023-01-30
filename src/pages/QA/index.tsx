@@ -12,11 +12,11 @@ function QA({ props }) {
     logo: true,
     menu: false,
   });
-  const [write] = useState(true);
+  const [QA_mode] = useState('list_read');
   return (
     <LayOut mode={mode} icon={icon}>
       <>
-        <QA_top write={write} />
+        <QA_top QA_mode={QA_mode} />
         <QA_Card mode={mode}></QA_Card>
       </>
     </LayOut>

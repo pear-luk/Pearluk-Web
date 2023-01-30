@@ -1,14 +1,16 @@
 import Link from 'next/link';
 import styled from 'styled-components';
 interface Props {
-  write?: boolean;
+  QA_mode?: 'list_read' | 'read' | null;
 }
-export const QA_top = ({ write = true }) => {
+export const QA_top = ({ QA_mode = null }) => {
   return (
     <Container>
       <ButtonBox></ButtonBox>
       <TextBox>QA</TextBox>
-      <ButtonBox>{write ? <Link href={'/qa/new'}>글쓰기</Link> : '삭제'}</ButtonBox>
+      <ButtonBox>
+        {QA_mode === 'list_read' ? <Link href={'/qa/new'}>글쓰기</Link> : QA_mode === 'read' ? <>삭제</> : null}
+      </ButtonBox>
     </Container>
   );
 };
