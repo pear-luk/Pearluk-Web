@@ -35,22 +35,22 @@ export const Nav = ({ mode, icon, menuState, setMenuState, ...props }: INavProps
               mode === 'dark' ? (
                 <Image
                   alt="다크모드 메뉴버튼"
-                  src={'./logo/white/menu.svg'}
+                  src={'/logo/white/menu.svg'}
                   onClick={menuClickHandler}
                   width={24}
                   height={24}></Image>
               ) : (
                 <Image
                   alt="화이트모드 메뉴버튼"
-                  src={'./logo/black/menu.svg'}
+                  src={'/logo/black/menu.svg'}
                   onClick={menuClickHandler}
                   width={24}
                   height={24}></Image>
               )
             ) : mode === 'dark' ? (
-              <Image alt="다크모드 뒤로가기버튼" src={'./logo/white/back.svg'} width={24} height={24}></Image>
+              <Image alt="다크모드 뒤로가기버튼" src={'/logo/white/back.svg'} width={24} height={24}></Image>
             ) : (
-              <Image alt="화이트모드 뒤로가기버튼" src={'./logo/black/back.svg'} width={24} height={24}></Image>
+              <Image alt="화이트모드 뒤로가기버튼" src={'/logo/black/back.svg'} width={24} height={24}></Image>
             )}
           </ItemBox>
         </SideBox>
@@ -60,7 +60,7 @@ export const Nav = ({ mode, icon, menuState, setMenuState, ...props }: INavProps
               <Link href={'/'}>
                 <Image
                   alt="홈 버튼"
-                  src={mode === 'dark' ? `./logo/white/home.svg` : `./logo/black/home.svg`}
+                  src={mode === 'dark' ? `/logo/white/home.svg` : `/logo/black/home.svg`}
                   width={30}
                   height={30}></Image>
               </Link>
@@ -72,16 +72,16 @@ export const Nav = ({ mode, icon, menuState, setMenuState, ...props }: INavProps
         <SideBox>
           <ItemBox>
             {mode === 'dark' ? (
-              <Image alt="다크모드 마이페이지 버튼" src={'./logo/white/my.svg'} width={24} height={24}></Image>
+              <Image alt="다크모드 마이페이지 버튼" src={'/logo/white/my.svg'} width={24} height={24}></Image>
             ) : (
-              <Image alt="화이트모드 마이페이지 버튼" src={'./logo/black/my.svg'} width={24} height={24}></Image>
+              <Image alt="화이트모드 마이페이지 버튼" src={'/logo/black/my.svg'} width={24} height={24}></Image>
             )}
           </ItemBox>
           <ItemBox>
             {mode === 'dark' ? (
-              <Image alt="다크모드 장바구니 버튼" src={'./logo/white/cart.svg'} width={24} height={24}></Image>
+              <Image alt="다크모드 장바구니 버튼" src={'/logo/white/cart.svg'} width={24} height={24}></Image>
             ) : (
-              <Image alt="다크모드 장바구니 버튼" src={'./logo/black/cart.svg'} width={24} height={24}></Image>
+              <Image alt="다크모드 장바구니 버튼" src={'/logo/black/cart.svg'} width={24} height={24}></Image>
             )}
           </ItemBox>
         </SideBox>
