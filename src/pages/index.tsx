@@ -6,7 +6,7 @@ import { ModeType } from '../recoil/config/configState';
 import { INavIconType } from '../recoil/Nav/navState';
 
 const MainBackGroundContainer = styled.div`
-  width: 100%;
+  width: auto;
 
   height: 100%;
   /* background-color: red; */

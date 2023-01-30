@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 interface Props {
   write?: boolean;
@@ -7,7 +8,7 @@ export const QA_top = ({ write = true }) => {
     <Container>
       <ButtonBox></ButtonBox>
       <TextBox>QA</TextBox>
-      <ButtonBox>{write ? '글쓰기' : '삭제'}</ButtonBox>
+      <ButtonBox>{write ? <Link href={'/qa/new'}>글쓰기</Link> : '삭제'}</ButtonBox>
     </Container>
   );
 };
