@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ModeType } from '../../recoil/config/configState';
@@ -8,7 +9,9 @@ interface IProps {
 
 export const QA_InputCard = ({ mode, ...props }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const imageAreaRef = useRef<HTMLDivElement>(null);
   const [currentValue, setCurrentValue] = useState('');
+  const [images, setImages] = useState<File[]>([]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -17,17 +20,69 @@ export const QA_InputCard = ({ mode, ...props }) => {
       textareaRef.current.style.height = scrollHeight + 'px';
     }
   }, [currentValue]);
-
+  useEffect(() => {
+    if (imageAreaRef.current) {
+      console.log(imageAreaRef.current.scrollWidth);
+      imageAreaRef.current.scrollTo({ left: imageAreaRef.current.scrollWidth });
+    }
+  }, [images]);
   return (
     <Container mode={mode}>
       <TitleInputBox>
         <InputName>TITLE</InputName>
         <TitleInput></TitleInput>
       </TitleInputBox>
-      <ImageInputBox>
-        <ImageInput></ImageInput>
-        <ImageInput></ImageInput>
-        <ImageInput></ImageInput>
+      <ImageInputBox ref={imageAreaRef}>
+        {/* <ImageInput mode={mode}>+</ImageInput> */}
+
+        {images?.map((image, i) => {
+          if (image as MediaSource | Blob) {
+            const objectUrl = URL?.createObjectURL(image);
+
+            return (
+              <ImageBox key={i}>
+                <Image
+                  alt="이미지"
+                  src={objectUrl}
+                  // width={50}
+                  // height={50}
+                  key={image.name}
+                  fill
+                  style={{ objectFit: 'contain', objectPosition: 'center' }}
+                />
+                <ImageDelete
+                  onClick={() => {
+                    const imgs = [...images];
+                    imgs.splice(i, 1);
+
+                    setImages([...imgs]);
+                  }}>
+                  X
+                </ImageDelete>
+              </ImageBox>
+            );
+          }
+          return;
+        })}
+
+        {images.length < 10 ? (
+          <ImageLable>
+            +
+            <Input
+              type={'file'}
+              onChange={(e) => {
+                if (e.currentTarget.files) setImages([...images, ...Array.from(e.currentTarget.files)]);
+              }}></Input>
+          </ImageLable>
+        ) : null}
+        {/* <ImageLable>
+          +
+          <Input
+            type={'file'}
+            onChange={(e) => {
+              if (e.currentTarget.files) setImages([...images, e.currentTarget.files[0]]);
+            }}></Input>
+        </ImageLable> */}
       </ImageInputBox>
 
       <ContentInputBox>
@@ -43,10 +98,10 @@ export const QA_InputCard = ({ mode, ...props }) => {
         <CheckBoxLabel>
           <Checkbox />
           <CustomCheckBox></CustomCheckBox>
-          <p>비밀글</p>
+          비밀글
         </CheckBoxLabel>
         <PasswordLabel>
-          <p>비밀번호</p>
+          비밀번호
           <PasswordInput />
         </PasswordLabel>
         <Button label="OK" background="dark"></Button>
@@ -54,6 +109,53 @@ export const QA_InputCard = ({ mode, ...props }) => {
     </Container>
   );
 };
+
+const ImageDelete = styled.div`
+  position: absolute;
+  font-size: 1.4rem;
+  right: 0.4rem;
+  font-weight: 700;
+  color: ${({ theme }) => theme.color.yellow.yellow};
+`;
+const ImageBox = styled.div`
+  background-color: black;
+  display: block;
+  width: 5rem;
+  position: relative;
+  height: 5rem;
+  margin: 0 0.4rem;
+  flex-basis: auto;
+
+  overflow-x: scroll;
+  flex: 0 0 auto;
+`;
+const ImageLable = styled.label`
+  /* display: block; */
+  width: 5rem;
+  height: 5rem;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: yellow;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1.4rem;
+  flex: 0 0 auto;
+`;
+const Input = styled.input.attrs({
+  type: 'file',
+  accept: 'image/jpg,image/png,image/jpeg,image/gif',
+  Placeholder: '+',
+})`
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+`;
 
 const Container = styled.div`
   width: 29.4rem;
@@ -82,16 +184,22 @@ const TitleInput = styled.input`
   display: block;
 `;
 
-const ImageInput = styled.button`
-  width: 5rem;
-  height: 5rem;
-  background-color: black;
-  margin-left: 0.8rem;
-`;
+// const ImageInput = styled.button`
+//   width: 5rem;
+//   height: 5rem;
+//   background-color: black;
+//   margin-left: 0.8rem;
+//   color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
+// `;
 
 const ImageInputBox = styled.div`
   margin: 1.6rem 0;
-  display: inline-block;
+  width: auto;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+
+  padding: 0 0.4rem;
 `;
 
 const ContentInputBox = styled.div``;
