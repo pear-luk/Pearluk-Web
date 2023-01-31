@@ -12,7 +12,9 @@ export default {
 const Template: ComponentStory<typeof OrderItem> = (args) => <OrderItem {...args} />;
 
 export const EX = Template.bind({});
-EX.args = {};
+EX.args = {
+  orderId: '01GQFFHHEPPHJC6VQZ5H9SF4YH',
+};
 
 EX.parameters = {
   layout: 'fullscreen',
