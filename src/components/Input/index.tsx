@@ -55,10 +55,10 @@ export const InputCustom = forwardRef(
 
 const Container = styled.div<Omit<Props, 'label' | 'onChange' | 'type'>>`
   color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
-  font-size: ${({ label_size, theme }) => theme.size.font[label_size]};
+  font-size: ${({ label_size, theme }) => label_size && theme.size.font[label_size]};
   display: ${({ label_type }) => label_type !== 'top' && 'flex'};
   label {
-    font-weight: ${({ theme, label_weight }) => theme.fontWeight[label_weight]};
+    font-weight: ${({ theme, label_weight }) => label_weight && theme.fontWeight[label_weight]};
     margin-bottom: ${({ theme, label_type }) => (label_type === 'top' ? theme.size.space.xxsmall : 0)};
     margin-left: ${({ theme, label_type }) => (label_type === 'right' ? theme.size.space.xxsmall : 0)};
     margin-right: ${({ theme, label_type }) => (label_type === 'left' ? theme.size.space.xxsmall : 0)};
@@ -68,8 +68,8 @@ const Container = styled.div<Omit<Props, 'label' | 'onChange' | 'type'>>`
     border: 1px solid ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
     color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
     font-size: 1rem;
-    width: ${({ theme, input_width }) => theme.size.width[input_width]};
-    height: ${({ theme, input_height }) => theme.size.space[input_height]};
+    width: ${({ theme, input_width }) => input_width && theme.size.width[input_width]};
+    height: ${({ theme, input_height }) => input_height && theme.size.space[input_height]};
   }
 `;
 
