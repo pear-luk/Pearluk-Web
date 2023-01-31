@@ -42,6 +42,10 @@ declare module 'styled-components' {
         small: string;
         xsmall: string;
       };
+      width: {
+        medium: string;
+        large: string;
+      };
     };
 
     color: {
@@ -52,11 +56,14 @@ declare module 'styled-components' {
         grey050: string;
         grey020: string;
         white: string;
+        yellowGrey: string;
       };
       yellow: {
         yellow: string;
         yellow080: string;
         yellow020: string;
+        darkYellow: string;
       };
     };
   }
+}

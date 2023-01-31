@@ -11,9 +11,29 @@ export default {
 
 const Template: ComponentStory<typeof QA_top> = (args) => <QA_top {...args} />;
 
-export const EX = Template.bind({});
-EX.args = {};
+export const WHITE_MEDIUM = Template.bind({});
+WHITE_MEDIUM.args = {
+  mode: 'white',
+  size: 'medium',
+};
 
-EX.parameters = {
+WHITE_MEDIUM.parameters = {
   layout: 'fullscreen',
 };
+
+export const DARK = Template.bind({});
+DARK.args = {
+  mode: 'dark',
+  QA_mode: 'list_read',
+};
+
+DARK.parameters = {
+  layout: 'fullscreen',
+};
+
+// export const EX = Template.bind({});
+// EX.args = {};
+
+// EX.parameters = {
+//   layout: 'fullscreen',
+// };

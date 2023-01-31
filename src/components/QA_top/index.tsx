@@ -1,31 +1,63 @@
 import Link from 'next/link';
 import styled from 'styled-components';
+import { ModeType } from '../../recoil/config/configState';
+
+export type QA_mode = 'list_read' | 'read' | 'product' | 'write';
 interface Props {
-  QA_mode?: 'list_read' | 'read' | null;
+  QA_mode?: 'list_read' | 'read' | 'product' | 'write' | null;
+  mode: ModeType;
+  size: 'large' | 'medium';
+  page: 'qa' | 'product';
 }
-export const QA_top = ({ QA_mode = null }) => {
+export const QA_top = ({ mode = 'dark', QA_mode, size = 'medium', page = 'qa' }: Props) => {
   return (
-    <Container>
-      <ButtonBox></ButtonBox>
-      <TextBox>QA</TextBox>
+    <Container mode={mode} size={size}>
+      {page === 'qa' ? (
+        <>
+          <ButtonBox></ButtonBox>
+          <TextBox>QA</TextBox>
+        </>
+      ) : (
+        <>
+          <TextBox>QA</TextBox>
+          <ButtonBox></ButtonBox>
+        </>
+      )}
+      {/* <ButtonBox></ButtonBox>
+      <TextBox>QA</TextBox> */}
       <ButtonBox>
-        {QA_mode === 'list_read' ? <Link href={'/qa/new'}>글쓰기</Link> : QA_mode === 'read' ? <>삭제</> : null}
+        {QA_mode === 'list_read' ? (
+          <Link href={'/qa/new'}>글쓰기</Link>
+        ) : QA_mode === 'read' ? (
+          <>삭제</>
+        ) : QA_mode === 'write' ? (
+          <>취소</>
+        ) : null}
       </ButtonBox>
     </Container>
   );
 };
 
-const Container = styled.div`
-  width: 29.4rem;
+const Container = styled.div<Pick<Props, 'mode' | 'size'>>`
+  width: ${({ size, theme }) => (size === 'medium' ? theme.size.width.medium : theme.size.width.large)};
 
   display: flex;
 
-  padding: 2.4rem 4.8rem;
+  padding: 2.4rem 0;
   padding-bottom: 1.6rem;
 
   justify-content: space-between;
   align-items: flex-end;
-  border-bottom: 0.1rem solid black;
+  border-bottom: 0.1rem solid
+    ${({ theme, mode }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
+  color: ${({ theme, mode }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
+
+  a {
+    color: ${({ theme, mode }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
+  }
+  a:visited {
+    color: ${({ theme, mode }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
+  }
 `;
 const TextBox = styled.div`
   font-size: 1.4rem;
