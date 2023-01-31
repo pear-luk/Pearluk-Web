@@ -16,7 +16,6 @@ const Template: ComponentStory<typeof MenuToggle> = (args) => <MenuToggle {...ar
 export const Primary = Template.bind({});
 
 Primary.args = {
-  primary: true,
-  label: 'Button',
   mode: 'dark',
+  menuState: true,
 };

@@ -10,11 +10,14 @@ export default {
 } as ComponentMeta<typeof Nav>;
 
 const Template: ComponentStory<typeof Nav> = (args) => <Nav {...args} />;
-
+// mode, icon, menuState, setMenuState, ...props
 export const MainNoLogo = Template.bind({});
 MainNoLogo.args = {
   mode: 'dark',
-  logo: false,
+  icon: {
+    logo: true,
+    menu: true,
+  },
 };
 
 export const Main = Template.bind({});
