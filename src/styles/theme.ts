@@ -22,7 +22,7 @@ const fontWeight = {
 
 const size = {
   space: {
-    xxsmall: `0.5rem`,
+    xxsmall: `0.4rem`,
     xsmall: `0.8rem`,
     small: `1.6rem`,
     base: `2.4rem`,
@@ -40,6 +40,10 @@ const size = {
     medium: `1.6rem`,
     small: '1.2rem',
     xsmall: `1rem`,
+  },
+  width: {
+    medium: '29.4rem',
+    large: '34.2rem',
   },
 };
 
@@ -61,11 +65,13 @@ const color = {
     grey050: `#8F8C8C`,
     grey020: `#CCCCCC`,
     white: `#ffffff`,
+    yellowGrey: '#332D06',
   },
   yellow: {
     yellow: `#FDE11D`,
     yellow080: `#FDE74A`,
     yellow020: `#FFF9D2`,
+    darkYellow: '#CAB417',
   },
 };
 

@@ -8,7 +8,7 @@ interface ButtonProps {
   /**
    * What background color to use
    */
-  background?: string;
+  color?: 'black' | 'yellow' | 'dark_yellow' | 'grey';
   /**
    * How large should the button be?
    */
@@ -25,9 +25,20 @@ interface ButtonProps {
    */
   onClick?: () => void;
 }
-const StyledButton = styled.button<ButtonProps>`
+const StyledButton = styled.button<Omit<ButtonProps, 'label' | 'onClick'>>`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  background-color: ${({ theme }) => theme.color.yellow.yellow};
+  background-color: ${({ theme, color }) => {
+    return color === 'black'
+      ? theme.color.grey.black
+      : color === 'yellow'
+      ? theme.color.yellow.yellow
+      : color === 'dark_yellow'
+      ? theme.color.yellow.darkYellow
+      : color === 'grey'
+      ? theme.color.grey.yellowGrey
+      : theme.color.grey.black;
+  }};
+  color: yellow;
   width: 8rem;
   height: 2.4rem;
   /* padding: 0.5rem 2.5rem; */
@@ -37,8 +48,18 @@ const StyledButton = styled.button<ButtonProps>`
 
   font-size: ${({ theme }) => theme.size.font.primary};
   /* padding: 0.5rem 2.5rem; */
-  color: ${({ theme }) => theme.color.grey.black};
+  color: ${({ theme, color }) => {
+    if (color === 'black' || color === 'grey') {
+      return theme.color.yellow.yellow;
+    } else {
+      return theme.color.grey.black;
+    }
+  }};
 `;
-export const Button = ({ size = 'medium', background, label, ...props }: ButtonProps) => {
-  return <StyledButton {...props}>{label}</StyledButton>;
+export const Button = ({ size = 'medium', color = 'black', label, ...props }: ButtonProps) => {
+  return (
+    <StyledButton color={color} size={size} {...props}>
+      {label}
+    </StyledButton>
+  );
 };
