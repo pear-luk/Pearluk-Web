@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import { ModeType } from '../../recoil/config/configState';
+import { Button } from '../Button';
 import { InputCustom } from '../Input';
+import { InputAddress } from '../InputAddress';
+import { InputPhone } from '../InputPhone';
 
 interface Props {
   mode: ModeType;
@@ -17,16 +20,18 @@ export const MyCard = ({ mode }: Props) => {
       </ItemBox>
 
       <ItemBox>
-        <InputCustom mode={mode} label="PHONE"></InputCustom>
+        <InputPhone mode={mode} label="PHONE"></InputPhone>
       </ItemBox>
 
       <ItemBox>
-        <InputCustom mode={mode} label="PSOTCODE"></InputCustom>
+        <InputAddress mode={mode}></InputAddress>
       </ItemBox>
 
-      <ItemBox>
-        <InputCustom mode={mode} label="ADDRESS"></InputCustom>
-      </ItemBox>
+      <BottonBox>
+        <Button color={mode === 'dark' ? 'yellow' : 'black'} size="large" label="SAVE"></Button>
+        <Button color="transparent" size="large" label="LOG OUT"></Button>
+        <Button color="transparent" size="large" label="LEAVE.."></Button>
+      </BottonBox>
     </Container>
   );
 };
@@ -34,4 +39,12 @@ export const MyCard = ({ mode }: Props) => {
 const Container = styled.div``;
 const ItemBox = styled.div`
   margin: 0.8rem 0;
+`;
+
+const BottonBox = styled.div`
+  width: 29.4rem;
+  display: flex;
+  justify-content: space-between;
+  margin-top: ${({ theme }) => theme.size.space.medium};
+  margin-bottom: ${({ theme }) => theme.size.space.xlarge};
 `;

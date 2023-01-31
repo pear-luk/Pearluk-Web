@@ -62,6 +62,7 @@ const color = {
     black: `#000000`,
     grey080: `#2B2B2B`,
     grey070: `#333333`,
+    grey060: '#424242',
     grey050: `#8F8C8C`,
     grey020: `#CCCCCC`,
     white: `#ffffff`,
