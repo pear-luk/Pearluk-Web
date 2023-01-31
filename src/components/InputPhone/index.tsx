@@ -77,52 +77,80 @@ export const InputPhone = ({
       label_type={label_type}
       input_width={input_width}
       input_height={input_height}>
-      <Label>{label}</Label>
+      {(label_type === 'top' || label_type === 'left') && <Label label_type={label_type}>{label}</Label>}
 
-      <Input
-        id={'first'}
-        maxLength={3}
-        ref={phoneRef_first}
-        onClick={inputClickHandler}
-        onChange={inputChangeHandler}
-      />
-      <Hyphen />
-      <Input
-        id={'second'}
-        maxLength={4}
-        ref={phoneRef_second}
-        onClick={inputClickHandler}
-        onChange={inputChangeHandler}
-      />
-      <Hyphen />
-      <Input
-        id={'third'}
-        maxLength={4}
-        ref={phoneRef_third}
-        onClick={inputClickHandler}
-        onChange={inputChangeHandler}
-      />
+      <PhoneNumberBox>
+        <Input
+          id={'first'}
+          maxLength={3}
+          ref={phoneRef_first}
+          onClick={inputClickHandler}
+          onChange={inputChangeHandler}
+        />
+        <Hyphen />
+        <Input
+          id={'second'}
+          maxLength={4}
+          ref={phoneRef_second}
+          onClick={inputClickHandler}
+          onChange={inputChangeHandler}
+        />
+        <Hyphen />
+        <Input
+          id={'third'}
+          maxLength={4}
+          ref={phoneRef_third}
+          onClick={inputClickHandler}
+          onChange={inputChangeHandler}
+        />
+      </PhoneNumberBox>
+      {label_type === 'right' && <Label label_type={label_type}>{label}</Label>}
     </Container>
   );
 };
-
-const Container = styled.div<Omit<Props, 'label' | 'onChange' | 'type'>>`
-  color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
-  font-size: ${({ label_size, theme }) => theme.size.font[label_size]};
-  display: flex;
-  align-items: center;
-`;
-const Label = styled.label``;
-
-const Input = styled.input`
-  width: 8.8rem;
-  border: 1px solid black;
-  text-align: left;
-`;
-
 const Hyphen = styled.div`
   width: 0.8rem;
   height: 0;
-  border-top: 1px solid black;
   margin: 0 0.4rem;
 `;
+const PhoneNumberBox = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const Container = styled.div<Omit<Props, 'label' | 'onChange' | 'type'>>`
+  color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
+  font-size: ${({ label_size, theme }) => label_size && theme.size.font[label_size]};
+  display: ${({ label_type }) => label_type !== 'top' && 'flex'};
+  width: ${({ theme, input_width }) => input_width && theme.size.width[input_width]};
+
+  align-items: center;
+
+  ${Hyphen} {
+    flex: 1 0 auto;
+
+    border-top: 1px solid ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
+  }
+  ${PhoneNumberBox} {
+    width: 100%;
+    margin-top: ${({ theme, label_type }) => (label_type === 'top' ? theme.size.space.xxsmall : 0)};
+    margin-right: ${({ theme, label_type }) => (label_type === 'right' ? theme.size.space.xxsmall : 0)};
+    margin-left: ${({ theme, label_type }) => (label_type === 'left' ? theme.size.space.xxsmall : 0)};
+  }
+  label {
+    font-weight: ${({ theme, label_weight }) => label_weight && theme.fontWeight[label_weight]};
+  }
+  input {
+    background-color: transparent;
+    border: 1px solid ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
+    color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
+    font-size: 1rem;
+    width: 100%;
+    flex-basis: auto;
+
+    height: ${({ theme, input_height }) => input_height && theme.size.space[input_height]};
+  }
+`;
+
+const Label = styled.label<{ label_type: Label_type }>``;
+
+const Input = styled.input``;

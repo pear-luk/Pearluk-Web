@@ -53,6 +53,8 @@ declare module 'styled-components' {
         black: string;
         grey080: string;
         grey070: string;
+        grey060: string;
+
         grey050: string;
         grey020: string;
         white: string;
