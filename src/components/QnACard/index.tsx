@@ -5,7 +5,7 @@ interface IProps {
   mode: ModeType;
 }
 
-export const QA_Card = ({ mode, ...props }) => {
+export const QnACard = ({ mode, ...props }) => {
   return (
     <Container mode={mode}>
       <TitleBox>

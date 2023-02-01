@@ -1,32 +1,39 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 import { ModeType } from '../../recoil/config/configState';
+
+export interface IProduct {
+  product_id: string;
+  name: string;
+  price: number;
+  imgs: string[];
+  count: number;
+}
+
 interface Props {
   mode: ModeType;
-  orderId: string;
-  productName: string;
-  productsCount: number;
-  price: number;
-  oderStatus: string;
-  mainProductImg: string;
+  product: IProduct;
+  order_id: string;
+
+  orderStatus: string;
 }
-export const OrderItem = ({ mode, orderId, productName, productsCount, price, oderStatus, mainProductImg }: Props) => {
+export const OrderItem = ({ mode, order_id, orderStatus, product }: Props) => {
   return (
     <Container>
       <ImgBox>
         <Image
           alt="상품 메인이미지"
-          src={mainProductImg}
+          src={product.imgs[0]}
           fill
           style={{ objectFit: 'contain' }}
           sizes="auto 100%"></Image>
       </ImgBox>
       <InfoBox>
-        <ProductName>{productName}</ProductName>
+        <ProductName>{product.name}</ProductName>
         <Info>
-          <p>{productsCount}개</p>
-          <p>KRW {price.toLocaleString()}</p>
-          <p>{oderStatus}</p>
+          <p>{product.count}개</p>
+          <p>KRW {product.price.toLocaleString()}</p>
+          <p>{orderStatus}</p>
         </Info>
       </InfoBox>
     </Container>

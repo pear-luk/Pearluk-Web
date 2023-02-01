@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { LayOut } from '../../components/layout';
-import { QA_InputCard } from '../../components/QA_InputCard';
+import { QnAInputCard } from '../../components/QnAInputCard';
 
-import { QA_top } from '../../components/QA_top';
+import { QnAHeader } from '../../components/QnAHeader';
 import { ModeType } from '../../recoil/config/configState';
 import { INavIconType } from '../../recoil/Nav/navState';
 
@@ -17,8 +17,8 @@ function NewQA({ props }) {
   return (
     <LayOut mode={mode} icon={icon}>
       <>
-        <QA_top mode={mode} size="medium" page="qa" />
-        <QA_InputCard size="medium" mode={mode}></QA_InputCard>
+        <QnAHeader mode={mode} size="medium" page="qa" />
+        <QnAInputCard size="medium" mode={mode}></QnAInputCard>
       </>
     </LayOut>
   );

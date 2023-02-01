@@ -8,7 +8,7 @@ interface Props {
   size: 'large' | 'medium';
 }
 
-export const QA_InputCard = ({ mode = 'white', size = 'medium', ...props }: Props) => {
+export const QnAInputCard = ({ mode = 'white', size = 'medium', ...props }: Props) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const imageAreaRef = useRef<HTMLDivElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
