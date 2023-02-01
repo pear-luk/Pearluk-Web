@@ -1,6 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-}
+  disableStaticImages: false,
 
-module.exports = nextConfig
+  // images: {
+  //   remotePatterns: {
+  //     protocol: 'http',
+  //     hostname: 'localhost',
+  //     port:""
+  //   },
+  // },
+};
+
+module.exports = nextConfig;

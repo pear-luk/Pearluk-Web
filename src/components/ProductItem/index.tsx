@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import styled from 'styled-components';
 import { ModeType } from '../../recoil/config/configState';
 
@@ -13,7 +14,19 @@ interface Props {
 export const ProductItem = ({ mode, price, product_id, product_name, images, slide = false }: Props) => {
   return (
     <Container mode={mode}>
-      <ImageBox></ImageBox>
+      <ImageBox>
+        <Image
+          alt="상품 대표 이미지"
+          placeholder="blur"
+          src={images[0]}
+          blurDataURL="/logo/logo.svg"
+          width={342}
+          height={456}
+
+          // fill
+          // style={{ objectFit: 'contain' }}
+        ></Image>
+      </ImageBox>
       <InfoBox>
         <NameBox>PRODUCT NAME PRODUCT NAME PRODUCT NAME PRODUCT NAME</NameBox>
         <PriceBox>
@@ -24,6 +37,7 @@ export const ProductItem = ({ mode, price, product_id, product_name, images, sli
   );
 };
 const ImageBox = styled.div`
+  position: relative;
   height: 45.6rem;
 `;
 const Container = styled.div<{ mode: ModeType }>`
@@ -33,6 +47,10 @@ const Container = styled.div<{ mode: ModeType }>`
   width: 34.2rem;
 
   ${ImageBox} {
+    /* border: 1px solid ${({ mode, theme }) =>
+      mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black}; */
+  }
+  img {
     border: 1px solid ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
   }
 `;
@@ -42,12 +60,12 @@ const InfoBox = styled.div`
 `;
 const NameBox = styled.div`
   font-size: 1.4rem;
-  width: 25rem;
-  word-break: keep-all;
+  width: 23rem;
+  word-break: break-all;
 `;
 
 const PriceBox = styled.div`
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 `;
 
 const Price = styled.div``;

@@ -17,7 +17,7 @@ EX.args = {
   product_id: '01GQM00TB1ENRKDW06E994CZ4R',
   product_name: '흑기사의 전리품이다',
   price: 9999999,
-  images: ['/'],
+  images: ['/imgs/test.png'],
 
   slide: false,
 };
