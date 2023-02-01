@@ -19,24 +19,3 @@ MainNoLogo.args = {
     menu: true,
   },
 };
-
-export const Main = Template.bind({});
-Main.args = {
-  mode: 'white',
-};
-
-export const MainBack = Template.bind({});
-MainBack.args = {
-  mode: 'white',
-  menu: false,
-};
-export const Product = Template.bind({});
-Product.args = {
-  mode: 'dark',
-};
-
-export const ProductBack = Template.bind({});
-ProductBack.args = {
-  mode: 'dark',
-  menu: false,
-};

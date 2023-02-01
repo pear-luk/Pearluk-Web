@@ -1,15 +1,15 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { QA_top } from '.';
+import { QnAHeader } from '.';
 
 export default {
-  title: 'Components/QA_top',
-  component: QA_top,
+  title: 'Components/QnAHeader',
+  component: QnAHeader,
   argTypes: {
     backgroundColor: { control: 'color' },
   },
-} as ComponentMeta<typeof QA_top>;
+} as ComponentMeta<typeof QnAHeader>;
 
-const Template: ComponentStory<typeof QA_top> = (args) => <QA_top {...args} />;
+const Template: ComponentStory<typeof QnAHeader> = (args) => <QnAHeader {...args} />;
 
 export const WHITE_MEDIUM = Template.bind({});
 WHITE_MEDIUM.args = {

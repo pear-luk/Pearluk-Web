@@ -9,7 +9,7 @@ interface Props {
   size: 'large' | 'medium';
   page: 'qa' | 'product';
 }
-export const QA_top = ({ mode = 'dark', QA_mode, size = 'medium', page = 'qa' }: Props) => {
+export const QnAHeader = ({ mode = 'dark', QA_mode, size = 'medium', page = 'qa' }: Props) => {
   return (
     <Container mode={mode} size={size}>
       {page === 'qa' ? (

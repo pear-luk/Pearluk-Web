@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { ModeType } from '../../recoil/config/configState';
 import { Button } from '../Button';
+import { Header } from '../Header';
 import { InputCustom } from '../Input';
 import { InputAddress } from '../InputAddress';
 import { InputPhone } from '../InputPhone';
@@ -32,11 +33,14 @@ export const MyCard = ({ mode }: Props) => {
         <Button color="transparent" size="large" label="LOG OUT"></Button>
         <Button color="transparent" size="large" label="LEAVE.."></Button>
       </BottonBox>
+      <Header mode={mode} label="MY ORDER" labelType="left"></Header>
     </Container>
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 29.4rem;
+`;
 const ItemBox = styled.div`
   margin: 0.8rem 0;
 `;
@@ -46,5 +50,6 @@ const BottonBox = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: ${({ theme }) => theme.size.space.medium};
-  margin-bottom: ${({ theme }) => theme.size.space.xlarge};
+  /* margin-bottom: ${({ theme }) => theme.size.space.xlarge}; */
+  margin-bottom: 2rem;
 `;

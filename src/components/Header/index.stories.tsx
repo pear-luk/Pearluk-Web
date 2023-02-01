@@ -1,18 +1,20 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { QA_Card } from '.';
+import { Header } from '.';
 
 export default {
-  title: 'Components/QA_Card',
-  component: QA_Card,
+  title: 'Components/Header',
+  component: Header,
   argTypes: {
     backgroundColor: { control: 'color' },
   },
-} as ComponentMeta<typeof QA_Card>;
+} as ComponentMeta<typeof Header>;
 
-const Template: ComponentStory<typeof QA_Card> = (args) => <QA_Card {...args} />;
+const Template: ComponentStory<typeof Header> = (args) => <Header {...args} />;
 
 export const EX = Template.bind({});
-EX.args = {};
+EX.args = {
+  label: 'MY ORDER',
+};
 
 EX.parameters = {
   layout: 'fullscreen',

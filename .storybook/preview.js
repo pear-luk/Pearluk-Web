@@ -1,7 +1,11 @@
+import * as NextImage from 'next/image';
 import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from '../src/styles/globalStyle';
 import theme from '../src/styles/theme';
+NextImage.defaultProps = {
+  unoptimized: true,
+};
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {

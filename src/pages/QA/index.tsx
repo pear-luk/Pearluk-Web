@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { LayOut } from '../../components/layout';
-import { QA_Card } from '../../components/QA_Card';
-import { QA_mode, QA_top } from '../../components/QA_top';
+import { QnACard } from '../../components/QnACard';
+import { QA_mode, QnAHeader } from '../../components/QnAHeader';
 import { ModeType } from '../../recoil/config/configState';
 import { INavIconType } from '../../recoil/Nav/navState';
 
@@ -16,8 +16,8 @@ function QA({ props }) {
   return (
     <LayOut mode={mode} icon={icon}>
       <>
-        <QA_top QA_mode={QA_mode} mode={mode} size={'medium'} page="qa" />
-        <QA_Card mode={mode}></QA_Card>
+        <QnAHeader QA_mode={QA_mode} mode={mode} size={'medium'} page="qa" />
+        <QnACard mode={mode}></QnACard>
       </>
     </LayOut>
   );
