@@ -1,72 +1,68 @@
+import Image from 'next/image';
 import styled from 'styled-components';
 import { ModeType } from '../../recoil/config/configState';
 interface Props {
   mode: ModeType;
   orderId: string;
+  productName: string;
   productsCount: number;
-  address: string;
+  price: number;
   oderStatus: string;
   mainProductImg: string;
 }
-export const OrderItem = ({ mode, orderId, productsCount, address, oderStatus, mainProductImg }: Props) => {
+export const OrderItem = ({ mode, orderId, productName, productsCount, price, oderStatus, mainProductImg }: Props) => {
   return (
     <Container>
-      <ImgBox></ImgBox>
-
-      <OrderInfoBox>
-        <OrderIdBox>NO.{orderId}</OrderIdBox>
-        <AddressBox></AddressBox>
-      </OrderInfoBox>
-
-      <OrderStatusBox>
-        <StatusBox>수량</StatusBox>
-        <ProductCountBox>1</ProductCountBox>
-      </OrderStatusBox>
+      <ImgBox>
+        <Image
+          alt="상품 메인이미지"
+          src={mainProductImg}
+          fill
+          style={{ objectFit: 'contain' }}
+          sizes="auto 100%"></Image>
+      </ImgBox>
+      <InfoBox>
+        <ProductName>{productName}</ProductName>
+        <Info>
+          <p>{productsCount}개</p>
+          <p>KRW {price.toLocaleString()}</p>
+          <p>{oderStatus}</p>
+        </Info>
+      </InfoBox>
     </Container>
   );
 };
 
 const Container = styled.div`
-  display: flex;
-  padding: 0.4rem 0;
-  border-bottom: 1px solid black;
-  width: 29.4rem;
-  font-size: 1rem;
-  justify-content: left;
   position: relative;
+
+  display: flex;
+  justify-content: left;
 `;
 
 const ImgBox = styled.div`
   width: 5.6rem;
   height: 5.6rem;
   background-color: black;
-`;
-
-const OrderInfoBox = styled.div`
-  /* background-color: black; */
-  height: 5.6rem;
-
-  margin-left: 0.4rem;
+  position: relative;
   margin-right: 0.4rem;
 `;
 
-const OrderIdBox = styled.div``;
-const AddressBox = styled.div``;
-
-const OrderStatusBox = styled.div`
+const InfoBox = styled.div`
   height: 5.6rem;
-  width: 5rem;
-  padding-right: 0.4rem;
-  background-color: yellow;
-  align-items: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
 `;
 
-const StatusBox = styled.div`
-  width: fit-content;
-  /* display: inline-block; */
+const ProductName = styled.p`
+  font-size: 1.2rem;
+  font-weight: 700;
 `;
-const ProductCountBox = styled.div`
-  margin: auto;
-  right: 0;
-  display: inline-block;
+
+const Info = styled.div`
+  font-size: 1rem;
+  font-weight: 400;
 `;
