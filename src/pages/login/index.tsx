@@ -6,12 +6,16 @@ import { ModeType } from '../../recoil/config/configState';
 import { INavIconType } from '../../recoil/Nav/navState';
 
 function Login({ props }) {
+  const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
+  const KAKAO_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+  console.log(KAKAO_REST_API_KEY);
   // mode, icon
   const [mode] = useState<ModeType>('dark');
   const [icon] = useState<INavIconType>({
     logo: true,
     menu: false,
   });
+
   return (
     <LayOut mode={mode} icon={icon}>
       <Box>
