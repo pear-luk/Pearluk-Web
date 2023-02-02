@@ -25,6 +25,7 @@ function Home({ props }) {
     logo: false,
     menu: true,
   });
+
   return (
     <LayOut mode={mode} icon={icon}>
       <MainBackGroundContainer>

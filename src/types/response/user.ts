@@ -1,8 +1,3 @@
-export interface IUser {
-  user_id: string;
-  email: string;
-  nickname: string;
-  role: string;
-  //   addresses ;
-  //   userSocialInfos;
-}
+import { User, UserAddress } from '../model/user';
+
+export type MyGetResponseDTO = User & { uesr_address: UserAddress };

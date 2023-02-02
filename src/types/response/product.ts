@@ -1,11 +1,3 @@
-export interface ProductResponse {
-  product_id: string;
-  name: string;
-  price: number;
-  introduce: string;
-  quantity: number;
-  product_status: number;
-  archive_id: string;
-  category_id: string;
-  imgs?: string[];
-}
+import { Product } from '../model/product';
+
+export type ProductList = Product[];

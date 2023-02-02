@@ -1,4 +1,4 @@
-import { SocialType } from '../common';
+import { CommonInfo } from './../common/commonData';
 export const UserRole: {
   user: 'user';
   admin: 'admin';
@@ -17,16 +17,19 @@ export type User = {
   user_id: string;
   email: string;
   nickname: string;
+  phone_number: string;
   role: UserRole;
-};
+} & CommonInfo;
 
 export type UserSocialInfo = {
   user_id: string;
   social_type: SocialType;
   social_id: string;
-};
+} & CommonInfo;
 
 export type UserAddress = {
-  addresses_id: string;
   uesr_id: string;
-};
+  full_address: string;
+  address: string;
+  detail_address: string;
+} & CommonInfo;

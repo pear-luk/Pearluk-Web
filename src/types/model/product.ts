@@ -1,3 +1,4 @@
+import { CommonInfo } from './../common/commonData';
 export type Product = {
   product_id: string;
   name: string;
@@ -7,4 +8,4 @@ export type Product = {
   product_status: number;
   archive_id: string;
   category_id: string;
-};
+} & CommonInfo;
