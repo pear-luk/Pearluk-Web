@@ -1,5 +1,6 @@
+import axios from 'axios';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { LayOut } from '../components/layout';
 import { ModeType } from '../recoil/config/configState';
@@ -16,6 +17,8 @@ const MainBackGroundContainer = styled.div`
 `;
 const ImgBox = styled.div`
   margin: 1.2rem 0;
+  width: auto;
+  height: auto;
 `;
 
 function Home({ props }) {
@@ -25,6 +28,15 @@ function Home({ props }) {
     logo: false,
     menu: true,
   });
+  async function fetchHellow() {
+    const res = await axios.get('/api');
+    console.log(res.data);
+  }
+
+  useEffect(() => {
+    fetchHellow();
+  }, []);
+
   return (
     <LayOut mode={mode} icon={icon}>
       <MainBackGroundContainer>
