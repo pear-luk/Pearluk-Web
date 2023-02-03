@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { ModeType } from '../../recoil/config/configState';
+import { ModeType } from '../../types/common/mode';
+
 import { Button } from '../Button';
 interface Props {
   mode: ModeType;

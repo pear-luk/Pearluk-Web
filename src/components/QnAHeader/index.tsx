@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import styled from 'styled-components';
-import { ModeType } from '../../recoil/config/configState';
+import { ModeType } from '../../types/common/mode';
 
 export type QA_mode = 'list_read' | 'read' | 'product' | 'write';
 interface Props {

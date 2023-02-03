@@ -9,7 +9,7 @@ export const API = (url: string, options?: AxiosRequestConfig) => {
     ...options,
   });
 
-  return async () => (await AXIOS_instance({ ...options })).data;
+  return (mutationData?: any) => AXIOS_instance({ ...options, data: mutationData });
   // return {
   //   get: async () => await (await AXIOS_instance.get(url)).data,
   //   post: async () => await (await AXIOS_instance.post(url, data)).data,
@@ -17,3 +17,13 @@ export const API = (url: string, options?: AxiosRequestConfig) => {
   //   delete: async () => await (await AXIOS_instance.delete(url, data)).data,
   // };
 };
+
+// 리액트 쿼리 사용법.
+// export const useGet = () => {
+//   return useQuery(['login'], API('/', { method: 'post', data: { asd: '123' } }), {
+//     onSuccess: (data) => {
+//       console.log(data);
+//     },
+//     retry: false,
+//   });
+// };

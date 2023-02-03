@@ -1,7 +1,8 @@
 import { forwardRef, HTMLInputTypeAttribute, RefObject } from 'react';
 import styled from 'styled-components';
-import { ModeType } from '../../recoil/config/configState';
+
 import { FontWeight, Size } from '../../styles/theme';
+import { ModeType } from '../../types/common/mode';
 type Label_type = 'top' | 'left' | 'right';
 
 interface Props {

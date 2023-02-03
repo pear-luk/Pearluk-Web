@@ -3,10 +3,9 @@ import Link from 'next/link';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { LayOut } from '../../components/layout';
-import { useGet } from '../../hooks/services/mutation/login';
 
-import { ModeType } from '../../recoil/config/configState';
 import { INavIconType } from '../../recoil/Nav/navState';
+import { ModeType } from '../../types/common/mode';
 
 function Login({ props }) {
   const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
@@ -18,8 +17,6 @@ function Login({ props }) {
     logo: true,
     menu: false,
   });
-  const { data, isLoading } = useGet({});
-  console.log(data);
 
   return (
     <LayOut mode={mode} icon={icon}>

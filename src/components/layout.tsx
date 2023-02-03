@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { ModeType } from '../recoil/config/configState';
+
 import { INavIconType } from '../recoil/Nav/navState';
 import { Footer } from './Footer';
 import { Nav } from './Nav';

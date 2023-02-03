@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import styled from 'styled-components';
-import { ModeType } from '../../recoil/config/configState';
+
+import { ModeType } from '@types/common/mode.ts';
 import { INavIconType } from '../../recoil/Nav/navState';
 import { MenuToggle } from '../Menu';
 

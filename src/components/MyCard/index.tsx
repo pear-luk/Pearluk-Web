@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { ModeType } from '../../recoil/config/configState';
+import { ModeType } from '../../types/common/mode';
+
 import { Button } from '../Button';
 import { Header } from '../Header';
 import { InputCustom } from '../Input';

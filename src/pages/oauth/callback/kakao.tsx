@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { LayOut } from '../../../components/layout';
-import { ModeType } from '../../../recoil/config/configState';
+import { useSocialLogin } from '../../../hooks/services/mutation/login';
 import { INavIconType } from '../../../recoil/Nav/navState';
+import { ModeType } from '../../../types/common/mode';
 
 const MainBackGroundContainer = styled.div`
   width: auto;
@@ -18,16 +19,25 @@ const MainBackGroundContainer = styled.div`
 const ImgBox = styled.div`
   margin: 1.2rem 0;
 `;
-
 function Home({ props }) {
+  const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
+  const KAKAO_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
   // mode, icon
   const [mode] = useState<ModeType>('dark');
   const [icon] = useState<INavIconType>({
     logo: false,
     menu: true,
   });
-  const router = useRouter();
-  console.log(router.query.code);
+  // { social_type: 'kakao', social_token: '' }
+  // const [login, setLogin] = useState<SocailLoginRequestDTO | null>(null);
+
+  const social_code = useRouter().query.code as string;
+
+  const { mutate } = useSocialLogin();
+
+  useEffect(() => {
+    if (social_code) mutate({ social_code, social_type: 'kakao' });
+  }, [social_code, mutate]);
 
   return (
     <LayOut mode={mode} icon={icon}>
