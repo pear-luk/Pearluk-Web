@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { LayOut } from '../../components/layout';
 import { QnACard } from '../../components/QnACard';
 import { QA_mode, QnAHeader } from '../../components/QnAHeader';
-import { ModeType } from '../../recoil/config/configState';
+
 import { INavIconType } from '../../recoil/Nav/navState';
+import { ModeType } from '../../types/common/mode';
 
 function QA({ props }) {
   // mode, icon

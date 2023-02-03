@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import styled from 'styled-components';
-import { ModeType } from '../../recoil/config/configState';
+import { ModeType } from '../../types/common/mode';
+
 interface IProps {
   mode: ModeType;
 }

@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import styled from 'styled-components';
-import { ModeType } from '../../recoil/config/configState';
+import { ModeType } from '@type/common/mode';
+
 
 interface Props {
   mode: ModeType;

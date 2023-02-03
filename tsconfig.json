@@ -23,7 +23,7 @@
       "@pages/*": ["src/pages/*"],
       "@recoil/*": ["src/recoil/*"],
       "@api/*": ["src/api/*"],
-      "@types/*": ["src/types/*"]
+      "@type/*": ["src/types/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

@@ -1,7 +1,8 @@
 import { RefObject } from 'react';
 import styled from 'styled-components';
-import { ModeType } from '../../recoil/config/configState';
+
 import { FontWeight, Size } from '../../styles/theme';
+import { ModeType } from '../../types/common/mode';
 import { Button } from '../Button';
 
 interface Props {

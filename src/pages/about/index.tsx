@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { LayOut } from '../../components/layout';
-import { ModeType } from '../../recoil/config/configState';
+
 import { INavIconType } from '../../recoil/Nav/navState';
+import { ModeType } from '../../types/common/mode';
 
 function Home({ props }) {
   // mode, icon

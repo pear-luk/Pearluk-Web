@@ -1,5 +1,5 @@
+import { ModeType } from '@type/common/mode';
 import styled from 'styled-components';
-import { ModeType } from '../../recoil/config/configState';
 import { IProduct, OrderItem } from '../OrderItem';
 
 interface Props {

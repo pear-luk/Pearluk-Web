@@ -3,8 +3,9 @@ import { LayOut } from '../../components/layout';
 import { QnAInputCard } from '../../components/QnAInputCard';
 
 import { QnAHeader } from '../../components/QnAHeader';
-import { ModeType } from '../../recoil/config/configState';
+
 import { INavIconType } from '../../recoil/Nav/navState';
+import { ModeType } from '../../types/common/mode';
 
 function NewQA({ props }) {
   // mode, icon

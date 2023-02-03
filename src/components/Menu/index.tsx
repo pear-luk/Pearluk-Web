@@ -2,8 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ModeType } from '../../recoil/config/configState';
+
 import { MenuSelectType } from '../../recoil/Nav/navState';
+import { ModeType } from '../../types/common/mode';
 
 // export interface MenuProps {}
 type SetType<T> = (t: T) => void;
