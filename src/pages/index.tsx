@@ -1,6 +1,5 @@
-import axios from 'axios';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { LayOut } from '../components/layout';
 import { ModeType } from '../recoil/config/configState';
@@ -28,14 +27,6 @@ function Home({ props }) {
     logo: false,
     menu: true,
   });
-  async function fetchHellow() {
-    const res = await axios.get('/api');
-    console.log(res.data);
-  }
-
-  useEffect(() => {
-    fetchHellow();
-  }, []);
 
   return (
     <LayOut mode={mode} icon={icon}>

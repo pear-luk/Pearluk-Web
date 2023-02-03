@@ -1,9 +1,10 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { LayOut } from '../../components/layout';
-import { ModeType } from '../../recoil/config/configState';
-import { INavIconType } from '../../recoil/Nav/navState';
+import { LayOut } from '../../../components/layout';
+import { ModeType } from '../../../recoil/config/configState';
+import { INavIconType } from '../../../recoil/Nav/navState';
 
 const MainBackGroundContainer = styled.div`
   width: auto;
@@ -25,14 +26,14 @@ function Home({ props }) {
     logo: false,
     menu: true,
   });
+  const router = useRouter();
+  console.log(router.query.code);
+
   return (
     <LayOut mode={mode} icon={icon}>
       <MainBackGroundContainer>
         <ImgBox>
           <Image alt="LUK" src={'/logo/logo.svg'} width={352.62} height={100} />
-        </ImgBox>
-        <ImgBox>
-          <Image alt="LUK chrome" src={'/logo/logo_chrome.svg'} width={352.62} height={100} />
         </ImgBox>
       </MainBackGroundContainer>
     </LayOut>

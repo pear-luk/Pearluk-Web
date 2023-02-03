@@ -1,25 +1,33 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { LayOut } from '../../components/layout';
+import { useGet } from '../../hooks/services/mutation/login';
+
 import { ModeType } from '../../recoil/config/configState';
 import { INavIconType } from '../../recoil/Nav/navState';
 
 function Login({ props }) {
   const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
   const KAKAO_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
-  console.log(KAKAO_REST_API_KEY);
+
   // mode, icon
   const [mode] = useState<ModeType>('dark');
   const [icon] = useState<INavIconType>({
     logo: true,
     menu: false,
   });
+  const { data, isLoading } = useGet({});
+  console.log(data);
 
   return (
     <LayOut mode={mode} icon={icon}>
       <Box>
-        <Image alt="카카오로그인" src="./kakao/kakaoLogin.svg" width="200" height="49" />
+        <Link
+          href={`https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`}>
+          <Image alt="카카오로그인" src="./kakao/kakaoLogin.svg" width="200" height="49" />
+        </Link>
       </Box>
     </LayOut>
   );
