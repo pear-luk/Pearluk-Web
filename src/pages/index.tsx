@@ -16,6 +16,8 @@ const MainBackGroundContainer = styled.div`
 `;
 const ImgBox = styled.div`
   margin: 1.2rem 0;
+  width: auto;
+  height: auto;
 `;
 
 function Home({ props }) {
@@ -25,6 +27,7 @@ function Home({ props }) {
     logo: false,
     menu: true,
   });
+
   return (
     <LayOut mode={mode} icon={icon}>
       <MainBackGroundContainer>
