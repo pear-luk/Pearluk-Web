@@ -7,17 +7,17 @@ import { useLogout } from '../../../hooks/services/mutation/logout';
 import { loginState } from '../../../recoil/auth/stats';
 
 import { MenuSelectType } from '../../../recoil/Nav/navState';
-import { ModeType } from '../../../types/common/propsTypes';
 
 // export interface MenuProps {}
 type SetType<T> = (t: T) => void;
-export interface IMenuToggle {
-  mode: ModeType;
+export interface Props {
+  //메뉴는 노란색으로 고정
+  // mode: ModeType;
 
   menuState: boolean;
-  setMenuState: SetType<any>;
+  setMenuState: SetType<boolean>;
 }
-export const MenuToggle = ({ mode, menuState, setMenuState, ...props }: IMenuToggle) => {
+export const MenuToggle = ({ menuState, setMenuState, ...props }: Props) => {
   const [menuSelect, setMenuSelect] = useState<MenuSelectType>(null);
   const isLogin = useRecoilValue(loginState);
   const itemClickHandler = useCallback(
@@ -153,7 +153,7 @@ const ArchiveItem = styled.div<{ menuSelect: MenuSelectType }>`
   width: 29.6rem;
   transition: all 0.3s;
 
-  ${({ title, menuSelect, theme }) => {
+  ${({ menuSelect, theme }) => {
     if (menuSelect === 'ARCHIVE') {
       return ` 
       height: 3.2rem;

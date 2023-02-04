@@ -10,3 +10,5 @@ export type BusinessInfoType = {
   business_tell: string;
   business_email: string;
 };
+
+export type ContentSzieType = 'small' | 'medium';

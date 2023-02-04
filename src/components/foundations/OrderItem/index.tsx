@@ -1,6 +1,7 @@
 import { ModeType } from '@type/common/mode';
 import Image from 'next/image';
 import styled from 'styled-components';
+import { Size } from '../../../styles/theme';
 
 export interface IProduct {
   product_id: string;
@@ -13,13 +14,26 @@ export interface IProduct {
 interface Props {
   mode: ModeType;
   product: IProduct;
+
+  size?: keyof Size['width'];
+
   order_id: string;
 
   orderStatus: string;
+  courier_name?: string;
+  waybill_number?: string;
 }
-export const OrderItem = ({ mode, order_id, orderStatus, product }: Props) => {
+export const OrderItem = ({
+  mode,
+  order_id,
+  orderStatus,
+  product,
+  courier_name,
+  waybill_number,
+  size = 'medium',
+}: Props) => {
   return (
-    <Container>
+    <Container size={size}>
       <ImgBox>
         <Image
           alt="상품 메인이미지"
@@ -31,17 +45,23 @@ export const OrderItem = ({ mode, order_id, orderStatus, product }: Props) => {
       <InfoBox>
         <ProductName>{product.name}</ProductName>
         <Info>
-          <p>{product.count}개</p>
-          <p>KRW {product.price.toLocaleString()}</p>
-          <p>{orderStatus}</p>
+          <InfoLeft>
+            <P>KRW {product.price.toLocaleString()}</P>
+            <P>{courier_name ? `${courier_name} ${waybill_number}` : `운송장 정보없음`}</P>
+          </InfoLeft>
+          <InfoRight>
+            <P>{product && product.count}개</P>
+            <P>{orderStatus}</P>
+          </InfoRight>
         </Info>
       </InfoBox>
     </Container>
   );
 };
 
-const Container = styled.div`
+const Container = styled.div<{ size: keyof Size['width'] }>`
   position: relative;
+  width: ${({ theme, size }) => size && theme.size.width[size]};
 
   display: flex;
   justify-content: left;
@@ -57,7 +77,7 @@ const ImgBox = styled.div`
 
 const InfoBox = styled.div`
   height: 5.6rem;
-
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -72,4 +92,14 @@ const ProductName = styled.p`
 const Info = styled.div`
   font-size: 1rem;
   font-weight: 400;
+  display: flex;
+  justify-content: space-between;
+`;
+const InfoRight = styled.div`
+  text-align: right;
+`;
+const InfoLeft = styled.div``;
+
+const P = styled.p`
+  margin-top: 0.4rem;
 `;

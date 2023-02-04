@@ -11,11 +11,12 @@ export default {
 
 const Template: ComponentStory<typeof Nav> = (args) => <Nav {...args} />;
 // mode, icon, menuState, setMenuState, ...props
-export const MainNoLogo = Template.bind({});
-MainNoLogo.args = {
+export const EX = Template.bind({});
+EX.args = {
   mode: 'dark',
-  icon: {
-    logo: true,
-    menu: true,
-  },
+  centerLogo: true,
+  menu: true,
+};
+EX.parameters = {
+  layout: 'fullscreen',
 };

@@ -1,32 +1,37 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useIsLogin } from '../hooks/services/queries/login';
+import { businessInfoMock } from '../mock/businessInfo.mock';
+import { ModeType } from '../types/common/propsTypes';
 
-import { INavIconType } from '../recoil/Nav/navState';
+import { Size } from '../styles/theme';
 import { Footer } from './foundations/Footer';
 import { Nav } from './foundations/Nav';
 
 interface Props {
   children?: React.ReactNode;
   mode: ModeType;
-  icon: INavIconType;
+  centerLogo?: boolean;
+  menu?: boolean;
+  contentSize?: keyof Size['width'];
 }
 
-export const LayOut = ({ children, mode, icon }: Props) => {
+export const LayOut = ({ children, mode, centerLogo = true, menu = true, contentSize = 'medium' }: Props) => {
   const [menuState, setMenuState] = useState(false);
 
-  const { user, login } = useIsLogin();
-  const loginState = useMemo(() => {
-    console.log(user, login);
-  }, [user, login]);
+  const { isLoginLoading } = useIsLogin();
 
   return (
     <Container>
-      <Nav mode={mode} icon={icon} menuState={menuState} setMenuState={setMenuState} />
+      <Nav mode={mode} menu={menu} centerLogo={centerLogo} menuState={menuState} setMenuState={setMenuState} />
       <ContentContainer mode={mode}>
-        <Content>{children}</Content>
+        {isLoginLoading ? (
+          <Content contentSize={contentSize}>로딩중</Content>
+        ) : (
+          <Content contentSize={contentSize}>{children}</Content>
+        )}
       </ContentContainer>
-      <Footer mode={mode} />
+      <Footer mode={mode} business_info={businessInfoMock} />
     </Container>
   );
 };
@@ -42,6 +47,6 @@ const ContentContainer = styled.main<{ mode: ModeType }>`
   display: flex;
   justify-content: center;
 `;
-const Content = styled.div`
-  /* width: 29.4rem; */
+const Content = styled.div<{ contentSize: keyof Size['width'] }>`
+  width: ${({ theme, contentSize }) => contentSize && theme.size.width[contentSize]};
 `;

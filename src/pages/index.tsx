@@ -3,7 +3,6 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { LayOut } from '../components/layout';
 
-import { INavIconType } from '../recoil/Nav/navState';
 import { ModeType } from '../types/common/propsTypes';
 const MainBackGroundContainer = styled.div`
   width: auto;
@@ -20,17 +19,13 @@ const ImgBox = styled.div`
   height: auto;
 `;
 
-function Home({ props }) {
+function Home() {
   // mode, icon
   const [mode] = useState<ModeType>('dark');
-  const [icon] = useState<INavIconType>({
-    logo: false,
-    menu: true,
-  });
 
   return (
     <>
-      <LayOut mode={mode} icon={icon}>
+      <LayOut mode={mode} menu={true} centerLogo={true}>
         <MainBackGroundContainer>
           <ImgBox>
             <Image alt="LUK" src={'/logo/logo.svg'} width={352.62} height={100} />
