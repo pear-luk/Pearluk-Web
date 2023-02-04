@@ -9,7 +9,7 @@ interface Props {
   font_size?: keyof Size['font'];
 }
 
-export const Footer = ({ mode, business_info, font_size = 'small', ...props }: Props) => {
+export const Footer = ({ mode, business_info, font_size = 'small' }: Props) => {
   const { insta, owner, business_email, business_name, business_number, business_tell } = business_info;
 
   return (
@@ -54,12 +54,9 @@ const Container = styled.div<Omit<Props, 'business_info'>>`
 `;
 const InfoBox = styled.div`
   height: auto;
-
-  /* background-color: blue; */
 `;
 
 const Info = styled.div`
-  /* font-size: 1.2rem; */
   text-align: center;
 `;
 

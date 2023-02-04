@@ -13,9 +13,12 @@ export default {
 
 const Template: ComponentStory<typeof MenuToggle> = (args) => <MenuToggle {...args} />;
 
-export const Primary = Template.bind({});
+export const EX = Template.bind({});
 
-Primary.args = {
-  mode: 'dark',
+EX.args = {
   menuState: true,
+  setMenuState: () => null,
+};
+EX.parameters = {
+  layout: 'fullscreen',
 };

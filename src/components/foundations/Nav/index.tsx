@@ -1,31 +1,34 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useCallback } from 'react';
 import styled from 'styled-components';
 
-import { INavIconType } from '../../../recoil/Nav/navState';
 import { ModeType } from '../../../types/common/propsTypes';
 import { MenuToggle } from '../Menu';
 
 type SetType<T> = (t: T) => void;
 export interface INavProps {
   mode: ModeType;
-  icon: INavIconType;
+  // icon: INavIconType;
+
   menuState: boolean;
   setMenuState: SetType<any>;
+  menu?: boolean; //menu표시일건지 뒤로가기 일건지
+  centerLogo?: boolean; //
 }
 
-export const Nav = ({ mode, icon, menuState, setMenuState, ...props }: INavProps) => {
+export const Nav = ({ mode, menuState, setMenuState, menu = true, centerLogo = true, ...props }: INavProps) => {
   // mode 다크모드인지. 아닌지
   // const [mode, setMode] = useRecoilState(modeAtom);
 
   // nav 아이콘
-  const { menu, logo } = icon;
 
   // 메뉴
 
-  const menuClickHandler = () => {
+  const menuClickHandler = useCallback(() => {
     setMenuState(!menuState);
-  };
+    console.log(menuState);
+  }, [setMenuState, menuState]);
 
   return (
     <>
@@ -57,7 +60,7 @@ export const Nav = ({ mode, icon, menuState, setMenuState, ...props }: INavProps
         </SideBox>
         <LogoBox>
           <Logo>
-            {logo ? (
+            {centerLogo ? (
               <Link href={'/'}>
                 <Image
                   alt="홈 버튼"
