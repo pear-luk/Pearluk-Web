@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 import { MenuSelectType } from '../../recoil/Nav/navState';
@@ -20,19 +20,21 @@ export const MenuToggle = ({ mode, menuState, setMenuState, ...props }: IMenuTog
   //
   const [menuSelect, setMenuSelect] = useState<MenuSelectType>(null);
 
-  const itemClickHandler = (e) => {
-    if (e.target.title === menuSelect || !e.target.title) {
-      setMenuSelect(null);
-    } else setMenuSelect(e.target.title);
-  };
-  const menuClickHandler = () => {
+  const itemClickHandler = useCallback(
+    (e: React.MouseEvent): void => {
+      const { target } = e;
+      if (target instanceof HTMLDivElement) {
+        const { title } = target;
+        if (title === menuSelect || !title) {
+          setMenuSelect(null);
+        } else setMenuSelect(title as MenuSelectType);
+      }
+    },
+    [menuSelect],
+  );
+  const menuClickHandler = useCallback(() => {
     setMenuState(!menuState);
-  };
-
-  useEffect(() => {
-    console.log(menuSelect);
-  }, [menuSelect]);
-
+  }, [setMenuState, menuState]);
   return (
     <Wrapper
       menuState={menuState}

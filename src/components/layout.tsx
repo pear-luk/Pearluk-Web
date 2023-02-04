@@ -1,18 +1,25 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import styled from 'styled-components';
+import { useIsLogin } from '../hooks/services/queries/login';
 
 import { INavIconType } from '../recoil/Nav/navState';
 import { Footer } from './Footer';
 import { Nav } from './Nav';
 
 interface Props {
-  children?: JSX.Element;
+  children?: React.ReactNode;
   mode: ModeType;
   icon: INavIconType;
 }
 
 export const LayOut = ({ children, mode, icon }: Props) => {
   const [menuState, setMenuState] = useState(false);
+
+  const { user, login } = useIsLogin();
+  const loginState = useMemo(() => {
+    console.log(user, login);
+  }, [user, login]);
+
   return (
     <Container>
       <Nav mode={mode} icon={icon} menuState={menuState} setMenuState={setMenuState} />

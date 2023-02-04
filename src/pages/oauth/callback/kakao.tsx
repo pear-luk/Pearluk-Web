@@ -20,8 +20,6 @@ const ImgBox = styled.div`
   margin: 1.2rem 0;
 `;
 function Home({ props }) {
-  const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
-  const KAKAO_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
   // mode, icon
   const [mode] = useState<ModeType>('dark');
   const [icon] = useState<INavIconType>({

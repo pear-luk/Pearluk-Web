@@ -5,7 +5,6 @@ import { LayOut } from '../components/layout';
 
 import { INavIconType } from '../recoil/Nav/navState';
 import { ModeType } from '../types/common/mode';
-
 const MainBackGroundContainer = styled.div`
   width: auto;
 
@@ -30,16 +29,18 @@ function Home({ props }) {
   });
 
   return (
-    <LayOut mode={mode} icon={icon}>
-      <MainBackGroundContainer>
-        <ImgBox>
-          <Image alt="LUK" src={'/logo/logo.svg'} width={352.62} height={100} />
-        </ImgBox>
-        <ImgBox>
-          <Image alt="LUK chrome" src={'/logo/logo_chrome.svg'} width={352.62} height={100} />
-        </ImgBox>
-      </MainBackGroundContainer>
-    </LayOut>
+    <>
+      <LayOut mode={mode} icon={icon}>
+        <MainBackGroundContainer>
+          <ImgBox>
+            <Image alt="LUK" src={'/logo/logo.svg'} width={352.62} height={100} />
+          </ImgBox>
+          <ImgBox>
+            <Image alt="LUK chrome" src={'/logo/logo_chrome.svg'} width={352.62} height={100} />
+          </ImgBox>
+        </MainBackGroundContainer>
+      </LayOut>
+    </>
   );
 }
 

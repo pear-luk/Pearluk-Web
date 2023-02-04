@@ -1,10 +1,12 @@
-import { LoginType, User } from './../model/user';
+import { LoginType } from './../model/user';
 export type LoginResponseDTO = {
-  access_token: string;
-  user: User & { social_type: LoginType };
+  social_type: LoginType;
+  nickname: string;
+  user_id: string;
 };
 
 export type SignupResponseDTO = {
-  access_token: string;
-  user: User & { social_type: LoginType };
+  social_type: LoginType;
+  nickname: string;
+  user_id: string;
 };
