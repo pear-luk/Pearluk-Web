@@ -12,6 +12,7 @@ function Home({ props }) {
     logo: true,
     menu: true,
   });
+
   return (
     <LayOut mode={mode} icon={icon}>
       <AboutContainer>

@@ -2,8 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import { ModeType } from '@types/common/mode.ts';
 import { INavIconType } from '../../recoil/Nav/navState';
+import { ModeType } from '../../types/common/mode';
 import { MenuToggle } from '../Menu';
 
 type SetType<T> = (t: T) => void;

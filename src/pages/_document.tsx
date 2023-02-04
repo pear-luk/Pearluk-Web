@@ -30,6 +30,7 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <Link type="image/x-icon" rel="shortcut icon" href="/favicon.ico" />
           <Link
             href={'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css'}
             rel="stylesheet"></Link>

@@ -1,7 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import { useLogout } from '../../hooks/services/mutation/logout';
+import { loginState } from '../../recoil/auth/stats';
 
 import { MenuSelectType } from '../../recoil/Nav/navState';
 import { ModeType } from '../../types/common/mode';
@@ -15,23 +18,32 @@ export interface IMenuToggle {
   setMenuState: SetType<any>;
 }
 export const MenuToggle = ({ mode, menuState, setMenuState, ...props }: IMenuToggle) => {
-  // 메뉴
-
-  //
   const [menuSelect, setMenuSelect] = useState<MenuSelectType>(null);
-
-  const itemClickHandler = (e) => {
-    if (e.target.title === menuSelect || !e.target.title) {
-      setMenuSelect(null);
-    } else setMenuSelect(e.target.title);
-  };
-  const menuClickHandler = () => {
+  const isLogin = useRecoilValue(loginState);
+  const itemClickHandler = useCallback(
+    (e: React.MouseEvent): void => {
+      const { target } = e;
+      if (target instanceof HTMLDivElement) {
+        const { title } = target;
+        if (title === menuSelect || !title) {
+          setMenuSelect(null);
+        } else setMenuSelect(title as MenuSelectType);
+      }
+    },
+    [menuSelect],
+  );
+  const menuClickHandler = useCallback(() => {
     setMenuState(!menuState);
-  };
+  }, [setMenuState, menuState]);
 
-  useEffect(() => {
-    console.log(menuSelect);
-  }, [menuSelect]);
+  const { mutate: logoutMutate } = useLogout();
+  const logoutClickHandler = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      logoutMutate();
+    },
+    [logoutMutate],
+  );
 
   return (
     <Wrapper
@@ -46,7 +58,7 @@ export const MenuToggle = ({ mode, menuState, setMenuState, ...props }: IMenuTog
           <Image src="./logo/black/home.svg" width={30} height={30} alt="home logo" />
         </LogoBox>
         <LoginBox>
-          <Link href={'/login'}>LOG IN</Link>
+          {isLogin ? <div onClick={logoutClickHandler}>LOG OUT</div> : <Link href={'/login'}>LOG IN</Link>}
         </LoginBox>
         <MenuBox>
           <MenuItemBox>
@@ -119,6 +131,7 @@ const LoginBox = styled.div`
 
   top: 4.8rem;
   right: 3rem;
+  cursor: pointer;
 `;
 
 const MenuBox = styled.div`
