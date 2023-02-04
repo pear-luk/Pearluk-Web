@@ -45,6 +45,15 @@ const size = {
     medium: '29.4rem',
     large: '34.2rem',
   },
+  button: {
+    mini: 'width: 2.4rem; height: 2.4rem;',
+    small: 'width: 8rem; height: 1.4rem; font-size:1rem;',
+    medium: 'width: 8rem; height: 2.4rem;',
+    large: 'width: 8.8rem; height: 2.4rem;',
+    xlarge: 'width: 14.5rem; height: 2.4rem;',
+    xxlarge: 'width: 16rem; height: 4rem;',
+    huge: 'width: 100%; height: 4rem;',
+  },
 };
 
 // const fontSize = {
@@ -66,7 +75,6 @@ const color = {
     grey050: `#8F8C8C`,
     grey020: `#CCCCCC`,
     white: `#ffffff`,
-    yellowGrey: '#332D06',
   },
   yellow: {
     yellow: `#FDE11D`,

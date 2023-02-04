@@ -46,6 +46,15 @@ declare module 'styled-components' {
         medium: string;
         large: string;
       };
+      button: {
+        mini: string;
+        small: string;
+        medium: string;
+        large: string;
+        xlarge: string;
+        xxlarge: string;
+        huge: string;
+      };
     };
 
     color: {
@@ -58,7 +67,6 @@ declare module 'styled-components' {
         grey050: string;
         grey020: string;
         white: string;
-        yellowGrey: string;
       };
       yellow: {
         yellow: string;

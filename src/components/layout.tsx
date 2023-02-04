@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { useIsLogin } from '../hooks/services/queries/login';
 
 import { INavIconType } from '../recoil/Nav/navState';
-import { Footer } from './Footer';
-import { Nav } from './Nav';
+import { Footer } from './foundations/Footer';
+import { Nav } from './foundations/Nav';
 
 interface Props {
   children?: React.ReactNode;
