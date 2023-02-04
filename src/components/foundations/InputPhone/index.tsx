@@ -1,9 +1,10 @@
-import { ChangeEvent, Dispatch, MouseEvent, RefObject, SetStateAction, useEffect, useRef, useState } from 'react';
+import React, { Dispatch, MouseEvent, RefObject, SetStateAction, useCallback, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { FontWeight, Size } from '../../../styles/theme';
-import { ModeType } from '../../../types/common/mode';
-type Label_type = 'top' | 'left' | 'right';
+import { LabelType, ModeType } from '../../../types/common/propsTypes';
+import { InputText } from '../../elements/InputText';
+import { Label } from '../../elements/Label';
 
 interface Props {
   mode: ModeType;
@@ -12,7 +13,7 @@ interface Props {
   input_height?: keyof Size['space'];
 
   label: string;
-  label_type?: Label_type;
+  label_type?: LabelType;
   label_size?: keyof Size['font'];
   label_weight?: keyof FontWeight;
 
@@ -40,35 +41,47 @@ export const InputPhone = ({
   const phoneRef_first = useRef<HTMLInputElement>(null);
   const phoneRef_second = useRef<HTMLInputElement>(null);
   const phoneRef_third = useRef<HTMLInputElement>(null);
-  const inputClickHandler = (e: MouseEvent) => {
-    (e.target as HTMLTextAreaElement).value = '';
-  };
-  const inputChangeHandler = (e: ChangeEvent) => {
-    if (e.target.id === 'first') {
-      if ((e.target as HTMLInputElement).value.length === 3) {
-        if (phoneRef_second.current) {
-          phoneRef_second.current.value = '';
-          phoneRef_second.current.focus();
-        }
-      }
-    }
-    if (e.currentTarget.id === 'second') {
-      if ((e.target as HTMLInputElement).value.length === 4) {
-        if (phoneRef_third.current) {
-          phoneRef_third.current.value = '';
-          phoneRef_third.current.focus();
-        }
-      }
-    }
 
-    setPhoneNum({ ...phoneNum, [e.target.id]: (e.target as HTMLInputElement).value });
-  };
-  useEffect(() => {
+  const inputClickHandler = useCallback((e: MouseEvent) => {
+    (e.target as HTMLTextAreaElement).value = '';
+  }, []);
+  const inputChangeHandler = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.id === 'first') {
+        if ((e.target as HTMLInputElement).value.length === 3) {
+          if (phoneRef_second.current) {
+            phoneRef_second.current.value = '';
+            phoneRef_second.current.focus();
+          }
+        }
+      }
+      if (e.currentTarget.id === 'second') {
+        if ((e.target as HTMLInputElement).value.length === 4) {
+          if (phoneRef_third.current) {
+            phoneRef_third.current.value = '';
+            phoneRef_third.current.focus();
+          }
+        }
+      }
+
+      setPhoneNum({ ...phoneNum, [e.target.id]: (e.target as HTMLInputElement).value });
+    },
+    [phoneNum],
+  );
+
+  useMemo(() => {
     if (setPhoneNumber) {
       const { first, second, third } = phoneNum;
       setPhoneNumber(`${first}-${second}-${third}`);
     }
+    console.log(phoneNum);
   }, [phoneNum, setPhoneNumber]);
+  // useEffect(() => {
+  //   if (setPhoneNumber) {
+  //     const { first, second, third } = phoneNum;
+  //     setPhoneNumber(`${first}-${second}-${third}`);
+  //   }
+  // }, [phoneNum, setPhoneNumber]);
 
   return (
     <Container
@@ -78,34 +91,58 @@ export const InputPhone = ({
       label_type={label_type}
       input_width={input_width}
       input_height={input_height}>
-      {(label_type === 'top' || label_type === 'left') && <Label label_type={label_type}>{label}</Label>}
+      {label_type !== 'right' && (
+        <Label
+          mode={mode}
+          label={label}
+          label_type={label_type}
+          label_size={label_size}
+          label_weight={label_weight}></Label>
+      )}
 
       <PhoneNumberBox>
-        <Input
+        <InputText
           id={'first'}
+          mode={mode}
           maxLength={3}
-          ref={phoneRef_first}
-          onClick={inputClickHandler}
+          input_height={input_height}
+          input_width={input_width}
           onChange={inputChangeHandler}
+          onClick={inputClickHandler}
+          forwardedRef={phoneRef_first}
         />
         <Hyphen />
-        <Input
+        <InputText
           id={'second'}
           maxLength={4}
-          ref={phoneRef_second}
-          onClick={inputClickHandler}
+          mode={mode}
+          input_height={input_height}
+          input_width={input_width}
           onChange={inputChangeHandler}
+          onClick={inputClickHandler}
+          forwardedRef={phoneRef_second}
         />
         <Hyphen />
-        <Input
-          id={'third'}
+        <InputText
           maxLength={4}
-          ref={phoneRef_third}
-          onClick={inputClickHandler}
+          id={'third'}
+          mode={mode}
+          input_height={input_height}
+          input_width={input_width}
           onChange={inputChangeHandler}
+          onClick={inputClickHandler}
+          forwardedRef={phoneRef_third}
         />
+
+        {label_type === 'right' && (
+          <Label
+            mode={mode}
+            label={label}
+            label_type={label_type}
+            label_size={label_size}
+            label_weight={label_weight}></Label>
+        )}
       </PhoneNumberBox>
-      {label_type === 'right' && <Label label_type={label_type}>{label}</Label>}
     </Container>
   );
 };
@@ -120,7 +157,6 @@ const PhoneNumberBox = styled.div`
 `;
 const Container = styled.div<Omit<Props, 'label' | 'onChange' | 'type'>>`
   color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
-  font-size: ${({ label_size, theme }) => label_size && theme.size.font[label_size]};
   display: ${({ label_type }) => label_type !== 'top' && 'flex'};
   width: ${({ theme, input_width }) => input_width && theme.size.width[input_width]};
 
@@ -137,21 +173,10 @@ const Container = styled.div<Omit<Props, 'label' | 'onChange' | 'type'>>`
     margin-right: ${({ theme, label_type }) => (label_type === 'right' ? theme.size.space.xxsmall : 0)};
     margin-left: ${({ theme, label_type }) => (label_type === 'left' ? theme.size.space.xxsmall : 0)};
   }
-  label {
-    font-weight: ${({ theme, label_weight }) => label_weight && theme.fontWeight[label_weight]};
-  }
-  input {
-    background-color: transparent;
-    border: 1px solid ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
-    color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
-    font-size: 1rem;
-    width: 100%;
-    flex-basis: auto;
 
-    height: ${({ theme, input_height }) => input_height && theme.size.space[input_height]};
+  input {
+    width: 100%;
   }
 `;
 
-const Label = styled.label<{ label_type: Label_type }>``;
-
-const Input = styled.input``;
+// const Input = styled.input``;

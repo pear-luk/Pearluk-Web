@@ -7,7 +7,7 @@ import { useLogout } from '../../../hooks/services/mutation/logout';
 import { loginState } from '../../../recoil/auth/stats';
 
 import { MenuSelectType } from '../../../recoil/Nav/navState';
-import { ModeType } from '../../../types/common/mode';
+import { ModeType } from '../../../types/common/propsTypes';
 
 // export interface MenuProps {}
 type SetType<T> = (t: T) => void;

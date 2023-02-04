@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { LayOut } from '../../components/layout';
 
 import { INavIconType } from '../../recoil/Nav/navState';
-import { ModeType } from '../../types/common/mode';
+import { ModeType } from '../../types/common/propsTypes';
 
 function Login({ props }) {
   const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;

@@ -1,8 +1,8 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { InputText } from './';
+import { InputText } from '.';
 
 export default {
-  title: 'Elements/Input',
+  title: 'Elements/InputText',
   component: InputText,
   argTypes: {
     backgroundColor: { control: 'color' },

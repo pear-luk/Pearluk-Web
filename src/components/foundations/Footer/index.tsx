@@ -1,29 +1,34 @@
 import Link from 'next/link';
 import styled from 'styled-components';
-import { ModeType } from '../../../types/common/mode';
+import { Size } from '../../../styles/theme';
+import { BusinessInfoType, ModeType } from '../../../types/common/propsTypes';
 
-interface IProps {
+interface Props {
   mode: ModeType;
+  business_info: BusinessInfoType;
+  font_size?: keyof Size['font'];
 }
 
-export const Footer = ({ mode, ...props }) => {
+export const Footer = ({ mode, business_info, font_size = 'small', ...props }: Props) => {
+  const { insta, owner, business_email, business_name, business_number, business_tell } = business_info;
+
   return (
-    <Container mode={mode}>
+    <Container mode={mode} font_size={font_size}>
       <InfoBox>
         <InstaInfo>
-          INSTA <Link href={'https://instagram.com/pearluk_kr'}>@pearluk_kr</Link>
+          INSTA <Link href={`https://instagram.com/${insta}`}>@{insta}</Link>
         </InstaInfo>
-        <BusinessInfo>PEARLUK (펄럭)</BusinessInfo>
-        <BusinessInfo>OWNER 이건호</BusinessInfo>
-        <BusinessInfo>BUSINESS NO 203-78-81668</BusinessInfo>
-        <BusinessInfo>TELL 010-9465-7093</BusinessInfo>
-        <BusinessInfo>EMAIL gunho227@naver.ocm</BusinessInfo>
+        <BusinessInfo>{business_name}</BusinessInfo>
+        <BusinessInfo>OWNER {owner}</BusinessInfo>
+        <BusinessInfo>BUSINESS NO {business_number}</BusinessInfo>
+        <BusinessInfo>TELL {business_tell}</BusinessInfo>
+        <BusinessInfo>EMAIL {business_email}</BusinessInfo>
       </InfoBox>
     </Container>
   );
 };
 
-const Container = styled.div<{ mode: ModeType }>`
+const Container = styled.div<Omit<Props, 'business_info'>>`
   width: 100%;
   height: 20rem;
   display: flex;
@@ -39,6 +44,7 @@ const Container = styled.div<{ mode: ModeType }>`
   background-color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.grey.black : theme.color.yellow.yellow)};
   padding-bottom: 8rem;
 
+  font-size: ${({ theme, font_size }) => font_size && theme.size.font[font_size]};
   a {
     color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.grey.grey050 : theme.color.grey.black)};
   }
@@ -53,7 +59,7 @@ const InfoBox = styled.div`
 `;
 
 const Info = styled.div`
-  font-size: 1.2rem;
+  /* font-size: 1.2rem; */
   text-align: center;
 `;
 

@@ -4,7 +4,7 @@ import { LayOut } from '../../components/layout';
 import { QnACard } from '../../components/modules/QnACard';
 
 import { INavIconType } from '../../recoil/Nav/navState';
-import { ModeType } from '../../types/common/mode';
+import { ModeType } from '../../types/common/propsTypes';
 
 function QA({ props }) {
   // mode, icon

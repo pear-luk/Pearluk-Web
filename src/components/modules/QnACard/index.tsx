@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import styled from 'styled-components';
-import { ModeType } from '../../../types/common/mode';
+import { ModeType } from '../../../types/common/propsTypes';
 
 interface IProps {
   mode: ModeType;

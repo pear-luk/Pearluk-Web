@@ -1,5 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Footer } from '.';
+import { businessInfoMock } from '../../../mock/businessInfo.mock';
 
 export default {
   title: 'Foundations/Footer',
@@ -12,7 +13,9 @@ export default {
 const Template: ComponentStory<typeof Footer> = (args) => <Footer {...args} />;
 
 export const EX = Template.bind({});
-EX.args = {};
+EX.args = {
+  business_info: businessInfoMock,
+};
 
 EX.parameters = {
   layout: 'fullscreen',

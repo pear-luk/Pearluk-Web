@@ -2,7 +2,7 @@ import { RefObject } from 'react';
 import styled from 'styled-components';
 
 import { FontWeight, Size } from '../../../styles/theme';
-import { ModeType } from '../../../types/common/mode';
+import { ModeType } from '../../../types/common/propsTypes';
 import { Button } from '../../elements/Button';
 
 interface Props {

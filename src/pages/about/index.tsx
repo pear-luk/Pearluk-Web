@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { LayOut } from '../../components/layout';
 
 import { INavIconType } from '../../recoil/Nav/navState';
-import { ModeType } from '../../types/common/mode';
+import { ModeType } from '../../types/common/propsTypes';
 
 function Home({ props }) {
   // mode, icon

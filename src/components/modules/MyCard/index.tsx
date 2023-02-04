@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { ModeType } from '../../../types/common/mode';
+import { ModeType } from '../../../types/common/propsTypes';
 
 import { Button } from '../../elements/Button';
 import { Header } from '../../foundations/Header';
-import { InputCustom } from '../../foundations/Input';
-import { InputAddress } from '../../foundations/InputAddress';
+import { InputCustom } from '../../foundations/InputLabel';
+import { InputAddress } from '../InputAddress';
 import { InputPhone } from '../../foundations/InputPhone';
 
 interface Props {

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { ModeType } from '../../../types/common/mode';
+import { ModeType } from '../../../types/common/propsTypes';
 
 import { Button } from '../../elements/Button';
 interface Props {

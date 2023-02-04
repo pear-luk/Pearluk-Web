@@ -1,18 +1,18 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { InputCustom } from '.';
+import { InputLabel } from '.';
 
 export default {
-  title: 'Foundations/Input',
-  component: InputCustom,
+  title: 'Foundations/InputLabel',
+  component: InputLabel,
   argTypes: {
     backgroundColor: { control: 'color' },
   },
-} as ComponentMeta<typeof InputCustom>;
+} as ComponentMeta<typeof InputLabel>;
 
-const Template: ComponentStory<typeof InputCustom> = (args) => <InputCustom {...args} />;
+const Template: ComponentStory<typeof InputLabel> = (args) => <InputLabel {...args} />;
 // mode, type, label, label_type, label_size, label_weight, onChange,
-export const TOP = Template.bind({});
-TOP.args = {
+export const EX = Template.bind({});
+EX.args = {
   mode: 'dark',
   label: '예시',
   type: 'text',
@@ -21,7 +21,7 @@ TOP.args = {
   label_weight: 'bold',
 };
 
-TOP.parameters = {
+EX.parameters = {
   layout: 'fullscreen',
 };
 
