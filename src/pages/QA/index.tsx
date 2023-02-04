@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { QA_mode, QnAHeader } from '../../components/foundations/QnAHeader';
 import { LayOut } from '../../components/layout';
-import { QnACard } from '../../components/QnACard';
-import { QA_mode, QnAHeader } from '../../components/QnAHeader';
+import { QnACard } from '../../components/modules/QnACard';
 
 import { INavIconType } from '../../recoil/Nav/navState';
 import { ModeType } from '../../types/common/mode';
