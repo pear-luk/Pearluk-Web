@@ -16,7 +16,7 @@ interface Props {
 
   maxLength?: number;
   onClick?: ((e: React.MouseEvent<HTMLElement>) => void) | (() => void);
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void | (() => void);
+  onChange?: ((e: React.ChangeEvent<HTMLInputElement>) => void) | (() => void);
 }
 // (typeof E_status)[keyof typeof E_status]
 // mode, type = 'text', ref, onChange
