@@ -14,3 +14,4 @@ export type BusinessInfoType = {
 export type ContentSzieType = 'small' | 'medium';
 
 export type QnAHeadType = 'read' | 'product';
+export type ButtonColorType = 'black' | 'yellow' | 'dark_yellow' | 'grey' | 'transparent';

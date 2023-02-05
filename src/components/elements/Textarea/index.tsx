@@ -13,11 +13,9 @@ interface Props {
   onChange?: ((e: React.ChangeEvent<HTMLTextAreaElement>) => void) | (() => void);
 }
 
-export const TextArea = forwardRef(
-  ({ mode, forwardedRef, size = 'medium', ...props }: Props & Partial<HTMLTextAreaElement>) => {
-    return <StyledTextArea mode={mode} ref={forwardedRef} size={size} {...props}></StyledTextArea>;
-  },
-);
+export const TextArea = forwardRef(({ mode, forwardedRef, size = 'medium', ...props }: Props) => {
+  return <StyledTextArea mode={mode} ref={forwardedRef} size={size} {...props}></StyledTextArea>;
+});
 const StyledTextArea = styled.textarea<Props>`
   background-color: transparent;
   width: ${({ theme, size }) => size && theme.size.width[size]};
