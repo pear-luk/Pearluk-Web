@@ -27,7 +27,7 @@ interface ButtonProps {
   /**
    * Optional click handler
    */
-  onClick?: () => void;
+  onClick?: (() => void) | ((e: React.MouseEvent) => void);
 }
 
 export const Button = ({ color = 'black', label, ...props }: ButtonProps) => {

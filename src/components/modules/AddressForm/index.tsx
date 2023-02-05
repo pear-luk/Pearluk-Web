@@ -17,7 +17,7 @@ interface Props {
   ref?: RefObject<HTMLInputElement>;
   setPhoneNumber?: Dispatch<SetStateAction<string>>;
 }
-export const InputAddress = ({
+export const AddressForm = ({
   mode,
 
   input_width = 'medium',

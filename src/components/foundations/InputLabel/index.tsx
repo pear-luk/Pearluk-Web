@@ -11,7 +11,7 @@ interface Props {
   mode: ModeType;
   type?: HTMLInputTypeAttribute;
 
-  input_width?: keyof Size['width'];
+  input_width?: keyof Size['width'] ;
   input_height?: keyof Size['space'];
   input_font_size?: keyof Size['font'];
 
@@ -90,4 +90,3 @@ const Container = styled.div<Omit<Props, 'label' | 'onChange' | 'type'>>`
   align-items: center;
 `;
 
-const Input = styled.input.attrs(({ type }) => ({ type: type }))``;

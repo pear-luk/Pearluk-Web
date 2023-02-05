@@ -1,24 +1,29 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 import { ModeType } from '../../../types/common/propsTypes';
+import { Question } from '../../../types/model/question';
 
-interface IProps {
+interface Props {
   mode: ModeType;
+
+  qustion: Omit<Question, 'password'>;
 }
 
-export const QnACard = ({ mode, ...props }) => {
+export const QnAListItem = ({ mode, qustion }: Props) => {
+  const { question_id, title, writer, secret_mode, created_at, answer_count } = qustion;
+  const { nickname } = writer as Pick<User, 'nickname' | 'user_id'>;
   return (
     <Container mode={mode}>
       <TitleBox>
         <IconBox>
-          <Image alt="잠금버튼" src="./icon/lock.svg" width={10} height={10}></Image>
+          {Boolean(secret_mode) && <Image alt="잠금버튼" src="./icon/lock.svg" width={10} height={10}></Image>}
         </IconBox>
-        <Title>{'아'.repeat(55)}...</Title>
-        <IconBox>(0)</IconBox>
+        <Title>{title}</Title>
+        <IconBox>({answer_count})</IconBox>
       </TitleBox>
       <InfoBox>
-        <InfoItem>아아아아아아아아아아아아아</InfoItem>
-        <InfoItem>2002.12.25</InfoItem>
+        <InfoItem>{nickname}</InfoItem>
+        <InfoItem>{new Date(created_at).toLocaleDateString()}</InfoItem>
       </InfoBox>
     </Container>
   );

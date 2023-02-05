@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@next/font": "13.1.1",
+    "@splidejs/react-splide": "^0.7.12",
     "@tosspayments/payment-sdk": "^1.4.0",
     "@tosspayments/payment-widget-sdk": "^0.5.4",
     "@types/node": "18.11.18",

@@ -1,6 +1,6 @@
 import { ModeType } from '@type/common/mode';
 import styled from 'styled-components';
-import { IProduct, OrderItem } from '../../foundations/OrderItem';
+import { IProduct, OrderItem } from '../../foundations/OrderListItem';
 
 interface Props {
   mode: ModeType;

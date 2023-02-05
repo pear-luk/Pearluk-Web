@@ -12,3 +12,5 @@ export type BusinessInfoType = {
 };
 
 export type ContentSzieType = 'small' | 'medium';
+
+export type QnAHeadType = 'read' | 'product';

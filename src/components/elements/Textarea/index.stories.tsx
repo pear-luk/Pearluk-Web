@@ -1,19 +1,23 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { InputAddress } from '.';
+import { TextArea } from '.';
 
 export default {
-  title: 'Modules/InputAddress',
-  component: InputAddress,
+  title: 'Elements/TextArea',
+  component: TextArea,
   argTypes: {
     backgroundColor: { control: 'color' },
   },
-} as ComponentMeta<typeof InputAddress>;
+} as ComponentMeta<typeof TextArea>;
 
-const Template: ComponentStory<typeof InputAddress> = (args) => <InputAddress {...args} />;
+const Template: ComponentStory<typeof TextArea> = (args) => <TextArea {...args} />;
 // mode, type, label, label_type, label_size, label_weight, onChange,
 export const TOP = Template.bind({});
 TOP.args = {
-  label_weight: 'bold',
+  // mode: 'dark',
+  // label: '예시',
+  // type: 'text',
+  // label_type: 'top',
+  // label_weight: 'bold',
 };
 
 TOP.parameters = {

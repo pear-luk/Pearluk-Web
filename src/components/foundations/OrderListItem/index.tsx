@@ -1,7 +1,7 @@
-import { ModeType } from '@type/common/mode';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { Size } from '../../../styles/theme';
+import { ModeType } from '../../../types/common/propsTypes';
 
 export interface IProduct {
   product_id: string;
@@ -23,7 +23,7 @@ interface Props {
   courier_name?: string;
   waybill_number?: string;
 }
-export const OrderItem = ({
+export const OrderListItem = ({
   mode,
   order_id,
   orderStatus,
@@ -33,7 +33,7 @@ export const OrderItem = ({
   size = 'medium',
 }: Props) => {
   return (
-    <Container size={size}>
+    <Container mode={mode} size={size}>
       <ImgBox>
         <Image
           alt="상품 메인이미지"
@@ -47,7 +47,7 @@ export const OrderItem = ({
         <Info>
           <InfoLeft>
             <P>KRW {product.price.toLocaleString()}</P>
-            <P>{courier_name ? `${courier_name} ${waybill_number}` : `운송장 정보없음`}</P>
+            <P>{courier_name && waybill_number ? `${courier_name} ${waybill_number}` : `운송장 정보없음`}</P>
           </InfoLeft>
           <InfoRight>
             <P>{product && product.count}개</P>
@@ -59,9 +59,10 @@ export const OrderItem = ({
   );
 };
 
-const Container = styled.div<{ size: keyof Size['width'] }>`
+const Container = styled.div<{ mode: ModeType; size: keyof Size['width'] }>`
   position: relative;
   width: ${({ theme, size }) => size && theme.size.width[size]};
+  color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
 
   display: flex;
   justify-content: left;
@@ -73,6 +74,7 @@ const ImgBox = styled.div`
   background-color: black;
   position: relative;
   margin-right: 0.4rem;
+  flex: 1 0 auto;
 `;
 
 const InfoBox = styled.div`

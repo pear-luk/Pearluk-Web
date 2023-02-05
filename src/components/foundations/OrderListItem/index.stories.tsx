@@ -1,15 +1,15 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { OrderItem } from '.';
+import { OrderListItem } from '.';
 
 export default {
-  title: 'Foundations/OrderItem',
-  component: OrderItem,
+  title: 'Foundations/OrderListItem',
+  component: OrderListItem,
   argTypes: {
     backgroundColor: { control: 'color' },
   },
-} as ComponentMeta<typeof OrderItem>;
+} as ComponentMeta<typeof OrderListItem>;
 
-const Template: ComponentStory<typeof OrderItem> = (args) => <OrderItem {...args} />;
+const Template: ComponentStory<typeof OrderListItem> = (args) => <OrderListItem {...args} />;
 
 const product = {
   product_id: 'test',
