@@ -1,8 +1,8 @@
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+import '@splidejs/splide/css';
 import Image from 'next/image';
 import styled from 'styled-components';
-import { ModeType } from '@type/common/mode';
-
-
+import { ModeType } from '../../../types/common/propsTypes';
 interface Props {
   mode: ModeType;
   product_id: string;
@@ -16,18 +16,39 @@ export const ProductItem = ({ mode, price, product_id, product_name, images, sli
   return (
     <Container mode={mode}>
       <ImageBox>
-        <Image
-          alt="상품 대표 이미지"
-          placeholder="blur"
-          src={images[0]}
-          blurDataURL="/logo/logo.svg"
-          width={342}
-          height={456}
+        {slide ? (
+          <Splide aria-label="My Favorite Images" options={{ arrows: false, perMove: 1, type: 'loop' }}>
+            {images.map((img, i) => {
+              return (
+                <SplideSlide key={i}>
+                  <Image
+                    alt={`상품 이미지${i}`}
+                    placeholder="blur"
+                    src={img}
+                    blurDataURL="/logo/logo.svg"
+                    width={342}
+                    height={456}></Image>
+                </SplideSlide>
+              );
+            })}
+          </Splide>
+        ) : (
+          <ImageBox>
+            <Image
+              alt="상품 대표 이미지"
+              placeholder="blur"
+              src={images[0]}
+              blurDataURL="/logo/logo.svg"
+              width={342}
+              height={456}
 
-          // fill
-          // style={{ objectFit: 'contain' }}
-        ></Image>
+              // fill
+              // style={{ objectFit: 'contain' }}
+            ></Image>
+          </ImageBox>
+        )}
       </ImageBox>
+
       <InfoBox>
         <NameBox>PRODUCT NAME PRODUCT NAME PRODUCT NAME PRODUCT NAME</NameBox>
         <PriceBox>
