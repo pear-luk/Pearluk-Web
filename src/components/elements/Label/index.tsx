@@ -28,8 +28,8 @@ export const Label = ({
 
 const StyledLabel = styled.label<Omit<Props, 'label'>>`
   align-items: center;
-  flex: 1 0 auto;
 
+  width: fit-content;
   //color
   color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
 

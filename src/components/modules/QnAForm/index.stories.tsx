@@ -1,15 +1,15 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { QnAInputCard } from '.';
+import { QnAForm } from '.';
 
 export default {
-  title: 'Modules/QnAInputCard',
-  component: QnAInputCard,
+  title: 'Modules/QnAForm',
+  component: QnAForm,
   argTypes: {
     backgroundColor: { control: 'color' },
   },
-} as ComponentMeta<typeof QnAInputCard>;
+} as ComponentMeta<typeof QnAForm>;
 
-const Template: ComponentStory<typeof QnAInputCard> = (args) => <QnAInputCard {...args} />;
+const Template: ComponentStory<typeof QnAForm> = (args) => <QnAForm {...args} />;
 
 export const EX = Template.bind({});
 EX.args = {};

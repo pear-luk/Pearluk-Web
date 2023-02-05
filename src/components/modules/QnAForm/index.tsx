@@ -1,15 +1,22 @@
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ModeType } from '../../../types/common/propsTypes';
 
 import { Button } from '../../elements/Button';
+import { CheckBox } from '../../elements/CheckBox';
+import { TextArea } from '../../elements/Textarea';
+import { InputLabel } from '../../foundations/InputLabel';
 interface Props {
   mode: ModeType;
   size: 'large' | 'medium';
+
+  //QnA requestDTO필요
+  setQnA?: React.Dispatch<React.SetStateAction<object>>;
+  submitButtonOnclick?: () => void;
 }
 
-export const QnAInputCard = ({ mode = 'white', size = 'medium', ...props }: Props) => {
+export const QnAForm = ({ mode = 'white', size = 'medium', ...props }: Props) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const imageAreaRef = useRef<HTMLDivElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -17,6 +24,7 @@ export const QnAInputCard = ({ mode = 'white', size = 'medium', ...props }: Prop
   const [images, setImages] = useState<File[]>([]);
   const [secret, setSecret] = useState<boolean>(false);
   const [action, setAction] = useState<'ADD' | 'DELETE' | null>(null);
+
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = '0px';
@@ -36,15 +44,18 @@ export const QnAInputCard = ({ mode = 'white', size = 'medium', ...props }: Prop
       if (passwordRef.current) passwordRef.current.value = '';
     }
   }, [secret]);
+
+  const textAreaChangeHandler = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    e.target.value && setCurrentValue(e.target.value);
+  }, []);
+
+  const checkBoxClickHandler = useCallback(() => {
+    setSecret(!secret);
+  }, [secret]);
   return (
     <Container mode={mode} size={size}>
-      <TitleInputBox>
-        <InputName>TITLE</InputName>
-        <TitleInput mode={mode}></TitleInput>
-      </TitleInputBox>
+      <InputLabel mode={mode} input_width={size} label="TITLE"></InputLabel>
       <ImageInputBox ref={imageAreaRef}>
-        {/* <ImageInput mode={mode}>+</ImageInput> */}
-
         {images?.map((image, i) => {
           if (image as MediaSource | Blob) {
             const objectUrl = URL?.createObjectURL(image);
@@ -92,26 +103,17 @@ export const QnAInputCard = ({ mode = 'white', size = 'medium', ...props }: Prop
       </ImageInputBox>
 
       <ContentInputBox>
-        <ContentInput
+        <TextArea
           mode={mode}
-          ref={textareaRef}
-          id="question_input"
-          onChange={(e) => {
-            setCurrentValue(e.target.value);
-          }}></ContentInput>
+          size={size}
+          forwardedRef={textareaRef}
+          id="question_contents"
+          onChange={textAreaChangeHandler}></TextArea>
       </ContentInputBox>
 
       <SubmitBox>
-        <CheckBoxLabel>
-          <Checkbox
-            onClick={() => {
-              setSecret(!secret);
-            }}
-            checked={secret}
-          />
-          <CustomCheckBox mode={mode}></CustomCheckBox>
-          비밀글
-        </CheckBoxLabel>
+        <CheckBox mode={mode} onClick={checkBoxClickHandler} label={'비밀글'} checked={secret}></CheckBox>
+
         <PasswordLabel>
           비밀번호
           <PasswordInput mode={mode} disabled={secret === false ? true : false} ref={passwordRef} />
@@ -126,11 +128,6 @@ const Container = styled.div<Pick<Props, 'mode' | 'size'>>`
   color: ${({ theme, mode }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
 
   padding: 0.8rem 0;
-  input,
-  textarea {
-    background-color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.grey.black : theme.color.yellow.yellow)};
-    color: ${({ theme, mode }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
-  }
 `;
 
 const ImageDelete = styled.div`
@@ -166,6 +163,7 @@ const ImageLable = styled.label<Pick<Props, 'mode'>>`
   cursor: pointer;
   text-align: center;
   font-size: 1.4rem;
+
   flex: 0 0 auto;
 `;
 const Input = styled.input.attrs({
@@ -181,39 +179,6 @@ const Input = styled.input.attrs({
   border: 0px solid transparent;
 `;
 
-const TitleInputBox = styled.div`
-  /* display: flex; */
-  /* height: 2rem; */
-
-  width: 100%;
-`;
-
-const InputName = styled.div`
-  font-size: 1.4rem;
-  font-weight: 700;
-  /* display: block; */
-`;
-
-const TitleInput = styled.input<Pick<Props, 'mode'>>`
-  /* background-color: ${({ mode, theme }) =>
-    mode === 'dark' ? theme.color.grey.black : theme.color.yellow.yellow}; */
-
-  width: 100%;
-  height: 2.4rem;
-
-  border: 1px solid ${({ theme, mode }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
-  margin-top: 0.4rem;
-  display: block;
-`;
-
-// const ImageInput = styled.button`
-//   width: 5rem;
-//   height: 5rem;
-//   background-color: black;
-//   margin-left: 0.8rem;
-//   color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
-// `;
-
 const ImageInputBox = styled.div`
   margin: 1.6rem 0;
   width: auto;
@@ -226,18 +191,6 @@ const ImageInputBox = styled.div`
 
 const ContentInputBox = styled.div``;
 
-const ContentInput = styled.textarea<Pick<Props, 'mode'>>`
-  /* background-color: ${({ mode, theme }) =>
-    mode === 'dark' ? theme.color.grey.black : theme.color.yellow.yellow}; */
-
-  width: 100%;
-
-  min-height: 10.6rem;
-  resize: none;
-  overflow: hidden;
-  border: 1px solid ${({ theme, mode }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
-`;
-
 const SubmitBox = styled.div`
   margin-top: 1.6rem;
   width: 100%;
@@ -248,23 +201,6 @@ const SubmitBox = styled.div`
   justify-content: space-between;
   font-size: 1rem;
 `;
-const CheckBoxLabel = styled.label`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-
-  height: 1.6rem;
-`;
-const CustomCheckBox = styled.span<Pick<Props, 'mode'>>`
-  display: inline-block;
-  width: 1.6rem;
-  height: 1.6rem;
-  border: 1px solid ${({ theme, mode }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
-  background-color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.grey.black : theme.color.yellow.yellow)};
-
-  margin-right: 0.4rem;
-  /* background-color: transparent; */
-`;
 
 const PasswordLabel = styled.label`
   display: flex;
@@ -274,26 +210,9 @@ const PasswordLabel = styled.label`
   height: 1.6rem;
 `;
 const PasswordInput = styled.input<Pick<Props, 'mode'>>`
-  /* background-color: ${({ mode, theme }) =>
-    mode === 'dark' ? theme.color.grey.black : theme.color.yellow.yellow}; */
   border: 1px solid ${({ theme, mode }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
 
   margin-left: 0.4rem;
   width: 10rem;
   height: 2rem;
-`;
-
-const Checkbox = styled.input.attrs((props) => ({
-  type: 'checkBox',
-  id: 'secret',
-}))`
-  width: 1.6rem;
-  height: 1.6rem;
-
-  outline: none;
-  display: none;
-
-  :checked ~ ${CustomCheckBox} {
-    background-color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.grey.black : theme.color.yellow.yellow)};
-  }
 `;

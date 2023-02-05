@@ -2,7 +2,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ProductItem } from '.';
 
 export default {
-  title: 'Modules/ProductItem',
+  title: 'Foundations/ProductItem',
   component: ProductItem,
   argTypes: {
     backgroundColor: { control: 'color' },

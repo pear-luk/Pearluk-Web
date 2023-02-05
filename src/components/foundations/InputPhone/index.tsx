@@ -177,6 +177,9 @@ const Container = styled.div<Omit<Props, 'label' | 'onChange' | 'type'>>`
   input {
     width: 100%;
   }
+  label {
+    flex: 1 0 auto;
+  }
 `;
 
 // const Input = styled.input``;
