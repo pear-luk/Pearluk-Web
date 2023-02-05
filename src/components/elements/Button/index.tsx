@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 import { Size } from '../../../styles/theme';
-
-type ButtonColor = 'black' | 'yellow' | 'dark_yellow' | 'grey' | 'transparent';
+import { ButtonColorType } from '../../../types/common/propsTypes';
 
 interface ButtonProps {
   /**
    * What background color to use
    */
-  color?: ButtonColor;
+  color?: ButtonColorType;
 
   /**
    * How large should the button be?
