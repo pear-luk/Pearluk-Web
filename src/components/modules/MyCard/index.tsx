@@ -4,7 +4,7 @@ import { ModeType } from '../../../types/common/propsTypes';
 import { Button } from '../../elements/Button';
 import { Header } from '../../foundations/Header';
 import { InputCustom } from '../../foundations/InputLabel';
-import { InputAddress } from '../InputAddress';
+import { InputAddress } from '../AddressForm';
 import { InputPhone } from '../../foundations/InputPhone';
 
 interface Props {

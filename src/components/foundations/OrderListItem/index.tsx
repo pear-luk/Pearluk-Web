@@ -23,7 +23,7 @@ interface Props {
   courier_name?: string;
   waybill_number?: string;
 }
-export const OrderItem = ({
+export const OrderListItem = ({
   mode,
   order_id,
   orderStatus,
