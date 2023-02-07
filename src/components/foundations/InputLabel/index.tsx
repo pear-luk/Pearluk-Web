@@ -1,4 +1,4 @@
-import React, { forwardRef, HTMLInputTypeAttribute, RefObject } from 'react';
+import React, { forwardRef, HTMLInputTypeAttribute } from 'react';
 import styled from 'styled-components';
 
 import { FontWeight, Size } from '../../../styles/theme';
@@ -22,30 +22,33 @@ interface Props {
   label_weight?: keyof FontWeight;
 
   disabled?: boolean;
-  ref?: RefObject<HTMLInputElement>;
+
   onChange?: (() => void) | ((e: React.ChangeEvent<HTMLInputElement>) => void);
 }
 // (typeof E_status)[keyof typeof E_status]
 
 export const InputLabel = forwardRef(
-  ({
-    mode,
-    type = 'text',
+  (
+    {
+      mode,
+      type = 'text',
 
-    input_width = 'medium',
-    input_height = 'base',
-    input_font_size = 'primary',
+      input_width = 'medium',
+      input_height = 'base',
+      input_font_size = 'primary',
 
-    label,
-    label_type = 'top',
-    label_size = 'medium',
-    label_weight = 'bold',
+      label,
+      label_type = 'top',
+      label_size = 'medium',
+      label_weight = 'bold',
 
-    value,
-    disabled,
-    ref,
-    onChange,
-  }: Props) => {
+      value,
+      disabled,
+
+      onChange,
+    }: Props,
+    ref?: React.Ref<HTMLInputElement>,
+  ) => {
     return (
       <Container
         mode={mode}
@@ -70,7 +73,7 @@ export const InputLabel = forwardRef(
           input_width={input_width}
           input_font_size={input_font_size}
           onChange={onChange}
-          ref={ref || undefined}
+          ref={ref}
           disabled={disabled}
           value={value}
         />
@@ -87,6 +90,7 @@ export const InputLabel = forwardRef(
     );
   },
 );
+
 // label, label_type, label_size, label_weight
 // "onChange" | "type" | "mode" | "input_width" | "input_height"
 const Container = styled.div<Omit<Props, 'label' | 'onChange' | 'type'>>`

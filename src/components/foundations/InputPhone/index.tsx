@@ -127,7 +127,7 @@ export const InputPhone = ({
           input_width={input_width}
           onChange={inputChangeHandler}
           onClick={inputClickHandler}
-          forwardedRef={phoneRef_first}
+          ref={phoneRef_first}
           placeholder={placeholder}
           value={phoneNum.first}
         />
@@ -140,7 +140,7 @@ export const InputPhone = ({
           input_width={input_width}
           onChange={inputChangeHandler}
           onClick={inputClickHandler}
-          forwardedRef={phoneRef_second}
+          ref={phoneRef_second}
           placeholder={placeholder}
           value={phoneNum.second}
         />
@@ -153,7 +153,7 @@ export const InputPhone = ({
           input_width={input_width}
           onChange={inputChangeHandler}
           onClick={inputClickHandler}
-          forwardedRef={phoneRef_third}
+          ref={phoneRef_third}
           placeholder={placeholder}
           value={phoneNum.third}
         />

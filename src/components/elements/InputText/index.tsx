@@ -1,4 +1,4 @@
-import React, { forwardRef, HTMLInputTypeAttribute, RefObject } from 'react';
+import React, { forwardRef, HTMLInputTypeAttribute } from 'react';
 import styled from 'styled-components';
 
 import { Size } from '../../../styles/theme';
@@ -12,7 +12,6 @@ interface Props {
   input_height?: keyof Size['space'];
   input_font_size?: keyof Size['font'];
 
-  forwardedRef?: RefObject<HTMLInputElement>;
   value?: string;
   placeholder?: string;
   disabled?: boolean;
@@ -23,13 +22,16 @@ interface Props {
 // (typeof E_status)[keyof typeof E_status]
 // mode, type = 'text', ref, onChange
 export const InputText = forwardRef(
-  ({ type, input_font_size = 'primary', forwardedRef, value, disabled, placeholder, ...props }: Props) => {
+  (
+    { type, input_font_size = 'primary', value, disabled, placeholder, ...props }: Props,
+    ref?: ((instance: HTMLInputElement | null) => void) | React.RefObject<HTMLInputElement> | null | undefined,
+  ) => {
     return (
       <Input
         type={type}
         value={value}
         input_font_size={input_font_size}
-        ref={forwardedRef || undefined}
+        ref={ref}
         disabled={disabled}
         {...props}
         placeholder={placeholder}

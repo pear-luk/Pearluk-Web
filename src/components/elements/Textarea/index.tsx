@@ -7,15 +7,21 @@ interface Props {
   mode: ModeType;
 
   size?: keyof Size['width'];
+  id?: string;
 
-  forwardedRef?: RefObject<HTMLTextAreaElement>;
   onClick?: ((e: React.MouseEvent<HTMLElement>) => void) | (() => void);
   onChange?: ((e: React.ChangeEvent<HTMLTextAreaElement>) => void) | (() => void);
 }
 
-export const TextArea = forwardRef(({ mode, forwardedRef, size = 'medium', ...props }: Props) => {
-  return <StyledTextArea mode={mode} ref={forwardedRef || undefined} size={size} {...props}></StyledTextArea>;
-});
+export const TextArea = forwardRef(
+  (
+    { mode, size = 'medium', ...props }: Props,
+    ref?: ((instance: HTMLTextAreaElement | null) => void) | RefObject<HTMLTextAreaElement> | null | undefined,
+  ) => {
+    return <StyledTextArea mode={mode} ref={ref} size={size} {...props}></StyledTextArea>;
+  },
+);
+
 const StyledTextArea = styled.textarea<Props>`
   background-color: transparent;
   width: ${({ theme, size }) => size && theme.size.width[size]};

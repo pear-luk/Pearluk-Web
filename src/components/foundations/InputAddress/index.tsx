@@ -29,13 +29,11 @@ export const InputAddress = ({
 
   input_width = 'medium',
   input_height = 'base',
-  address,
+  // address,
   userAddress,
   setUserAddress,
   label_size = 'medium',
   label_weight = 'bold',
-
-  ref,
 }: Props) => {
   const [isOpenPost, setIsOpenPost] = useState<boolean>(false);
   const onCompletePost = ({ address, zonecode }: Address) => {
@@ -61,7 +59,7 @@ export const InputAddress = ({
         });
       }
     },
-    [userAddress],
+    [userAddress, setUserAddress],
   );
   return (
     <Container
@@ -128,7 +126,8 @@ const AddressInput = styled.textarea`
 
   resize: none;
 `;
-const Container = styled.div<Omit<Props, 'label' | 'onChange' | 'type' | 'address'>>`
+
+const Container = styled.div<Pick<Props, 'mode' | 'label_size' | 'label_weight' | 'input_width' | 'input_height'>>`
   color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
   font-size: ${({ label_size, theme }) => label_size && theme.size.font[label_size]};
 

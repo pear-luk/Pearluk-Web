@@ -16,7 +16,7 @@ interface Props {
   submitButtonOnclick?: () => void;
 }
 
-export const QnAForm = ({ mode = 'white', size = 'medium', ...props }: Props) => {
+export const QnAForm = ({ mode = 'white', size = 'medium' }: Props) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const imageAreaRef = useRef<HTMLDivElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -106,13 +106,13 @@ export const QnAForm = ({ mode = 'white', size = 'medium', ...props }: Props) =>
         <TextArea
           mode={mode}
           size={size}
-          forwardedRef={textareaRef}
+          ref={textareaRef}
           id="question_contents"
           onChange={textAreaChangeHandler}></TextArea>
       </ContentInputBox>
 
       <SubmitBox>
-        <CheckBox mode={mode} onClick={checkBoxClickHandler} label={'비밀글'} checked={secret}></CheckBox>
+        <CheckBox mode={mode} onChange={checkBoxClickHandler} label={'비밀글'} checked={Boolean(secret)}></CheckBox>
 
         <PasswordLabel>
           비밀번호
