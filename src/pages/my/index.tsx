@@ -1,5 +1,4 @@
-import { Header } from '../../components/foundations/Header';
-import { InputLabel } from '../../components/foundations/InputLabel';
+import { InputAddress } from '../../components/foundations/InputAddress';
 import { LayOut } from '../../components/layout';
 
 function My({ props }) {
@@ -7,9 +6,7 @@ function My({ props }) {
 
   return (
     <LayOut mode="white" menu={true} centerLogo={true}>
-      <Header mode="white" label="MY PAGE" />
-      <Header mode="white" />
-      <InputLabel label="E_MAIL"></InputLabel>
+      <InputAddress mode="white"></InputAddress>
     </LayOut>
   );
 }

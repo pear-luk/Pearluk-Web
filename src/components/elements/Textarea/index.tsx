@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const TextArea = forwardRef(({ mode, forwardedRef, size = 'medium', ...props }: Props) => {
-  return <StyledTextArea mode={mode} ref={forwardedRef} size={size} {...props}></StyledTextArea>;
+  return <StyledTextArea mode={mode} ref={forwardedRef || undefined} size={size} {...props}></StyledTextArea>;
 });
 const StyledTextArea = styled.textarea<Props>`
   background-color: transparent;

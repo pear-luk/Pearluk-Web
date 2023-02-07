@@ -13,7 +13,7 @@ interface Props {
 
 export const ImgButton = forwardRef(({ img, onClick, width = '1.2rem', height = '1.2rem', forwardedRef }: Props) => {
   return (
-    <StyledButton onClick={onClick} width={width} height={height} ref={forwardedRef}>
+    <StyledButton onClick={onClick} width={width} height={height} ref={forwardedRef || undefined}>
       <Image
         alt="상품 메인이미지"
         src={img}

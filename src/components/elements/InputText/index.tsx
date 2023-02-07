@@ -13,7 +13,8 @@ interface Props {
   input_font_size?: keyof Size['font'];
 
   forwardedRef?: RefObject<HTMLInputElement>;
-
+  value?: string;
+  placeholder?: string;
   disabled?: boolean;
   maxLength?: number;
   onClick?: ((e: React.MouseEvent<HTMLElement>) => void) | (() => void);
@@ -22,8 +23,18 @@ interface Props {
 // (typeof E_status)[keyof typeof E_status]
 // mode, type = 'text', ref, onChange
 export const InputText = forwardRef(
-  ({ type, input_font_size = 'primary', forwardedRef, disabled, ...props }: Props) => {
-    return <Input type={type} input_font_size={input_font_size} ref={forwardedRef} disabled={disabled} {...props} />;
+  ({ type, input_font_size = 'primary', forwardedRef, value, disabled, placeholder, ...props }: Props) => {
+    return (
+      <Input
+        type={type}
+        value={value}
+        input_font_size={input_font_size}
+        ref={forwardedRef || undefined}
+        disabled={disabled}
+        {...props}
+        placeholder={placeholder}
+      />
+    );
   },
 );
 

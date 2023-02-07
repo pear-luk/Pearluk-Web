@@ -42,14 +42,17 @@ export const PriceLabel = ({
 
 const Container = styled.div<Omit<Props, 'label' | 'price' | 'sign'>>`
   display: flex;
-  text-align: center;
   color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
 
   width: ${({ theme, size }) => size && theme.size.width[size]};
   font-size: ${({ theme, font_size }) => font_size && theme.size.font[font_size]};
   font-weight: ${({ theme, font_weight }) => font_weight && theme.fontWeight[font_weight]};
   justify-content: space-between;
+  text-align: center;
   align-items: center;
+  label {
+    margin: 0;
+  }
 `;
 const Box = styled.div``;
 

@@ -32,7 +32,7 @@ export const CheckBox = forwardRef(
     return (
       <CheckBoxLabel label_size={label_size}>
         {label_type === 'left' && label}
-        <CheckboxInput mode={mode} id={id} onClick={onClick} ref={forwardedRef} checked={checked} />
+        <CheckboxInput mode={mode} id={id} onClick={onClick} ref={forwardedRef || undefined} checked={checked} />
         <CustomCheckBox mode={mode} label_type={label_type}></CustomCheckBox>
         {label_type === 'right' && label}
       </CheckBoxLabel>

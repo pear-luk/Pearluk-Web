@@ -1,5 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { OrderListItem } from '.';
+import { orderProductMock, orderShippingMock } from '../../../mock/order.mock';
 
 export default {
   title: 'Foundations/OrderListItem',
@@ -11,23 +12,25 @@ export default {
 
 const Template: ComponentStory<typeof OrderListItem> = (args) => <OrderListItem {...args} />;
 
-const product = {
-  product_id: 'test',
-  name: 'test',
-  price: 99999,
-  imgs: ['/imgs/test.svg'],
-  count: 999,
-};
-
-export const EX = Template.bind({});
-EX.args = {
-  order_id: '01GQFFHHEPPHJC6VQZ5H9SF4YH',
+export const NoShipping = Template.bind({});
+NoShipping.args = {
   mode: 'dark',
-  product: product,
+  product: orderProductMock(),
 
-  orderStatus: '배송중',
+  order_status: '준비중',
 };
 
-EX.parameters = {
+NoShipping.parameters = {
+  layout: 'fullscreen',
+};
+export const Shipping = Template.bind({});
+Shipping.args = {
+  mode: 'dark',
+  product: orderProductMock(),
+  shipping: orderShippingMock,
+  order_status: '배송중',
+};
+
+Shipping.parameters = {
   layout: 'fullscreen',
 };
