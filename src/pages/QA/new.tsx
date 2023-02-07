@@ -4,7 +4,7 @@ import { QnAInputCard } from '../../components/modules/QnAForm';
 
 import { QnAHeader } from '../../components/foundations/QnAHeader';
 
-import { INavIconType } from '../../recoil/Nav/navState';
+import { INavIconType } from '../../recoil/Nav/archiveState';
 import { ModeType } from '../../types/common/propsTypes';
 
 function NewQA({ props }) {

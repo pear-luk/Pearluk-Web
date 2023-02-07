@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { LayOut } from '../../../components/layout';
 import { useSocialLogin } from '../../../hooks/services/mutation/login';
-import { INavIconType } from '../../../recoil/Nav/navState';
+import { INavIconType } from '../../../recoil/Nav/archiveState';
 import { ModeType } from '../../../types/common/propsTypes';
 
 const MainBackGroundContainer = styled.div`
@@ -19,7 +19,7 @@ const MainBackGroundContainer = styled.div`
 const ImgBox = styled.div`
   margin: 1.2rem 0;
 `;
-function Home({ props }) {
+function KakaoAuth({ props, url }) {
   // mode, icon
   const [mode] = useState<ModeType>('dark');
   const [icon] = useState<INavIconType>({
@@ -28,7 +28,6 @@ function Home({ props }) {
   });
   // { social_type: 'kakao', social_token: '' }
   // const [login, setLogin] = useState<SocailLoginRequestDTO | null>(null);
-
   const social_code = useRouter().query.code as string;
 
   const { mutate } = useSocialLogin();
@@ -48,4 +47,4 @@ function Home({ props }) {
   );
 }
 
-export default Home;
+export default KakaoAuth;

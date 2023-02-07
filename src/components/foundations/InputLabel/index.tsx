@@ -11,7 +11,7 @@ interface Props {
   mode: ModeType;
   type?: HTMLInputTypeAttribute;
 
-  input_width?: keyof Size['width'] ;
+  input_width?: keyof Size['width'];
   input_height?: keyof Size['space'];
   input_font_size?: keyof Size['font'];
 
@@ -37,7 +37,7 @@ export const InputLabel = forwardRef(
     label,
     label_type = 'top',
     label_size = 'medium',
-    label_weight = 'medium',
+    label_weight = 'bold',
 
     ref,
     onChange,
@@ -89,4 +89,3 @@ const Container = styled.div<Omit<Props, 'label' | 'onChange' | 'type'>>`
   display: ${({ label_type }) => label_type !== 'top' && 'flex'};
   align-items: center;
 `;
-

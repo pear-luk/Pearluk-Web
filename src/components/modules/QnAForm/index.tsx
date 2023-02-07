@@ -127,7 +127,7 @@ const Container = styled.div<Pick<Props, 'mode' | 'size'>>`
   width: ${({ size, theme }) => (size === 'medium' ? theme.size.width.medium : theme.size.width.large)};
   color: ${({ theme, mode }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
 
-  padding: 0.8rem 0;
+  padding: 1.6rem 0;
 `;
 
 const ImageDelete = styled.div`
@@ -211,7 +211,7 @@ const PasswordLabel = styled.label`
 `;
 const PasswordInput = styled.input<Pick<Props, 'mode'>>`
   border: 1px solid ${({ theme, mode }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
-
+  background-color: transparent;
   margin-left: 0.4rem;
   width: 10rem;
   height: 2rem;

@@ -19,7 +19,7 @@ export const useIsLogin = (): IsLoginType => {
   const resetUser = useResetRecoilState(userState);
 
   const [login, setLogin] = useRecoilState(loginState);
-  const { isLoading: isLoginError, isError: isLoginLoading } = useQuery<
+  const { isLoading: isLoginLoading, isError: isLoginError } = useQuery<
     AxiosResponse<BaseResponseDTO<LoginResponseDTO>> | null,
     AxiosError
   >(

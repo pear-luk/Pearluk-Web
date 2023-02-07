@@ -29,7 +29,7 @@ export const InputPhone = ({
   label,
   label_type = 'top',
   label_size = 'medium',
-  label_weight = 'medium',
+  label_weight = 'bold',
 
   setPhoneNumber,
 }: Props) => {

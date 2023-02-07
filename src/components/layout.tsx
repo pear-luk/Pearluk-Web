@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { useIsLogin } from '../hooks/services/queries/login';
+import { useIsLogin } from '../hooks/services/queries/loginQuery';
 import { businessInfoMock } from '../mock/businessInfo.mock';
 import { ModeType } from '../types/common/propsTypes';
 
@@ -19,17 +19,13 @@ interface Props {
 export const LayOut = ({ children, mode, centerLogo = true, menu = true, contentSize = 'medium' }: Props) => {
   const [menuState, setMenuState] = useState(false);
 
-  const { isLoginLoading } = useIsLogin();
+  const { isLoginLoading, isLoginError } = useIsLogin();
 
   return (
     <Container>
       <Nav mode={mode} menu={menu} centerLogo={centerLogo} menuState={menuState} setMenuState={setMenuState} />
       <ContentContainer mode={mode}>
-        {isLoginLoading ? (
-          <Content contentSize={contentSize}>로딩중</Content>
-        ) : (
-          <Content contentSize={contentSize}>{children}</Content>
-        )}
+        <Content contentSize={contentSize}>{children}</Content>
       </ContentContainer>
       <Footer mode={mode} business_info={businessInfoMock} />
     </Container>
