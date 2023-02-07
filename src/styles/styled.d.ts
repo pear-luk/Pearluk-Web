@@ -43,6 +43,7 @@ declare module 'styled-components' {
         xsmall: string;
       };
       width: {
+        small: string;
         medium: string;
         large: string;
       };

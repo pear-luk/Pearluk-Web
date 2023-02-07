@@ -2,39 +2,34 @@ import styled from 'styled-components';
 import { ModeType } from '../../../types/common/propsTypes';
 
 import { Button } from '../../elements/Button';
-import { Header } from '../../foundations/Header';
-import { InputCustom } from '../../foundations/InputLabel';
-import { InputAddress } from '../AddressForm';
+import { InputAddress } from '../../foundations/InputAddress';
+import { InputLabel } from '../../foundations/InputLabel';
 import { InputPhone } from '../../foundations/InputPhone';
 
 interface Props {
   mode: ModeType;
 }
 
-export const MyCard = ({ mode }: Props) => {
+export const MyInfoCard = ({ mode }: Props) => {
   return (
     <Container>
-      <ItemBox>
-        <InputCustom mode={mode} label="E-MAIL"></InputCustom>
-      </ItemBox>
-      <ItemBox>
-        <InputCustom mode={mode} label="NAME"></InputCustom>
-      </ItemBox>
-
-      <ItemBox>
+      <Box>
+        <InputLabel mode={mode} label="E-MAIL" />
+      </Box>
+      <Box>
+        <InputLabel mode={mode} label="NAME" />
+      </Box>
+      <Box>
         <InputPhone mode={mode} label="PHONE"></InputPhone>
-      </ItemBox>
-
-      <ItemBox>
+      </Box>
+      <Box>
         <InputAddress mode={mode}></InputAddress>
-      </ItemBox>
-
+      </Box>
       <BottonBox>
         <Button color={mode === 'dark' ? 'yellow' : 'black'} size="large" label="SAVE"></Button>
         <Button color="transparent" size="large" label="LOG OUT"></Button>
         <Button color="transparent" size="large" label="LEAVE.."></Button>
       </BottonBox>
-      <Header mode={mode} label="MY ORDER" labelType="left"></Header>
     </Container>
   );
 };
@@ -42,7 +37,7 @@ export const MyCard = ({ mode }: Props) => {
 const Container = styled.div`
   width: 29.4rem;
 `;
-const ItemBox = styled.div`
+const Box = styled.div`
   margin: 0.8rem 0;
 `;
 

@@ -42,6 +42,7 @@ const size = {
     xsmall: `1rem`,
   },
   width: {
+    small: '16.7rem',
     medium: '29.4rem',
     large: '34.2rem',
   },

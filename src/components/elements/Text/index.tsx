@@ -30,7 +30,7 @@ export const Text = ({ mode, size = 'medium', font_size = 'primary', contents }:
 const StyledPre = styled.span<Omit<Props, 'contents'>>`
   font-size: ${({ font_size, theme }) => font_size && theme.size.font[font_size]};
   display: block;
-
+  
   /* overflow: hidden; */
   white-space: pre-wrap;
   word-wrap: break-word;

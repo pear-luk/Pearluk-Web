@@ -7,8 +7,8 @@ interface Props {
   header_type?: HeaderType;
   size?: keyof Size['width'];
 
-  label: string;
-  label_size: keyof Size['font'];
+  label?: string;
+  label_size?: keyof Size['font'];
 
   button_label?: string;
   button_size?: keyof Size['font'];
@@ -70,12 +70,14 @@ const ButtonBox = styled.div`
   width: 100%;
   overflow: hidden;
   text-align: right;
+  position: relative;
 `;
 const Button = styled.div<{ button_size?: keyof Size['font'] }>`
   width: fit-content;
   float: right;
+  position: absolute;
   right: 0;
-
+  bottom: 0;
   font-size: ${({ theme, button_size }) => button_size && theme.size.font[button_size]};
   font-weight: 400;
   font-weight: ${({ theme }) => theme.fontWeight.medium};

@@ -4,9 +4,10 @@ import { useCallback, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { useLogout } from '../../../hooks/services/mutation/logout';
+import { useArchive } from '../../../hooks/services/queries/archiveQuery';
 import { loginState } from '../../../recoil/auth/stats';
 
-import { MenuSelectType } from '../../../recoil/Nav/navState';
+import { MenuSelectType } from '../../../recoil/Nav/archiveState';
 
 // export interface MenuProps {}
 type SetType<T> = (t: T) => void;
@@ -18,6 +19,7 @@ export interface Props {
   setMenuState: SetType<boolean>;
 }
 export const MenuToggle = ({ menuState, setMenuState, ...props }: Props) => {
+  const { archiveList } = useArchive();
   const [menuSelect, setMenuSelect] = useState<MenuSelectType>(null);
   const isLogin = useRecoilValue(loginState);
   const itemClickHandler = useCallback(
@@ -55,7 +57,7 @@ export const MenuToggle = ({ menuState, setMenuState, ...props }: Props) => {
       }}>
       <Container {...props}>
         <LogoBox>
-          <Image src="./logo/black/home.svg" width={30} height={30} alt="home logo" />
+          <Image src="./logo/black/home.svg" width={30} height={30} alt="home logo" priority />
         </LogoBox>
         <LoginBox>
           {isLogin ? <div onClick={logoutClickHandler}>LOG OUT</div> : <Link href={'/login'}>LOG IN</Link>}
@@ -73,16 +75,19 @@ export const MenuToggle = ({ menuState, setMenuState, ...props }: Props) => {
               <Item menuSelect={menuSelect} title={'ARCHIVE'}>
                 ARCHIVE
               </Item>
-              {/* 아카이브 모아보기 map 돌려야함. */}
               <ArchiveItem menuSelect={menuSelect} onClick={menuClickHandler} title={'ALL'}>
                 ALL
               </ArchiveItem>
-              <ArchiveItem menuSelect={menuSelect} onClick={menuClickHandler} title={'22 F/W'}>
-                22 F/W
-              </ArchiveItem>
-              <ArchiveItem menuSelect={menuSelect} onClick={menuClickHandler} title={'22 S/S'}>
-                22 S/S
-              </ArchiveItem>
+              {/* 아카이브 모아보기 map 돌려야함. */}
+              {archiveList &&
+                archiveList.map((archive, i) => {
+                  const { archive_id, title } = archive;
+                  return (
+                    <ArchiveItem menuSelect={menuSelect} onClick={menuClickHandler} title={title} key={i}>
+                      <Link href={`/archives/${archive_id}`}> {title}</Link>
+                    </ArchiveItem>
+                  );
+                })}
               <ArchiveItem menuSelect={menuSelect} onClick={menuClickHandler} title={'OFF'}>
                 OFF
               </ArchiveItem>

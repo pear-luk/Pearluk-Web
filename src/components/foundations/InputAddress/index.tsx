@@ -15,16 +15,16 @@ interface Props {
   label_weight?: keyof FontWeight;
 
   ref?: RefObject<HTMLInputElement>;
-  setPhoneNumber?: Dispatch<SetStateAction<string>>;
+  // setPhoneNumber?: Dispatch<SetStateAction<string>>;
 }
-export const AddressForm = ({
+export const InputAddress = ({
   mode,
 
   input_width = 'medium',
   input_height = 'base',
 
   label_size = 'medium',
-  label_weight = 'medium',
+  label_weight = 'bold',
 
   ref,
 }: Props) => {
@@ -68,13 +68,14 @@ const Container = styled.div<Omit<Props, 'label' | 'onChange' | 'type'>>`
 
   width: ${({ theme, input_width }) => input_width && theme.size.width[input_width]};
   label {
+    margin-top: 0.8rem;
     font-weight: ${({ theme, label_weight }) => label_weight && theme.fontWeight[label_weight]};
     display: block;
   }
   input {
     outline: none;
     display: block;
-    margin: ${({ theme }) => theme.size.space.xxsmall} 0;
+    /* margin: ${({ theme }) => theme.size.space.xxsmall} 0; */
 
     background-color: transparent;
     border: 1px solid ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};

@@ -39,6 +39,8 @@ export const Button = ({ color = 'black', label, ...props }: ButtonProps) => {
   );
 };
 const StyledButton = styled.button<Omit<ButtonProps, 'label'>>`
+  font-family: 'Pretendard';
+
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   background-color: ${({ theme, color }) => {
     return color === 'black'
@@ -54,6 +56,7 @@ const StyledButton = styled.button<Omit<ButtonProps, 'label'>>`
 
   font-size: ${({ theme }) => theme.size.font.primary};
   ${({ theme, size }) => size && theme.size.button[size]}
+  /* line-height: auto;  */
 
   display: inline-block;
   opacity: ${({ opacity }) => (opacity ? opacity : 1)};

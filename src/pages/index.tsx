@@ -6,11 +6,10 @@ import { LayOut } from '../components/layout';
 import { ModeType } from '../types/common/propsTypes';
 const MainBackGroundContainer = styled.div`
   width: auto;
+  height: auto;
 
-  height: 100%;
-  /* background-color: red; */
-  padding: 9.2rem 0; //10.4 -1.2
-  /* align-items: center; */
+  padding: 7.2rem 0; //10.4 -1.2
+
   text-align: center;
 `;
 const ImgBox = styled.div`
@@ -28,10 +27,14 @@ function Home() {
       <LayOut mode={mode} menu={true} centerLogo={true}>
         <MainBackGroundContainer>
           <ImgBox>
-            <Image alt="LUK" src={'/logo/logo.svg'} width={352.62} height={100} />
-          </ImgBox>
-          <ImgBox>
-            <Image alt="LUK chrome" src={'/logo/logo_chrome.svg'} width={352.62} height={100} />
+            <Image
+              alt="LUK"
+              src={'/imgs/home_background.svg'}
+              width={194}
+              height={438.28}
+              style={{ width: '100%', height: 'auto' }}
+              priority
+            />
           </ImgBox>
         </MainBackGroundContainer>
       </LayOut>

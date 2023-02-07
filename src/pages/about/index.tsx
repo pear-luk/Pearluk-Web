@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { LayOut } from '../../components/layout';
 
-import { INavIconType } from '../../recoil/Nav/navState';
+import { INavIconType } from '../../recoil/Nav/archiveState';
 import { ModeType } from '../../types/common/propsTypes';
 
 function Home({ props }) {
