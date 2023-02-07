@@ -5,9 +5,7 @@ import { businessInfoMock } from '../../../mock/businessInfo.mock';
 export default {
   title: 'Foundations/Footer',
   component: Footer,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof Footer>;
 
 const Template: ComponentStory<typeof Footer> = (args) => <Footer {...args} />;

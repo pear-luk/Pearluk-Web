@@ -4,9 +4,7 @@ import { InputAddress } from '.';
 export default {
   title: 'Foundations/InputAddress',
   component: InputAddress,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof InputAddress>;
 
 const Template: ComponentStory<typeof InputAddress> = (args) => <InputAddress {...args} />;

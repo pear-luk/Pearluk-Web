@@ -4,9 +4,7 @@ import { InputPhone } from '.';
 export default {
   title: 'Foundations/InputPhone',
   component: InputPhone,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof InputPhone>;
 
 const Template: ComponentStory<typeof InputPhone> = (args) => <InputPhone {...args} />;

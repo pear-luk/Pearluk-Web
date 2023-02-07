@@ -5,9 +5,7 @@ import { orderProductMock, orderShippingMock } from '../../../mock/order.mock';
 export default {
   title: 'Foundations/OrderListItem',
   component: OrderListItem,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof OrderListItem>;
 
 const Template: ComponentStory<typeof OrderListItem> = (args) => <OrderListItem {...args} />;

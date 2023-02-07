@@ -5,9 +5,7 @@ import { orderMock } from '../../../mock/order.mock';
 export default {
   title: 'Modules/OrderListCard',
   component: OrderListCard,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof OrderListCard>;
 
 const Template: ComponentStory<typeof OrderListCard> = (args) => <OrderListCard {...args} />;

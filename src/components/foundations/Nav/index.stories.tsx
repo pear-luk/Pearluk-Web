@@ -4,9 +4,7 @@ import { Nav } from '.';
 export default {
   title: 'Foundations/Nav',
   component: Nav,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof Nav>;
 
 const Template: ComponentStory<typeof Nav> = (args) => <Nav {...args} />;

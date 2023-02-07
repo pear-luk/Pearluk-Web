@@ -8,9 +8,7 @@ import {
 export default {
   title: 'Foundations/QnAListItem',
   component: QnAListItem,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof QnAListItem>;
 
 const Template: ComponentStory<typeof QnAListItem> = (args) => <QnAListItem {...args} />;

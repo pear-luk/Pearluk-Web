@@ -4,9 +4,7 @@ import { Text } from '.';
 export default {
   title: 'elements/Text',
   component: Text,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof Text>;
 
 const Template: ComponentStory<typeof Text> = (args) => <Text {...args} />;

@@ -4,9 +4,7 @@ import { TextArea } from '.';
 export default {
   title: 'Elements/TextArea',
   component: TextArea,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof TextArea>;
 
 const Template: ComponentStory<typeof TextArea> = (args) => <TextArea {...args} />;

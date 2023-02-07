@@ -4,9 +4,7 @@ import { AmountCard } from '.';
 export default {
   title: 'Modules/AmountCard',
   component: AmountCard,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof AmountCard>;
 
 const Template: ComponentStory<typeof AmountCard> = (args) => <AmountCard {...args} />;

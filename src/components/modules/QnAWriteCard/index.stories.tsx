@@ -4,9 +4,7 @@ import { QnAForm } from '.';
 export default {
   title: 'Modules/QnAForm',
   component: QnAForm,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof QnAForm>;
 
 const Template: ComponentStory<typeof QnAForm> = (args) => <QnAForm {...args} />;
