@@ -2,34 +2,23 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { Size } from '../../../styles/theme';
 import { ModeType } from '../../../types/common/propsTypes';
-
-export interface IProduct {
-  product_id: string;
-  name: string;
-  price: number;
-  imgs: string[];
-  count: number;
-}
+import { OrderProduct, Shipping } from '../../../types/model/order';
 
 interface Props {
   mode: ModeType;
-  product: IProduct;
+  product: OrderProduct;
 
   size?: keyof Size['width'];
 
-  order_id: string;
-
-  orderStatus: string;
-  courier_name?: string;
-  waybill_number?: string;
+  order_status: string;
+  shipping?: Shipping;
 }
 export const OrderListItem = ({
   mode,
-  order_id,
-  orderStatus,
+
+  order_status,
   product,
-  courier_name,
-  waybill_number,
+  shipping,
   size = 'medium',
 }: Props) => {
   return (
@@ -37,21 +26,25 @@ export const OrderListItem = ({
       <ImgBox>
         <Image
           alt="상품 메인이미지"
-          src={product.imgs[0]}
+          src={product.product.imgs[0]}
           fill
           style={{ objectFit: 'contain' }}
           sizes="auto 100%"></Image>
       </ImgBox>
       <InfoBox>
-        <ProductName>{product.name}</ProductName>
+        <ProductName>{product.product.name}</ProductName>
         <Info>
           <InfoLeft>
             <P>KRW {product.price.toLocaleString()}</P>
-            <P>{courier_name && waybill_number ? `${courier_name} ${waybill_number}` : `운송장 정보없음`}</P>
+            <P>
+              {shipping && shipping.courier_name && shipping.waybill_number
+                ? `${shipping.courier_name} ${shipping.waybill_number}`
+                : `운송장 정보없음`}
+            </P>
           </InfoLeft>
           <InfoRight>
             <P>{product && product.count}개</P>
-            <P>{orderStatus}</P>
+            <P>{order_status}</P>
           </InfoRight>
         </Info>
       </InfoBox>

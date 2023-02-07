@@ -19,6 +19,8 @@ export type User = {
   nickname: string;
   phone_number?: string;
   role: UserRole;
+  user_address?: UserAddress;
+  user_social_info?: UserSocialInfo;
 } & CommonInfo;
 
 export type UserSocialInfo = {
@@ -28,7 +30,8 @@ export type UserSocialInfo = {
 } & CommonInfo;
 
 export type UserAddress = {
-  uesr_id: string;
+  user_id?: string;
+  post_code: string;
   full_address: string;
   address: string;
   detail_address: string;

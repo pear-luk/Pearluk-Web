@@ -1,4 +1,4 @@
-import { forwardRef, HTMLInputTypeAttribute, RefObject } from 'react';
+import React, { forwardRef, HTMLInputTypeAttribute, RefObject } from 'react';
 import styled from 'styled-components';
 
 import { FontWeight, Size } from '../../../styles/theme';
@@ -14,14 +14,16 @@ interface Props {
   input_width?: keyof Size['width'];
   input_height?: keyof Size['space'];
   input_font_size?: keyof Size['font'];
+  value?: string;
 
   label: string;
   label_type?: Label_type;
   label_size?: keyof Size['font'];
   label_weight?: keyof FontWeight;
 
+  disabled?: boolean;
   ref?: RefObject<HTMLInputElement>;
-  onChange?: () => void;
+  onChange?: (() => void) | ((e: React.ChangeEvent<HTMLInputElement>) => void);
 }
 // (typeof E_status)[keyof typeof E_status]
 
@@ -39,6 +41,8 @@ export const InputLabel = forwardRef(
     label_size = 'medium',
     label_weight = 'bold',
 
+    value,
+    disabled,
     ref,
     onChange,
   }: Props) => {
@@ -66,7 +70,9 @@ export const InputLabel = forwardRef(
           input_width={input_width}
           input_font_size={input_font_size}
           onChange={onChange}
-          ref={ref}
+          ref={ref || undefined}
+          disabled={disabled}
+          value={value}
         />
         {label_type === 'right' && (
           <Label

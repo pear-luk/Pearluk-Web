@@ -17,6 +17,8 @@ interface Props {
   label_size?: keyof Size['font'];
   label_weight?: keyof FontWeight;
 
+  value?: string;
+  placeholder?: string;
   ref?: RefObject<HTMLInputElement>;
   setPhoneNumber?: Dispatch<SetStateAction<string>>;
 }
@@ -30,13 +32,14 @@ export const InputPhone = ({
   label_type = 'top',
   label_size = 'medium',
   label_weight = 'bold',
-
+  placeholder,
+  value,
   setPhoneNumber,
 }: Props) => {
   const [phoneNum, setPhoneNum] = useState({
-    first: '',
-    second: '',
-    third: '',
+    first: value?.slice(0, 3),
+    second: value?.slice(3, 7),
+    third: value?.slice(7, 11),
   });
   const phoneRef_first = useRef<HTMLInputElement>(null);
   const phoneRef_second = useRef<HTMLInputElement>(null);
@@ -44,13 +47,28 @@ export const InputPhone = ({
 
   const inputClickHandler = useCallback((e: MouseEvent) => {
     (e.target as HTMLTextAreaElement).value = '';
+    if (phoneRef_first.current) {
+      phoneRef_first.current.value = '';
+      phoneRef_first.current.focus();
+    }
+    if (phoneRef_second.current) {
+      phoneRef_second.current.value = '';
+    }
+    if (phoneRef_third.current) {
+      phoneRef_third.current.value = '';
+    }
+    setPhoneNum({
+      first: '',
+      second: '',
+      third: '',
+    });
   }, []);
   const inputChangeHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.id === 'first') {
         if ((e.target as HTMLInputElement).value.length === 3) {
           if (phoneRef_second.current) {
-            phoneRef_second.current.value = '';
+            // phoneRef_second.current.value = '';
             phoneRef_second.current.focus();
           }
         }
@@ -58,7 +76,7 @@ export const InputPhone = ({
       if (e.currentTarget.id === 'second') {
         if ((e.target as HTMLInputElement).value.length === 4) {
           if (phoneRef_third.current) {
-            phoneRef_third.current.value = '';
+            // phoneRef_third.current.value = '';
             phoneRef_third.current.focus();
           }
         }
@@ -72,7 +90,7 @@ export const InputPhone = ({
   useMemo(() => {
     if (setPhoneNumber) {
       const { first, second, third } = phoneNum;
-      setPhoneNumber(`${first}-${second}-${third}`);
+      setPhoneNumber(`${first}${second}${third}`);
     }
     console.log(phoneNum);
   }, [phoneNum, setPhoneNumber]);
@@ -110,6 +128,8 @@ export const InputPhone = ({
           onChange={inputChangeHandler}
           onClick={inputClickHandler}
           forwardedRef={phoneRef_first}
+          placeholder={placeholder}
+          value={phoneNum.first}
         />
         <Hyphen />
         <InputText
@@ -121,6 +141,8 @@ export const InputPhone = ({
           onChange={inputChangeHandler}
           onClick={inputClickHandler}
           forwardedRef={phoneRef_second}
+          placeholder={placeholder}
+          value={phoneNum.second}
         />
         <Hyphen />
         <InputText
@@ -132,6 +154,8 @@ export const InputPhone = ({
           onChange={inputChangeHandler}
           onClick={inputClickHandler}
           forwardedRef={phoneRef_third}
+          placeholder={placeholder}
+          value={phoneNum.third}
         />
 
         {label_type === 'right' && (

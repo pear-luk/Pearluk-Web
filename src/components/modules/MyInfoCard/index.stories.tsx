@@ -1,5 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { MyInfoCard } from '.';
+import { userWithAddressMock } from '../../../mock/user.mock';
 
 export default {
   title: 'Modules/MyInfoCard',
@@ -14,6 +15,7 @@ const Template: ComponentStory<typeof MyInfoCard> = (args) => <MyInfoCard {...ar
 export const TOP = Template.bind({});
 TOP.args = {
   mode: 'dark',
+  user: userWithAddressMock,
 };
 
 TOP.parameters = {
