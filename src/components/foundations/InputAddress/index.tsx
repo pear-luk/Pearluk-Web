@@ -15,9 +15,9 @@ interface Props {
   label_weight?: keyof FontWeight;
 
   ref?: RefObject<HTMLInputElement>;
-  setPhoneNumber?: Dispatch<SetStateAction<string>>;
+  // setPhoneNumber?: Dispatch<SetStateAction<string>>;
 }
-export const AddressForm = ({
+export const InputAddress = ({
   mode,
 
   input_width = 'medium',

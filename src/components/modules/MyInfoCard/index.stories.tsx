@@ -1,15 +1,15 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { MyCard } from '.';
+import { MyInfoCard } from '.';
 
 export default {
-  title: 'Modules/MyCard',
-  component: MyCard,
+  title: 'Modules/MyInfoCard',
+  component: MyInfoCard,
   argTypes: {
     backgroundColor: { control: 'color' },
   },
-} as ComponentMeta<typeof MyCard>;
+} as ComponentMeta<typeof MyInfoCard>;
 
-const Template: ComponentStory<typeof MyCard> = (args) => <MyCard {...args} />;
+const Template: ComponentStory<typeof MyInfoCard> = (args) => <MyInfoCard {...args} />;
 // mode, type, label, label_type, label_size, label_weight, onChange,
 export const TOP = Template.bind({});
 TOP.args = {

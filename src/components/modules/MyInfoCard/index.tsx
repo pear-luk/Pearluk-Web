@@ -2,15 +2,15 @@ import styled from 'styled-components';
 import { ModeType } from '../../../types/common/propsTypes';
 
 import { Button } from '../../elements/Button';
+import { InputAddress } from '../../foundations/InputAddress';
 import { InputLabel } from '../../foundations/InputLabel';
 import { InputPhone } from '../../foundations/InputPhone';
-import { AddressForm } from '../AddressForm';
 
 interface Props {
   mode: ModeType;
 }
 
-export const MyCard = ({ mode }: Props) => {
+export const MyInfoCard = ({ mode }: Props) => {
   return (
     <Container>
       <Box>
@@ -23,7 +23,7 @@ export const MyCard = ({ mode }: Props) => {
         <InputPhone mode={mode} label="PHONE"></InputPhone>
       </Box>
       <Box>
-        <AddressForm mode={mode}></AddressForm>
+        <InputAddress mode={mode}></InputAddress>
       </Box>
       <BottonBox>
         <Button color={mode === 'dark' ? 'yellow' : 'black'} size="large" label="SAVE"></Button>

@@ -1,15 +1,15 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { AddressForm } from '.';
+import { InputAddress } from '.';
 
 export default {
-  title: 'Modules/AddressForm',
-  component: AddressForm,
+  title: 'Foundations/InputAddress',
+  component: InputAddress,
   argTypes: {
     backgroundColor: { control: 'color' },
   },
-} as ComponentMeta<typeof AddressForm>;
+} as ComponentMeta<typeof InputAddress>;
 
-const Template: ComponentStory<typeof AddressForm> = (args) => <AddressForm {...args} />;
+const Template: ComponentStory<typeof InputAddress> = (args) => <InputAddress {...args} />;
 // mode, type, label, label_type, label_size, label_weight, onChange,
 export const TOP = Template.bind({});
 TOP.args = {

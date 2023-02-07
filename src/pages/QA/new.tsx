@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { LayOut } from '../../components/layout';
-import { QnAInputCard } from '../../components/modules/QnAForm';
+import { QnAInputCard } from '../../components/modules/QnAWriteCard';
 
 import { QnAHeader } from '../../components/foundations/QnAHeader';
 
