@@ -6,24 +6,27 @@ interface Props {
   img: string;
   width?: string;
   height?: string;
-  forwardedRef?: RefObject<HTMLInputElement>;
 
   onClick?: () => void;
 }
 
-export const ImgButton = ({ img, onClick, width = '1.2rem', height = '1.2rem', forwardedRef }: Props) => {
-  return (
-    <StyledButton onClick={onClick} width={width} height={height} ref={forwardedRef || undefined}>
-      <Image
-        alt="상품 메인이미지"
-        src={img}
-        fill
-        style={{ objectFit: 'contain', fill: 'red' }}
-        sizes="auto 100%"></Image>
-    </StyledButton>
-  );
-};
-export const ImageButtonForwardRef = forwardRef(ImgButton);
+export const ImgButton = forwardRef(
+  (
+    { img, onClick, width = '1.2rem', height = '1.2rem' }: Props,
+    ref?: ((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined,
+  ) => {
+    return (
+      <StyledButton onClick={onClick} width={width} height={height} ref={ref}>
+        <Image
+          alt="상품 메인이미지"
+          src={img}
+          fill
+          style={{ objectFit: 'contain', fill: 'red' }}
+          sizes="auto 100%"></Image>
+      </StyledButton>
+    );
+  },
+);
 
 const StyledButton = styled.div<Omit<Props, 'img'>>`
   position: relative;

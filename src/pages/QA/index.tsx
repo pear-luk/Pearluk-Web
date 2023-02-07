@@ -9,7 +9,8 @@ import { questionListItemMock_NoSecret_NoProduct } from '../../mock/question.moc
 import { ModeType } from '../../types/common/propsTypes';
 import { Question } from '../../types/model/question';
 
-function QA({ props }) {
+// interface Props {}
+function QA() {
   // mode, icon
   const [mode] = useState<ModeType>('white');
 

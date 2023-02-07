@@ -1,4 +1,4 @@
-import React, { forwardRef, RefObject } from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { Size } from '../../../styles/theme';
 import { ModeType } from '../../../types/common/propsTypes';
@@ -11,34 +11,36 @@ interface Props {
   label_size?: keyof Size['font'];
   checked?: boolean;
 
-  forwardedRef?: RefObject<HTMLInputElement>;
-
   id?: string;
   onClick?: (() => void) | ((e: React.MouseEvent) => void);
+  onChange?: (() => void) | ((e: React.ChangeEvent) => void);
 }
 
-export const CheckBox = ({
-  mode,
-  label,
-  checked,
-  id,
-  forwardedRef,
-  onClick,
-  label_type = 'right',
-  label_size = 'xsmall',
-  ...props
-}: Props) => {
-  return (
-    <CheckBoxLabel label_size={label_size}>
-      {label_type === 'left' && label}
-      <CheckboxInput mode={mode} id={id} onClick={onClick} ref={forwardedRef || undefined} checked={checked} />
-      <CustomCheckBox mode={mode} label_type={label_type}></CustomCheckBox>
-      {label_type === 'right' && label}
-    </CheckBoxLabel>
-  );
-};
+export const CheckBox = forwardRef(
+  (
+    {
+      mode,
+      label,
+      checked,
+      id,
 
-export const CheckBoxForwardRef = forwardRef(CheckBox);
+      onClick,
+      onChange,
+      label_type = 'right',
+      label_size = 'xsmall',
+    }: Props,
+    ref?: ((instance: HTMLInputElement | null) => void) | React.RefObject<HTMLInputElement> | null | undefined,
+  ) => {
+    return (
+      <CheckBoxLabel label_size={label_size}>
+        {label_type === 'left' && label}
+        <CheckboxInput mode={mode} id={id} onClick={onClick} ref={ref} checked={checked} onChange={onChange} />
+        <CustomCheckBox mode={mode} label_type={label_type}></CustomCheckBox>
+        {label_type === 'right' && label}
+      </CheckBoxLabel>
+    );
+  },
+);
 
 const CheckBoxLabel = styled.label<{ label_size?: keyof Size['font'] }>`
   display: flex;

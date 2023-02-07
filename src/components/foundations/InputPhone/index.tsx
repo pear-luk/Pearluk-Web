@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { FontWeight, Size } from '../../../styles/theme';
 import { LabelType, ModeType } from '../../../types/common/propsTypes';
-import { InputTextForwardRef } from '../../elements/InputText';
+import { InputText } from '../../elements/InputText';
 import { Label } from '../../elements/Label';
 
 interface Props {
@@ -119,7 +119,7 @@ export const InputPhone = ({
       )}
 
       <PhoneNumberBox>
-        <InputTextForwardRef
+        <InputText
           id={'first'}
           mode={mode}
           maxLength={3}
@@ -127,12 +127,12 @@ export const InputPhone = ({
           input_width={input_width}
           onChange={inputChangeHandler}
           onClick={inputClickHandler}
-          forwardedRef={phoneRef_first}
+          ref={phoneRef_first}
           placeholder={placeholder}
           value={phoneNum.first}
         />
         <Hyphen />
-        <InputTextForwardRef
+        <InputText
           id={'second'}
           maxLength={4}
           mode={mode}
@@ -140,12 +140,12 @@ export const InputPhone = ({
           input_width={input_width}
           onChange={inputChangeHandler}
           onClick={inputClickHandler}
-          forwardedRef={phoneRef_second}
+          ref={phoneRef_second}
           placeholder={placeholder}
           value={phoneNum.second}
         />
         <Hyphen />
-        <InputTextForwardRef
+        <InputText
           maxLength={4}
           id={'third'}
           mode={mode}
@@ -153,7 +153,7 @@ export const InputPhone = ({
           input_width={input_width}
           onChange={inputChangeHandler}
           onClick={inputClickHandler}
-          forwardedRef={phoneRef_third}
+          ref={phoneRef_third}
           placeholder={placeholder}
           value={phoneNum.third}
         />
