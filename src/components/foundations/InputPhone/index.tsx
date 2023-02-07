@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { FontWeight, Size } from '../../../styles/theme';
 import { LabelType, ModeType } from '../../../types/common/propsTypes';
-import { InputText } from '../../elements/InputText';
+import { InputTextForwardRef } from '../../elements/InputText';
 import { Label } from '../../elements/Label';
 
 interface Props {
@@ -119,7 +119,7 @@ export const InputPhone = ({
       )}
 
       <PhoneNumberBox>
-        <InputText
+        <InputTextForwardRef
           id={'first'}
           mode={mode}
           maxLength={3}
@@ -132,7 +132,7 @@ export const InputPhone = ({
           value={phoneNum.first}
         />
         <Hyphen />
-        <InputText
+        <InputTextForwardRef
           id={'second'}
           maxLength={4}
           mode={mode}
@@ -145,7 +145,7 @@ export const InputPhone = ({
           value={phoneNum.second}
         />
         <Hyphen />
-        <InputText
+        <InputTextForwardRef
           maxLength={4}
           id={'third'}
           mode={mode}

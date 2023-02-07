@@ -27,66 +27,54 @@ interface Props {
 }
 // (typeof E_status)[keyof typeof E_status]
 
-export const InputLabel = forwardRef(
-  ({
-    mode,
-    type = 'text',
+export const InputLabel = ({
+  mode,
+  type = 'text',
 
-    input_width = 'medium',
-    input_height = 'base',
-    input_font_size = 'primary',
+  input_width = 'medium',
+  input_height = 'base',
+  input_font_size = 'primary',
 
-    label,
-    label_type = 'top',
-    label_size = 'medium',
-    label_weight = 'bold',
+  label,
+  label_type = 'top',
+  label_size = 'medium',
+  label_weight = 'bold',
 
-    value,
-    disabled,
-    ref,
-    onChange,
-  }: Props) => {
-    return (
-      <Container
+  value,
+  disabled,
+  ref,
+  onChange,
+}: Props) => {
+  return (
+    <Container
+      mode={mode}
+      label_size={label_size}
+      label_weight={label_weight}
+      label_type={label_type}
+      input_width={input_width}
+      input_height={input_height}>
+      {(label_type === 'top' || label_type === 'left') && (
+        <Label mode={mode} label={label} label_type={label_type} label_size={label_size} label_weight={label_weight} />
+      )}
+      <InputText
         mode={mode}
-        label_size={label_size}
-        label_weight={label_weight}
-        label_type={label_type}
+        type={type}
+        input_height={input_height}
         input_width={input_width}
-        input_height={input_height}>
-        {(label_type === 'top' || label_type === 'left') && (
-          <Label
-            mode={mode}
-            label={label}
-            label_type={label_type}
-            label_size={label_size}
-            label_weight={label_weight}
-          />
-        )}
-        <InputText
-          mode={mode}
-          type={type}
-          input_height={input_height}
-          input_width={input_width}
-          input_font_size={input_font_size}
-          onChange={onChange}
-          ref={ref || undefined}
-          disabled={disabled}
-          value={value}
-        />
-        {label_type === 'right' && (
-          <Label
-            mode={mode}
-            label={label}
-            label_type={label_type}
-            label_size={label_size}
-            label_weight={label_weight}
-          />
-        )}
-      </Container>
-    );
-  },
-);
+        input_font_size={input_font_size}
+        onChange={onChange}
+        ref={ref || undefined}
+        disabled={disabled}
+        value={value}
+      />
+      {label_type === 'right' && (
+        <Label mode={mode} label={label} label_type={label_type} label_size={label_size} label_weight={label_weight} />
+      )}
+    </Container>
+  );
+};
+export const InputLabelForwardRef = forwardRef(InputLabel);
+
 // label, label_type, label_size, label_weight
 // "onChange" | "type" | "mode" | "input_width" | "input_height"
 const Container = styled.div<Omit<Props, 'label' | 'onChange' | 'type'>>`

@@ -11,7 +11,7 @@ interface Props {
   onClick?: () => void;
 }
 
-export const ImgButton = forwardRef(({ img, onClick, width = '1.2rem', height = '1.2rem', forwardedRef }: Props) => {
+export const ImgButton = ({ img, onClick, width = '1.2rem', height = '1.2rem', forwardedRef }: Props) => {
   return (
     <StyledButton onClick={onClick} width={width} height={height} ref={forwardedRef || undefined}>
       <Image
@@ -22,7 +22,8 @@ export const ImgButton = forwardRef(({ img, onClick, width = '1.2rem', height = 
         sizes="auto 100%"></Image>
     </StyledButton>
   );
-});
+};
+export const ImageButtonForwardRef = forwardRef(ImgButton);
 
 const StyledButton = styled.div<Omit<Props, 'img'>>`
   position: relative;

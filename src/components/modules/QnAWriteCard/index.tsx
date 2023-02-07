@@ -5,7 +5,7 @@ import { ModeType } from '../../../types/common/propsTypes';
 
 import { Button } from '../../elements/Button';
 import { CheckBox } from '../../elements/CheckBox';
-import { TextArea } from '../../elements/Textarea';
+import { TextAreaForwardRef } from '../../elements/Textarea';
 import { InputLabel } from '../../foundations/InputLabel';
 interface Props {
   mode: ModeType;
@@ -103,12 +103,12 @@ export const QnAForm = ({ mode = 'white', size = 'medium', ...props }: Props) =>
       </ImageInputBox>
 
       <ContentInputBox>
-        <TextArea
+        <TextAreaForwardRef
           mode={mode}
           size={size}
           forwardedRef={textareaRef}
           id="question_contents"
-          onChange={textAreaChangeHandler}></TextArea>
+          onChange={textAreaChangeHandler}></TextAreaForwardRef>
       </ContentInputBox>
 
       <SubmitBox>

@@ -17,28 +17,28 @@ interface Props {
   onClick?: (() => void) | ((e: React.MouseEvent) => void);
 }
 
-export const CheckBox = forwardRef(
-  ({
-    mode,
-    label,
-    checked,
-    id,
-    forwardedRef,
-    onClick,
-    label_type = 'right',
-    label_size = 'xsmall',
-    ...props
-  }: Props) => {
-    return (
-      <CheckBoxLabel label_size={label_size}>
-        {label_type === 'left' && label}
-        <CheckboxInput mode={mode} id={id} onClick={onClick} ref={forwardedRef || undefined} checked={checked} />
-        <CustomCheckBox mode={mode} label_type={label_type}></CustomCheckBox>
-        {label_type === 'right' && label}
-      </CheckBoxLabel>
-    );
-  },
-);
+export const CheckBox = ({
+  mode,
+  label,
+  checked,
+  id,
+  forwardedRef,
+  onClick,
+  label_type = 'right',
+  label_size = 'xsmall',
+  ...props
+}: Props) => {
+  return (
+    <CheckBoxLabel label_size={label_size}>
+      {label_type === 'left' && label}
+      <CheckboxInput mode={mode} id={id} onClick={onClick} ref={forwardedRef || undefined} checked={checked} />
+      <CustomCheckBox mode={mode} label_type={label_type}></CustomCheckBox>
+      {label_type === 'right' && label}
+    </CheckBoxLabel>
+  );
+};
+
+export const CheckBoxForwardRef = forwardRef(CheckBox);
 
 const CheckBoxLabel = styled.label<{ label_size?: keyof Size['font'] }>`
   display: flex;

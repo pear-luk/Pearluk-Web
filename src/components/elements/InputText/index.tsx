@@ -22,21 +22,29 @@ interface Props {
 }
 // (typeof E_status)[keyof typeof E_status]
 // mode, type = 'text', ref, onChange
-export const InputText = forwardRef(
-  ({ type, input_font_size = 'primary', forwardedRef, value, disabled, placeholder, ...props }: Props) => {
-    return (
-      <Input
-        type={type}
-        value={value}
-        input_font_size={input_font_size}
-        ref={forwardedRef || undefined}
-        disabled={disabled}
-        {...props}
-        placeholder={placeholder}
-      />
-    );
-  },
-);
+export const InputText = ({
+  type,
+  input_font_size = 'primary',
+  forwardedRef,
+  value,
+  disabled,
+  placeholder,
+  ...props
+}: Props) => {
+  return (
+    <Input
+      type={type}
+      value={value}
+      input_font_size={input_font_size}
+      ref={forwardedRef || undefined}
+      disabled={disabled}
+      {...props}
+      placeholder={placeholder}
+    />
+  );
+};
+
+export const InputTextForwardRef = forwardRef(InputText);
 
 const Input = styled.input.attrs(({ type }) => ({ type: type }))<Props>`
   background-color: transparent;
