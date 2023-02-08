@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ModeType } from '../../../types/common/propsTypes';
-import { User } from '../../../types/model/user';
+import { UserAddress } from '../../../types/model/user';
+import { MyInfoGetResponseDTO } from '../../../types/response/my';
 
 import { Button } from '../../elements/Button';
 import { InputAddress } from '../../foundations/InputAddress';
@@ -10,49 +11,48 @@ import { InputPhone } from '../../foundations/InputPhone';
 
 interface Props {
   mode: ModeType;
-  user: User;
+  user: MyInfoGetResponseDTO;
+  setUser?: Dispatch<SetStateAction<MyInfoGetResponseDTO | undefined>>;
 }
 
-export const MyInfoCard = ({ mode, user }: Props) => {
-  const { email, nickname, phone_number } = user;
-  const [userInfo, setUserInfo] = useState(user);
-  const [phone, setPhone] = useState<string>(user.phone_number ? user.phone_number : '');
-  const [userAddress, setUserAddress] = useState<Partial<UserAddress> | undefined>(user.user_address);
+export const MyInfoCard = ({ mode, user, setUser }: Props) => {
+  const [phone, setPhone] = useState<string>(user?.phone_number ? user.phone_number : '');
+  const [userAddress, setUserAddress] = useState<Partial<UserAddress>>(user?.address ? user.address : {});
   const emaliHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setUserInfo({ ...userInfo, email: e.target.value });
+      if (setUser) setUser({ ...user, email: e.target.value });
     },
-    [userInfo],
+    [user, setUser],
   );
   const nameHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setUserInfo({ ...userInfo, nickname: e.target.value });
+      if (setUser) setUser({ ...user, nickname: e.target.value });
     },
-    [userInfo],
+    [user, setUser],
   );
 
-  const phoneHandler = useCallback(() => {
-    setUserInfo({ ...userInfo, email: phone });
-  }, [userInfo, phone]);
-  const setAddress = () => {
-    setUserInfo({ ...userInfo, email: phone });
-  };
+  // const phoneHandler = useCallback(() => {
+  //   setUser({ ...user, email: phone });
+  // }, [user, phone]);
+  // const setAddress = () => {
+  //   setUser({ ...user, email: phone });
+  // };
   useEffect(() => {
-    setUserInfo((userInfo) => ({ ...userInfo, phone_number: phone }));
-  }, [phone]);
+    if (setUser) setUser((user) => ({ ...(user as MyInfoGetResponseDTO), phone_number: phone }));
+  }, [phone, setUser]);
   useEffect(() => {
-    setUserInfo((userInfo) => ({ ...userInfo, user_address: userAddress }));
-  }, [userAddress]);
+    if (setUser) setUser((user) => ({ ...(user as MyInfoGetResponseDTO), address: userAddress as UserAddress }));
+  }, [userAddress, setUser]);
   useEffect(() => {
-    console.log(userInfo);
-  }, [userInfo]);
+    console.log(user);
+  }, [user]);
   return (
     <Container>
       <Box>
-        <InputLabel mode={mode} value={userInfo.email && userInfo.email} onChange={emaliHandler} label="E-MAIL" />
+        <InputLabel mode={mode} value={user?.email || undefined} onChange={emaliHandler} label="E-MAIL" />
       </Box>
       <Box>
-        <InputLabel mode={mode} value={userInfo.nickname && userInfo.nickname} onChange={nameHandler} label="NAME" />
+        <InputLabel mode={mode} value={user?.nickname || undefined} onChange={nameHandler} label="NAME" />
       </Box>
       <Box>
         <InputPhone mode={mode} value={phone} setPhoneNumber={setPhone} label="PHONE"></InputPhone>
@@ -60,7 +60,7 @@ export const MyInfoCard = ({ mode, user }: Props) => {
       <Box>
         <InputAddress
           mode={mode}
-          address={userInfo.user_address}
+          address={user?.address || undefined}
           userAddress={userAddress}
           setUserAddress={setUserAddress}></InputAddress>
       </Box>

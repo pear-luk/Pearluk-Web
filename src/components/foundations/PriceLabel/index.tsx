@@ -12,7 +12,7 @@ interface Props {
   price_weight?: keyof FontWeight;
 
   label: string;
-  price: number;
+  price?: number;
   sign?: '+' | '-';
   // 선택한 아이템에따른 쿼리 (상품, QA ....)
   selectChangeQuery?: (select: string) => void;
@@ -33,7 +33,7 @@ export const PriceLabel = ({
       <Label mode={mode} label={label} label_size={font_size} label_weight={font_weight} />
       <Box>
         {sign}
-        <Price price_weight={price_weight}>{price && price.toLocaleString()} </Price>
+        <Price price_weight={price_weight}>{price ? price.toLocaleString() : ''} </Price>
         KRW
       </Box>
     </Container>

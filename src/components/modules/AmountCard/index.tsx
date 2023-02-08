@@ -4,8 +4,8 @@ import { ModeType } from '../../../types/common/propsTypes';
 import { PriceLabel } from '../../foundations/PriceLabel';
 interface Props {
   mode: ModeType;
-  total: number;
-  point: number;
+  total?: number;
+  point?: number;
   size?: keyof Size['width'];
   font_size?: keyof Size['font'];
 }
