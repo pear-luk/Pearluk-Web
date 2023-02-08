@@ -29,7 +29,7 @@ export const InputText = forwardRef(
     return (
       <Input
         type={type}
-        value={value}
+        value={value || ''}
         input_font_size={input_font_size}
         ref={ref}
         disabled={disabled}

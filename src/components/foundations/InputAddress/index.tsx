@@ -76,7 +76,7 @@ export const InputAddress = ({
         <>
           <Label>POSTCODE</Label>
           <PostCodeBox>
-            <PostCodeInput value={userAddress && userAddress.post_code} disabled></PostCodeInput>
+            <PostCodeInput value={(userAddress && userAddress.post_code) || ''} disabled></PostCodeInput>
             <ButtonBox>
               <Button
                 color={mode === 'dark' ? 'yellow' : 'black'}
@@ -86,7 +86,12 @@ export const InputAddress = ({
             </ButtonBox>
           </PostCodeBox>
           <Label>ADDRESS</Label>
-          <AddressInput rows={2} cols={20} value={userAddress && userAddress.address} readOnly disabled></AddressInput>
+          <AddressInput
+            rows={2}
+            cols={20}
+            value={(userAddress && userAddress.address) || ''}
+            readOnly
+            disabled></AddressInput>
           <DetailAddressInput
             onChange={detailOnChangeHandler}
             value={userAddress && userAddress.detail_address}

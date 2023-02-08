@@ -1,8 +1,11 @@
+import { AxiosError, AxiosResponse } from 'axios';
 import { useQuery } from 'react-query';
 import { useRecoilState } from 'recoil';
-import { archiveLsitMock } from '../../../mock/archive.mock';
 import { archiveState } from '../../../recoil/Nav/archiveState';
+import { BaseResponseDTO } from '../../../types/common/baseResponse';
 import { Archive } from '../../../types/model/archive';
+import { ArchiveGetListResponseDTO } from '../../../types/response/archive';
+import { API } from '../../util/API';
 
 type useArchiveType = {
   archiveList: Archive[];
@@ -13,13 +16,20 @@ type useArchiveType = {
 
 export const useArchive = (): useArchiveType => {
   const [archiveList, setArchiveList] = useRecoilState(archiveState);
-  const { isLoading: isArchiveLoading, isError: isArchiveError } = useQuery(
+  const { isLoading: isArchiveLoading, isError: isArchiveError } = useQuery<
+    AxiosResponse<BaseResponseDTO<ArchiveGetListResponseDTO>> | null,
+    AxiosError
+  >(
     ['archive'],
-    archiveList.length === 0 ? () => archiveLsitMock : () => null,
+    archiveList.length === 0 ? API('/archives', { method: 'get' }) : () => null,
     // API('/auth', { method: 'get' }),
     {
       onSuccess: (res) => {
-        res && setArchiveList([...archiveList, ...res]);
+        if (res !== null) {
+          const { data } = res as AxiosResponse<BaseResponseDTO<ArchiveGetListResponseDTO>>;
+          const { result } = data as BaseResponseDTO<ArchiveGetListResponseDTO>;
+          result && setArchiveList([...archiveList, ...result]);
+        }
       },
 
       retry: false,

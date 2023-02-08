@@ -33,7 +33,7 @@ export const PriceLabel = ({
       <Label mode={mode} label={label} label_size={font_size} label_weight={font_weight} />
       <Box>
         {sign}
-        <Price price_weight={price_weight}>{price ? price.toLocaleString() : ''} </Price>
+        <Price price_weight={price_weight}>{price ? price?.toLocaleString() : ''} </Price>
         KRW
       </Box>
     </Container>
