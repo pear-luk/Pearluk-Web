@@ -4,9 +4,7 @@ import { InputLabel } from '.';
 export default {
   title: 'Foundations/InputLabel',
   component: InputLabel,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof InputLabel>;
 
 const Template: ComponentStory<typeof InputLabel> = (args) => <InputLabel {...args} />;

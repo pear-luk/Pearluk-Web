@@ -1,7 +1,9 @@
+import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { ModeType } from '../../../types/common/propsTypes';
 import { Order } from '../../../types/model/order';
-import { User } from '../../../types/model/user';
+import { MyInfoGetResponseDTO } from '../../../types/response/my';
+
 import { Header } from '../../foundations/Header';
 import { LayOut } from '../../layout';
 import { AmountCard } from '../../modules/AmountCard';
@@ -9,26 +11,27 @@ import { MyInfoCard } from '../../modules/MyInfoCard';
 import { OrderListCard } from '../../modules/OrderListCard';
 interface Props {
   mode: ModeType;
-  user?: User;
+  user?: MyInfoGetResponseDTO;
+  setUser?: Dispatch<SetStateAction<MyInfoGetResponseDTO | undefined>>;
   orders: Order[];
 }
 
-export const MyTemplate = ({ mode, user, orders }: Props) => {
+export const MyTemplate = ({ mode, user, orders, setUser }: Props) => {
   return (
     <LayOut mode={mode} menu={true} centerLogo={true}>
       <Header mode={mode} label="MY PAGE" />
       <ContentBox mode={mode}>
-        <AmountCard mode={mode} point={11111111} total={111111} />
+        <AmountCard mode={mode} point={undefined} total={undefined} />
       </ContentBox>
 
       <ContentBoxNoBorderBox>
-        <MyInfoCard mode={mode}></MyInfoCard>
+        <MyInfoCard mode={mode} user={user as MyInfoGetResponseDTO} setUser={setUser}></MyInfoCard>
       </ContentBoxNoBorderBox>
 
       <Header mode={mode} label="MY ORDER" header_type="left" />
       {orders.map((order, i) => {
-        const { order_id } = order;
-        return <OrderListCard mode={mode} order={order}></OrderListCard>;
+        // const { order_id } = order;
+        return <OrderListCard mode={mode} key={i} order={order}></OrderListCard>;
       })}
     </LayOut>
   );

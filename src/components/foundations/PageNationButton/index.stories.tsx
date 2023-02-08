@@ -4,9 +4,7 @@ import { PageNationBotton } from '.';
 export default {
   title: 'Foundations/PageNationBotton',
   component: PageNationBotton,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof PageNationBotton>;
 
 const Template: ComponentStory<typeof PageNationBotton> = (args) => <PageNationBotton {...args} />;

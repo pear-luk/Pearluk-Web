@@ -9,7 +9,7 @@ export const API = (url: string, options?: AxiosRequestConfig) => {
     ...options,
   });
 
-  return (mutationData?: any) => AXIOS_instance({ ...options, data: mutationData });
+  return (mutationData?: object | string | number) => AXIOS_instance({ ...options, data: mutationData });
   // return {
   //   get: async () => await (await AXIOS_instance.get(url)).data,
   //   post: async () => await (await AXIOS_instance.post(url, data)).data,

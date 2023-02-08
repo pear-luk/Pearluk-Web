@@ -7,9 +7,7 @@ export default {
   component: Login,
 
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof Login>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args

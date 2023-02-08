@@ -6,9 +6,7 @@ export default {
   title: 'Prototypes/MyTemplate',
   component: MyTemplate,
 
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof MyTemplate>;
 
 const Template: ComponentStory<typeof MyTemplate> = (args) => <MyTemplate {...args} />;

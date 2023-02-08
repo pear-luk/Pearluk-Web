@@ -5,9 +5,7 @@ import { userWithAddressMock } from '../../../mock/user.mock';
 export default {
   title: 'Modules/MyInfoCard',
   component: MyInfoCard,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof MyInfoCard>;
 
 const Template: ComponentStory<typeof MyInfoCard> = (args) => <MyInfoCard {...args} />;

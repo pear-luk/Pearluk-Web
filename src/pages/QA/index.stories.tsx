@@ -7,9 +7,7 @@ export default {
   component: QA,
 
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof QA>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args

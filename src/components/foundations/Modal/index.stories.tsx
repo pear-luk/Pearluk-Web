@@ -4,9 +4,7 @@ import { Modal } from '.';
 export default {
   title: 'Foundations/Modal',
   component: Modal,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof Modal>;
 
 const Template: ComponentStory<typeof Modal> = (args) => <Modal {...args} />;

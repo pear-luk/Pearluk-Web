@@ -4,16 +4,13 @@ import { ImgButton } from '.';
 export default {
   title: 'Elements/ImgButton',
   component: ImgButton,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof ImgButton>;
 
 const Template: ComponentStory<typeof ImgButton> = (args) => <ImgButton {...args} />;
 // mode, type, label, label_type, label_size, label_weight, onChange,
 export const Prev = Template.bind({});
 Prev.args = {
-  mode: 'dark',
   img: '/item/white_next_mode.svg',
   // label: '예시',
   // type: 'text',
@@ -27,7 +24,6 @@ Prev.parameters = {
 
 export const Next = Template.bind({});
 Next.args = {
-  mode: 'dark',
   img: '/item/dark_next_mode.svg',
   // label: '예시',
   // type: 'text',

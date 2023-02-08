@@ -6,9 +6,7 @@ export default {
   title: 'LAYOUT/layout',
   component: LayOut,
 
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof LayOut>;
 
 const Template: ComponentStory<typeof LayOut> = (args) => <LayOut {...args} />;

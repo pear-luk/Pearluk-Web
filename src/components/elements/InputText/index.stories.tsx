@@ -4,9 +4,7 @@ import { InputText } from '.';
 export default {
   title: 'Elements/InputText',
   component: InputText,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof InputText>;
 
 const Template: ComponentStory<typeof InputText> = (args) => <InputText {...args} />;
@@ -14,11 +12,8 @@ const Template: ComponentStory<typeof InputText> = (args) => <InputText {...args
 export const TOP = Template.bind({});
 TOP.args = {
   mode: 'dark',
-  label: '예시',
-  type: 'text',
-  label_type: 'top',
 
-  label_weight: 'bold',
+  type: 'text',
 };
 
 TOP.parameters = {

@@ -19,7 +19,7 @@ export type User = {
   nickname: string;
   phone_number?: string;
   role: UserRole;
-  user_address?: UserAddress;
+  user_address?: Partial<UserAddress>;
   user_social_info?: UserSocialInfo;
 } & CommonInfo;
 

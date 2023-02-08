@@ -4,9 +4,7 @@ import { CheckBox } from '.';
 export default {
   title: 'Elements/CheckBox',
   component: CheckBox,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof CheckBox>;
 
 const Template: ComponentStory<typeof CheckBox> = (args) => <CheckBox {...args} />;

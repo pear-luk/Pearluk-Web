@@ -16,9 +16,9 @@ interface Props {
   label_size?: keyof Size['font'];
   label_weight?: keyof FontWeight;
 
-  address?: UserAddress;
+  address?: Partial<UserAddress>;
   userAddress: Partial<UserAddress> | undefined;
-  setUserAddress: React.Dispatch<React.SetStateAction<Partial<UserAddress> | undefined>>;
+  setUserAddress: React.Dispatch<React.SetStateAction<Partial<UserAddress>>>;
   setAddress?: () => void;
   ref?: RefObject<HTMLInputElement>;
 

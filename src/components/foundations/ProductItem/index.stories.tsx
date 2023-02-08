@@ -4,9 +4,7 @@ import { ProductItem } from '.';
 export default {
   title: 'Foundations/ProductItem',
   component: ProductItem,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof ProductItem>;
 
 const Template: ComponentStory<typeof ProductItem> = (args) => <ProductItem {...args} />;
