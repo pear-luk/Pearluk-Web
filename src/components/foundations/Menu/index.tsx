@@ -43,8 +43,9 @@ export const MenuToggle = ({ menuState, setMenuState, archiveList, ...props }: P
     (e: React.MouseEvent) => {
       e.preventDefault();
       logoutMutate();
+      setMenuState(!menuState);
     },
-    [logoutMutate],
+    [logoutMutate, setMenuState, menuState],
   );
 
   return (
@@ -57,7 +58,7 @@ export const MenuToggle = ({ menuState, setMenuState, archiveList, ...props }: P
       }}>
       <Container {...props}>
         <LogoBox>
-          <Image src="./logo/black/home.svg" width={30} height={30} alt="home logo" priority />
+          <Image src="/logo/black/home.svg" width={30} height={30} alt="home logo" priority />
         </LogoBox>
         <LoginBox>
           {auth && auth.is_login ? (
