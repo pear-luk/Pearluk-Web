@@ -2,10 +2,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { LayOut } from '../../../components/layout';
-import { useSocialLogin } from '../../../hooks/services/mutation/login';
-import { INavIconType } from '../../../recoil/Nav/archiveState';
-import { ModeType } from '../../../types/common/propsTypes';
+import { LayOut } from '../../../../components/layout';
+import { useSocialLogin } from '../../../../hooks/services/mutation/login';
+import { ModeType } from '../../../../types/common/propsTypes';
 
 const MainBackGroundContainer = styled.div`
   width: auto;
@@ -19,13 +18,10 @@ const MainBackGroundContainer = styled.div`
 const ImgBox = styled.div`
   margin: 1.2rem 0;
 `;
-function KakaoAuth({ props, url }) {
+function KakaoAuth({ ...props }) {
   // mode, icon
   const [mode] = useState<ModeType>('dark');
-  const [icon] = useState<INavIconType>({
-    logo: false,
-    menu: true,
-  });
+
   // { social_type: 'kakao', social_token: '' }
   // const [login, setLogin] = useState<SocailLoginRequestDTO | null>(null);
   const social_code = useRouter().query.code as string;
@@ -37,7 +33,7 @@ function KakaoAuth({ props, url }) {
   }, [social_code, mutate]);
 
   return (
-    <LayOut mode={mode} icon={icon}>
+    <LayOut mode={mode} {...props}>
       <MainBackGroundContainer>
         <ImgBox>
           <Image alt="LUK" src={'/logo/logo.svg'} width={352.62} height={100} />

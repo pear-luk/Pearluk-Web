@@ -12,6 +12,7 @@ type IsLoginType = {
   user: LoginResponseDTO | null;
   isLoginLoading: boolean;
   isLoginError: boolean;
+  isLoginFetching: boolean;
 };
 
 export const useIsLogin = (): IsLoginType => {
@@ -19,21 +20,25 @@ export const useIsLogin = (): IsLoginType => {
   const resetUser = useResetRecoilState(userState);
 
   const [login, setLogin] = useRecoilState(loginState);
-  const { isLoading: isLoginLoading, isError: isLoginError } = useQuery<
-    AxiosResponse<BaseResponseDTO<LoginResponseDTO>> | null,
-    AxiosError
-  >(
+  const {
+    isLoading: isLoginLoading,
+    isError: isLoginError,
+    isFetching: isLoginFetching,
+  } = useQuery<AxiosResponse<BaseResponseDTO<LoginResponseDTO>> | AxiosResponse<null>, AxiosError>(
     ['isLogin'],
 
-    login === null ? API('/auth', { method: 'get' }) : () => null,
+    API('/auth', { method: 'get' }),
     // API('/auth', { method: 'get' }),
     {
       onSuccess: (res) => {
-        if (res !== null) {
-          const { data } = res;
-          const { is_success, result } = data;
+        const { data } = res;
+        if (data) {
+          const { is_success, result } = data as BaseResponseDTO<LoginResponseDTO>;
           user === null && setUser(result as LoginResponseDTO);
           login === null && setLogin(is_success);
+        } else {
+          resetUser();
+          setLogin(false);
         }
       },
       onError: (err) => {
@@ -48,6 +53,6 @@ export const useIsLogin = (): IsLoginType => {
     },
   );
 
-  return { login, user, isLoginError, isLoginLoading };
+  return { login, user, isLoginError, isLoginLoading, isLoginFetching };
 };
 //   useMutation(API('/login', { method: 'post', data: loginInfo }), { retry: false });

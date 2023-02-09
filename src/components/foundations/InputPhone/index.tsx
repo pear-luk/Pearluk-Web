@@ -1,4 +1,13 @@
-import React, { Dispatch, MouseEvent, RefObject, SetStateAction, useCallback, useMemo, useRef, useState } from 'react';
+import React, {
+  Dispatch,
+  MouseEvent,
+  RefObject,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import styled from 'styled-components';
 
 import { FontWeight, Size } from '../../../styles/theme';
@@ -87,7 +96,7 @@ export const InputPhone = ({
     [phoneNum],
   );
 
-  useMemo(() => {
+  useEffect(() => {
     if (setPhoneNumber) {
       const { first, second, third } = phoneNum;
       setPhoneNumber(`${first}${second}${third}`);
