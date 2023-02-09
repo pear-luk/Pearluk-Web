@@ -1,23 +1,23 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback } from 'react';
+import { Dispatch, SetStateAction, useCallback } from 'react';
 import styled from 'styled-components';
 
 import { ModeType } from '../../../types/common/propsTypes';
+import { Archive } from '../../../types/model/archive';
 import { MenuToggle } from '../Menu';
 
-type SetType<T> = (t: T) => void;
 export interface INavProps {
   mode: ModeType;
   // icon: INavIconType;
-
+  archiveList: Archive[];
   menuState: boolean;
-  setMenuState: SetType<any>;
+  setMenuState: Dispatch<SetStateAction<boolean>>;
   menu?: boolean; //menu표시일건지 뒤로가기 일건지
   centerLogo?: boolean; //
 }
 
-export const Nav = ({ mode, menuState, setMenuState, menu = true, centerLogo = true, ...props }: INavProps) => {
+export const Nav = ({ mode, menuState, setMenuState, menu = true, centerLogo = true, archiveList }: INavProps) => {
   // mode 다크모드인지. 아닌지
   // const [mode, setMode] = useRecoilState(modeAtom);
 
@@ -97,7 +97,7 @@ export const Nav = ({ mode, menuState, setMenuState, menu = true, centerLogo = t
           </ItemBox>
         </SideBox>
       </NavContainer>
-      <MenuToggle mode={mode} menuState={menuState} setMenuState={setMenuState}></MenuToggle>
+      <MenuToggle menuState={menuState} setMenuState={setMenuState} archiveList={archiveList}></MenuToggle>
     </>
   );
 };

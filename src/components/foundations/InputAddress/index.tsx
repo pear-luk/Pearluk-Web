@@ -46,7 +46,7 @@ export const InputAddress = ({
     setIsOpenPost(!isOpenPost);
   }, [isOpenPost]);
   useEffect(() => {
-    console.log(userAddress);
+
   }, [userAddress]);
 
   const detailOnChangeHandler = useCallback(

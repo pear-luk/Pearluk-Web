@@ -3,7 +3,8 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { LayOut } from '../../../../components/layout';
-import { useSocialLogin } from '../../../../hooks/services/mutation/login';
+import { useSocialLogin } from '../../../../hooks/mutation/login';
+
 import { ModeType } from '../../../../types/common/propsTypes';
 
 const MainBackGroundContainer = styled.div`

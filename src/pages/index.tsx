@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { LayOut } from '../components/layout';
 
@@ -21,13 +21,7 @@ const ImgBox = styled.div`
 function Home() {
   // mode, icon
   const [mode] = useState<ModeType>('dark');
-  useEffect(() => {
-    // axios
-    //   .get(
-    //     `https://business.juso.go.kr/addrlink/addrLinkUrl.do?confmKey=${process.env.NEXT_PUBLIC_ADDRESS_API_KEY}&returnUrl=${process.env.NEXT_PUBLIC_ADDRESS_API_RETURN_URL}`,
-    //   )
-    //   .then((res) => console.log(res.data));
-  }, []);
+
   return (
     <>
       <LayOut mode={mode} menu={true} centerLogo={true}>

@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export function middleware(request: NextRequeste) {
+export function middleware(request: NextRequest) {
   // if (request.nextUrl.pathname.startsWith('/about')) {
   //   // This logic is only applied to /about
   // }
@@ -9,6 +9,6 @@ export function middleware(request: NextRequeste) {
     if (!request.cookies.get('access_token')) return NextResponse.redirect(new URL('/login', request.url));
   }
   if (request.nextUrl.pathname.startsWith('/api/auth')) {
-    if (!request.cookies.get('access_token')) return NextResponse.json(null);
+    if (!request.cookies.get('access_token')) return NextResponse.json({ is_login: false });
   }
 }

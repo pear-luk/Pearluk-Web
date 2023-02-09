@@ -1,9 +1,9 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
-import { BaseResponseDTO } from '../../../types/common/baseResponse';
-import { MyOrderListGetResponseDTO } from '../../../types/response/order';
-import { API } from '../../util/API';
+import { BaseResponseDTO } from '../../types/common/baseResponse';
+import { MyOrderListGetResponseDTO } from '../../types/response/order';
+import { API } from '../util/API';
 
 type UseMyOrderListType = {
   myOrderList: MyOrderListGetResponseDTO;

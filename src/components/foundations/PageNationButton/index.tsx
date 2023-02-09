@@ -46,10 +46,6 @@ export const PageNationBotton = ({ mode, items, font_size = 'small', size = 'sma
     }
   }, [itemList, item_count]);
 
-  useEffect(() => {
-    console.log(num);
-  }, [num]);
-
   return (
     <Container mode={mode} size={size}>
       {mode === 'dark' ? (
@@ -59,7 +55,6 @@ export const PageNationBotton = ({ mode, items, font_size = 'small', size = 'sma
       )}
 
       {itemList.slice(num, num + item_count).map((item, i) => {
-        console.log(item);
         if (item)
           return (
             <Item key={i} id={item.id} onClick={selectHandler} mode={mode} select={select} font_size={font_size}>
@@ -80,7 +75,7 @@ export const PageNationBotton = ({ mode, items, font_size = 'small', size = 'sma
 const Container = styled.div<Omit<Props, 'items'>>`
   display: flex;
   text-align: center;
-  width: ${({ theme, size }) => theme.size.width[size]};
+  width: ${({ theme, size }) => size && theme.size.width[size]};
   justify-content: space-between;
   align-items: center;
 `;

@@ -1,23 +1,26 @@
 import { useEffect } from 'react';
+import { useQuery } from 'react-query';
 import { RecoilState, useRecoilState } from 'recoil';
+import { BaseResponseDTO } from './../../types/common/baseResponse';
 
-const useRecoilQuery = <T>(
+export const useRecoilQuery = <T>(
   recoilState: RecoilState<T>,
-  key: string,
-  getFunc: () => Promise<T>,
+  key: string | unknown[],
+  getFunc: () => Promise<BaseResponseDTO<T>>,
   staleTime = Infinity,
-  suspense = true,
+  // suspense = true,
 ) => {
   const [state, setState] = useRecoilState(recoilState);
   const { isLoading, data, refetch } = useQuery(key, getFunc, {
     staleTime,
-    suspense,
+    // suspense,
+    retry: 0,
   });
 
   useEffect(() => {
     if (!data) return;
-
-    setState(data);
+    if (!data.result) return;
+    setState(data.result);
   }, [data, setState]);
 
   return { state, isLoading, refetch };
