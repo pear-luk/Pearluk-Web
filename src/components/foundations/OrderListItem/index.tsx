@@ -26,7 +26,7 @@ export const OrderListItem = ({
       <ImgBox>
         <Image
           alt="상품 메인이미지"
-          src={product.product.imgs[0]}
+          src={product.product.imgs[0] || '/logo/logo.svg'}
           fill
           style={{ objectFit: 'contain' }}
           sizes="auto 100%"></Image>

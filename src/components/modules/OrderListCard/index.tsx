@@ -1,28 +1,38 @@
 import styled from 'styled-components';
 import { Size } from '../../../styles/theme';
 import { ModeType } from '../../../types/common/propsTypes';
-import { Order, OrderStatusEnum } from '../../../types/model/order';
+import { OrderProduct, OrderStatusEnum } from '../../../types/model/order';
+import { MyOderListGetResponItemDTO } from '../../../types/response/order';
 import { OrderListItem } from '../../foundations/OrderListItem';
 
 interface Props {
   mode: ModeType;
-  order: Order;
+
+  order: MyOderListGetResponItemDTO;
+
+  size?: keyof Size['width'];
 }
 
 export const OrderListCard = ({ mode, size = 'medium', order }: Props) => {
-  const { order_id, name, user_id, total_price, order_products, order_status, created_at, shipping } = order;
+  const {
+    //  order_id, name, user_id, total_price,
+    order_products,
+    order_status,
+    created_at,
+    shipping,
+  } = order;
   return (
     <Container size={size}>
       {/* <Header mode={mode} label="MY ORDER" labelType="left"></Header> */}
       <OrderDateBox>{created_at && new Date(created_at).toLocaleDateString()}</OrderDateBox>
-      {order_products?.map((product) => {
+      {order_products?.map((product: OrderProduct) => {
         return (
           <OrderItemBox key={product.product_id}>
             <OrderListItem
               mode={mode}
               product={product}
               order_status={OrderStatusEnum[order_status]}
-              shipping={shipping}
+              shipping={shipping || undefined}
             />
           </OrderItemBox>
         );

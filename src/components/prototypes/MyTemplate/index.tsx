@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
+import { Size } from '../../../styles/theme';
 import { ModeType } from '../../../types/common/propsTypes';
-import { Order } from '../../../types/model/order';
 import { MyInfoGetResponseDTO } from '../../../types/response/my';
+import { MyOrderListGetResponseDTO } from '../../../types/response/order';
 
 import { Header } from '../../foundations/Header';
 import { LayOut } from '../../layout';
@@ -13,7 +14,8 @@ interface Props {
   mode: ModeType;
   user?: MyInfoGetResponseDTO;
   setUser?: Dispatch<SetStateAction<MyInfoGetResponseDTO | undefined>>;
-  orders: Order[];
+  orders: MyOrderListGetResponseDTO;
+  size?: keyof Size['width'];
 }
 
 export const MyTemplate = ({ mode, user, orders, setUser }: Props) => {
@@ -29,10 +31,11 @@ export const MyTemplate = ({ mode, user, orders, setUser }: Props) => {
       </ContentBoxNoBorderBox>
 
       <Header mode={mode} label="MY ORDER" header_type="left" />
-      {orders.map((order, i) => {
-        // const { order_id } = order;
-        return <OrderListCard mode={mode} key={i} order={order}></OrderListCard>;
-      })}
+      {Array.isArray(orders) &&
+        orders.map((order, i) => {
+          // const { order_id } = order;
+          return <OrderListCard mode={mode} key={i} order={order}></OrderListCard>;
+        })}
     </LayOut>
   );
 };
