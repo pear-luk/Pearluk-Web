@@ -18,7 +18,7 @@ interface Props {
   size?: keyof Size['width'];
 }
 
-export const MyTemplate = ({ mode, user, orders, setUser }: Props) => {
+export const MyTemplate = ({ mode, user, orders, setUser, size }: Props) => {
   return (
     <LayOut mode={mode} menu={true} centerLogo={true}>
       <Header mode={mode} label="MY PAGE" />
