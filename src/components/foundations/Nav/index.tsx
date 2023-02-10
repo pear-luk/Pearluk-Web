@@ -96,11 +96,23 @@ export const Nav = ({ mode, menuState, setMenuState, menu = true, centerLogo = t
             </Link>
           </ItemBox>
           <ItemBox>
-            {mode === 'dark' ? (
-              <Image alt="다크모드 장바구니 버튼" src={'/logo/white/cart.svg'} width={24} height={24} priority></Image>
-            ) : (
-              <Image alt="다크모드 장바구니 버튼" src={'/logo/black/cart.svg'} width={24} height={24} priority></Image>
-            )}
+            <Link href={'/cart'}>
+              {mode === 'dark' ? (
+                <Image
+                  alt="다크모드 장바구니 버튼"
+                  src={'/logo/white/cart.svg'}
+                  width={24}
+                  height={24}
+                  priority></Image>
+              ) : (
+                <Image
+                  alt="다크모드 장바구니 버튼"
+                  src={'/logo/black/cart.svg'}
+                  width={24}
+                  height={24}
+                  priority></Image>
+              )}
+            </Link>
           </ItemBox>
         </SideBox>
       </NavContainer>
