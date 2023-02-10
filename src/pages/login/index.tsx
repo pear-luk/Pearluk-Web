@@ -4,10 +4,10 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { LayOut } from '../../components/layout';
 
-import { INavIconType } from '../../recoil/Nav/archiveState';
+import { INavIconType } from '../../recoil/archive/state';
 import { ModeType } from '../../types/common/propsTypes';
 
-function Login({ props }) {
+function Login() {
   const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
   const KAKAO_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
 

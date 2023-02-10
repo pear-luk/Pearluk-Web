@@ -12,7 +12,8 @@ interface Props {
 
   slide?: boolean;
 }
-export const ProductItem = ({ mode, price, product_id, product_name, images, slide = false }: Props) => {
+export const ProductItem = ({ mode, price, product_name, images, slide = false }: Props) => {
+  // product_id
   return (
     <Container mode={mode}>
       <ImageBox>
@@ -50,7 +51,7 @@ export const ProductItem = ({ mode, price, product_id, product_name, images, sli
       </ImageBox>
 
       <InfoBox>
-        <NameBox>PRODUCT NAME PRODUCT NAME PRODUCT NAME PRODUCT NAME</NameBox>
+        <NameBox>{product_name && product_name}</NameBox>
         <PriceBox>
           <Price>{price.toLocaleString()} KRW</Price>
         </PriceBox>
@@ -92,4 +93,4 @@ const PriceBox = styled.div`
 
 const Price = styled.div``;
 
-const Sale = styled.div``;
+// const Sale = styled.div``;

@@ -1,6 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { OrderListCard } from '.';
-import { orderMock } from '../../../mock/order.mock';
 
 export default {
   title: 'Modules/OrderListCard',
@@ -13,7 +12,6 @@ const Template: ComponentStory<typeof OrderListCard> = (args) => <OrderListCard 
 export const EX = Template.bind({});
 EX.args = {
   mode: 'white',
-  order: orderMock,
 };
 
 EX.parameters = {

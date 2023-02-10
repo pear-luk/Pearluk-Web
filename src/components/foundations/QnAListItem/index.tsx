@@ -2,6 +2,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { ModeType } from '../../../types/common/propsTypes';
 import { Question } from '../../../types/model/question';
+import { User } from '../../../types/model/user';
 
 interface Props {
   mode: ModeType;
@@ -9,11 +10,12 @@ interface Props {
   qustion: Omit<Question, 'password'>;
 }
 
-export const QnAListItem = ({ mode, qustion }: Props) => {
-  const { question_id, title, writer, secret_mode, created_at, answer_count } = qustion;
+export const QnAListItem = ({ qustion }: Props) => {
+  // question_id,
+  const { title, writer, secret_mode, created_at, answer_count } = qustion;
   const { nickname } = writer as Pick<User, 'nickname' | 'user_id'>;
   return (
-    <Container mode={mode}>
+    <Container>
       <TitleBox>
         <IconBox>
           {Boolean(secret_mode) && <Image alt="잠금버튼" src="./icon/lock.svg" width={10} height={10}></Image>}
@@ -23,7 +25,7 @@ export const QnAListItem = ({ mode, qustion }: Props) => {
       </TitleBox>
       <InfoBox>
         <InfoItem>{nickname}</InfoItem>
-        <InfoItem>{new Date(created_at).toLocaleDateString()}</InfoItem>
+        <InfoItem>{created_at && new Date(created_at).toLocaleDateString()}</InfoItem>
       </InfoBox>
     </Container>
   );

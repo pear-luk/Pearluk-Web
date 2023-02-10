@@ -1,9 +1,9 @@
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { LayOut } from '../../../../components/layout';
-import { useSocialLogin } from '../../../../hooks/services/mutation/login';
+import { useSocialLogin } from '../../../../hooks/mutation/login';
+
 import { ModeType } from '../../../../types/common/propsTypes';
 
 const MainBackGroundContainer = styled.div`
@@ -32,15 +32,7 @@ function KakaoAuth({ ...props }) {
     if (social_code) mutate({ social_code, social_type: 'kakao' });
   }, [social_code, mutate]);
 
-  return (
-    <LayOut mode={mode} {...props}>
-      <MainBackGroundContainer>
-        <ImgBox>
-          <Image alt="LUK" src={'/logo/logo.svg'} width={352.62} height={100} />
-        </ImgBox>
-      </MainBackGroundContainer>
-    </LayOut>
-  );
+  return <LayOut mode={mode} {...props}></LayOut>;
 }
 
 export default KakaoAuth;

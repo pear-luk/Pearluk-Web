@@ -4,10 +4,10 @@ import { QnAInputCard } from '../../components/modules/QnAWriteCard';
 
 import { QnAHeader } from '../../components/foundations/QnAHeader';
 
-import { INavIconType } from '../../recoil/Nav/archiveState';
+import { INavIconType } from '../../recoil/archive/state';
 import { ModeType } from '../../types/common/propsTypes';
 
-function NewQA({ props }) {
+function NewQA() {
   // mode, icon
   const [mode] = useState<ModeType>('white');
   const [icon] = useState<INavIconType>({

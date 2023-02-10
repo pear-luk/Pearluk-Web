@@ -43,9 +43,7 @@ export const MyInfoCard = ({ mode, user, setUser }: Props) => {
   useEffect(() => {
     if (setUser) setUser((user) => ({ ...(user as MyInfoGetResponseDTO), address: userAddress as UserAddress }));
   }, [userAddress, setUser]);
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+
   return (
     <Container>
       <Box>

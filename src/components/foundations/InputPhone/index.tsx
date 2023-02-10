@@ -101,7 +101,6 @@ export const InputPhone = ({
       const { first, second, third } = phoneNum;
       setPhoneNumber(`${first}${second}${third}`);
     }
-    console.log(phoneNum);
   }, [phoneNum, setPhoneNumber]);
   // useEffect(() => {
   //   if (setPhoneNumber) {

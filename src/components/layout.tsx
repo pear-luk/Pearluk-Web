@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { useIsLogin } from '../hooks/services/queries/loginQuery';
+
 import { businessInfoMock } from '../mock/businessInfo.mock';
 import { ModeType } from '../types/common/propsTypes';
 
+import { useArchiveList } from '../hooks/queries/archiveQuery';
 import { Size } from '../styles/theme';
 import { Footer } from './foundations/Footer';
 import { Nav } from './foundations/Nav';
@@ -18,12 +19,21 @@ interface Props {
 
 export const LayOut = ({ children, mode, centerLogo = true, menu = true, contentSize = 'medium' }: Props) => {
   const [menuState, setMenuState] = useState(false);
+  const { archiveList } = useArchiveList();
 
-  const { isLoginLoading, isLoginError } = useIsLogin();
+  // const { isLoginLoading, isLoginError } = useIsLogin();
+  // const { authState } = useAuth();
 
   return (
     <Container>
-      <Nav mode={mode} menu={menu} centerLogo={centerLogo} menuState={menuState} setMenuState={setMenuState} />
+      <Nav
+        mode={mode}
+        menu={menu}
+        centerLogo={centerLogo}
+        menuState={menuState}
+        setMenuState={setMenuState}
+        archiveList={archiveList}
+      />
       <ContentContainer mode={mode}>
         <Content contentSize={contentSize}>{children}</Content>
       </ContentContainer>

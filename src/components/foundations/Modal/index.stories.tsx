@@ -12,8 +12,6 @@ const Template: ComponentStory<typeof Modal> = (args) => <Modal {...args} />;
 export const EX = Template.bind({});
 EX.args = {
   mode: 'dark',
-  centerLogo: true,
-  menu: true,
 };
 EX.parameters = {
   layout: 'fullscreen',

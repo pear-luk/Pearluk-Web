@@ -1,32 +1,8 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { BaseResponseDTO } from '../../types/common/baseResponse';
 
-export const API = (url: string, options?: AxiosRequestConfig) => {
+export const API = <T,>(url: string, options?: AxiosRequestConfig): Promise<AxiosResponse<BaseResponseDTO<T>>> => {
   const API_PREFIX = process.env.NEXT_PUBLIC_API_PREFIX;
-  const AXIOS_instance = axios.create({
-    baseURL: `http://localhost:3000${API_PREFIX}${url}`,
 
-    headers: {},
-    ...options,
-  });
-
-  return async (mutationData?: object | string | number) =>
-    await (
-      await AXIOS_instance({ ...options, data: mutationData })
-    ).data;
-  // return {
-  //   get: async () => await (await AXIOS_instance.get(url)).data,
-  //   post: async () => await (await AXIOS_instance.post(url, data)).data,
-  //   patch: async () => await (await AXIOS_instance.patch(url, data)).data,
-  //   delete: async () => await (await AXIOS_instance.delete(url, data)).data,
-  // };
+  return axios(`${API_PREFIX}${url}`, { ...options });
 };
-
-// 리액트 쿼리 사용법.
-// export const useGet = () => {
-//   return useQuery(['login'], API('/', { method: 'post', data: { asd: '123' } }), {
-//     onSuccess: (data) => {
-//       console.log(data);
-//     },
-//     retry: false,
-//   });
-// };

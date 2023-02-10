@@ -3,11 +3,9 @@ import Link from 'next/link';
 import { useCallback, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { useLogout } from '../../../hooks/services/mutation/logout';
-import { useArchive } from '../../../hooks/services/queries/archiveQuery';
-import { loginState } from '../../../recoil/auth/stats';
-
-import { MenuSelectType } from '../../../recoil/Nav/archiveState';
+import { useLogout } from '../../../hooks/mutation/logout';
+import { authState } from '../../../recoil/auth/state';
+import { Archive } from '../../../types/model/archive';
 
 // export interface MenuProps {}
 type SetType<T> = (t: T) => void;
@@ -17,11 +15,13 @@ export interface Props {
 
   menuState: boolean;
   setMenuState: SetType<boolean>;
+  archiveList: Archive[];
 }
-export const MenuToggle = ({ menuState, setMenuState, ...props }: Props) => {
-  const { archiveList } = useArchive();
-  const [menuSelect, setMenuSelect] = useState<MenuSelectType>(null);
-  const isLogin = useRecoilValue(loginState);
+export const MenuToggle = ({ menuState, setMenuState, archiveList, ...props }: Props) => {
+  const [menuSelect, setMenuSelect] = useState<string | null>(null);
+  const auth = useRecoilValue(authState);
+  const { mutate: logoutMutate } = useLogout();
+
   const itemClickHandler = useCallback(
     (e: React.MouseEvent): void => {
       const { target } = e;
@@ -29,22 +29,23 @@ export const MenuToggle = ({ menuState, setMenuState, ...props }: Props) => {
         const { title } = target;
         if (title === menuSelect || !title) {
           setMenuSelect(null);
-        } else setMenuSelect(title as MenuSelectType);
+        } else setMenuSelect(title as string);
       }
     },
     [menuSelect],
   );
+
   const menuClickHandler = useCallback(() => {
     setMenuState(!menuState);
   }, [setMenuState, menuState]);
 
-  const { mutate: logoutMutate } = useLogout();
   const logoutClickHandler = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
       logoutMutate();
+      setMenuState(!menuState);
     },
-    [logoutMutate],
+    [logoutMutate, setMenuState, menuState],
   );
 
   return (
@@ -57,10 +58,14 @@ export const MenuToggle = ({ menuState, setMenuState, ...props }: Props) => {
       }}>
       <Container {...props}>
         <LogoBox>
-          <Image src="./logo/black/home.svg" width={30} height={30} alt="home logo" priority />
+          <Image src="/logo/black/home.svg" width={30} height={30} alt="home logo" priority />
         </LogoBox>
         <LoginBox>
-          {isLogin ? <div onClick={logoutClickHandler}>LOG OUT</div> : <Link href={'/login'}>LOG IN</Link>}
+          {auth && auth.is_login ? (
+            <div onClick={logoutClickHandler}>LOG OUT</div>
+          ) : (
+            <Link href={'/login'}>LOG IN</Link>
+          )}
         </LoginBox>
         <MenuBox>
           <MenuItemBox>
@@ -148,7 +153,7 @@ const MenuItemBox = styled.div`
   /* background-color: blue; */
 `;
 
-const ArchiveItem = styled.div<{ menuSelect: MenuSelectType }>`
+const ArchiveItem = styled.div<{ menuSelect: string | null }>`
   overflow: hidden;
   font-size: 1.4rem;
   align-content: center;
@@ -171,7 +176,7 @@ const ArchiveItem = styled.div<{ menuSelect: MenuSelectType }>`
   }}
 `;
 
-const MenuItem = styled.div<{ menuSelect: MenuSelectType; menuState: boolean }>`
+const MenuItem = styled.div<{ menuSelect: string | null; menuState: boolean }>`
   padding: 3rem 0;
   transition: all 0.3s;
   a {
