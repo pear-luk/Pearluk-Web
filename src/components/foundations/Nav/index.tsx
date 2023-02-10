@@ -77,16 +77,23 @@ export const Nav = ({ mode, menuState, setMenuState, menu = true, centerLogo = t
         </LogoBox>
         <SideBox>
           <ItemBox>
-            {mode === 'dark' ? (
-              <Image alt="다크모드 마이페이지 버튼" src={'/logo/white/my.svg'} width={24} height={24} priority></Image>
-            ) : (
-              <Image
-                alt="화이트모드 마이페이지 버튼"
-                src={'/logo/black/my.svg'}
-                width={24}
-                height={24}
-                priority></Image>
-            )}
+            <Link href={'/my'}>
+              {mode === 'dark' ? (
+                <Image
+                  alt="다크모드 마이페이지 버튼"
+                  src={'/logo/white/my.svg'}
+                  width={24}
+                  height={24}
+                  priority></Image>
+              ) : (
+                <Image
+                  alt="화이트모드 마이페이지 버튼"
+                  src={'/logo/black/my.svg'}
+                  width={24}
+                  height={24}
+                  priority></Image>
+              )}
+            </Link>
           </ItemBox>
           <ItemBox>
             {mode === 'dark' ? (

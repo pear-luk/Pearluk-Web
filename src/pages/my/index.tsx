@@ -1,23 +1,24 @@
 import { useEffect, useState } from 'react';
 import { MyTemplate } from '../../components/prototypes/MyTemplate';
-import { useMyInfo } from '../../hooks/services/queries/MyQuery';
-import { useMyOrderList } from '../../hooks/services/queries/orderQuery';
+import { useMyInfo } from '../../hooks/queries/MyQuery';
+import { useMyOrderList } from '../../hooks/queries/orderQuery';
+
 import { ModeType } from '../../types/common/propsTypes';
 import { MyInfoGetResponseDTO } from '../../types/response/my';
 
 function My({ ...props }) {
   // mode, icon
   const [mode] = useState<ModeType>('white');
-  const { userInfo, isUserInfoLoading } = useMyInfo();
+  const { myInfo, isMyInfoLoading } = useMyInfo();
 
   const [user, setUser] = useState<MyInfoGetResponseDTO | undefined>();
   useEffect(() => {
-    userInfo && setUser(userInfo);
-  }, [userInfo]);
+    myInfo && setUser(myInfo);
+  }, [myInfo]);
 
   const { myOrderList, isMyOrderLoading } = useMyOrderList();
 
-  return isUserInfoLoading || isMyOrderLoading ? (
+  return isMyInfoLoading || isMyOrderLoading ? (
     <></>
   ) : (
     <MyTemplate mode={mode} user={user} setUser={setUser} orders={myOrderList} {...props} />

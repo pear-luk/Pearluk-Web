@@ -1,5 +1,5 @@
-import { AxiosError, AxiosResponse } from 'axios';
-import { useState } from 'react';
+import { AxiosError } from 'axios';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { BaseResponseDTO } from '../../types/common/baseResponse';
 import { MyOrderListGetResponseDTO } from '../../types/response/order';
@@ -11,27 +11,27 @@ type UseMyOrderListType = {
   isMyOrderLoading: boolean;
 };
 
+const getMyOrderList = async () => (await API<MyOrderListGetResponseDTO>('/orders', { method: 'get' })).data;
+
 export const useMyOrderList = (): UseMyOrderListType => {
   const [myOrderList, setMyOrderList] = useState<MyOrderListGetResponseDTO>([]);
 
-  const { isLoading, isError } = useQuery<AxiosResponse<BaseResponseDTO<MyOrderListGetResponseDTO>> | null, AxiosError>(
+  const { data, isLoading, isError } = useQuery<BaseResponseDTO<MyOrderListGetResponseDTO>, AxiosError>(
     ['myOrderList'],
 
-    myOrderList.length === 0 ? API('/orders', { method: 'get' }) : () => null,
+    getMyOrderList,
     // API('/auth', { method: 'get' }),
     {
-      onSuccess: (res: AxiosResponse<BaseResponseDTO<MyOrderListGetResponseDTO>> | null) => {
-        if (res !== null) {
-          const { data } = res;
-          const { result } = data as BaseResponseDTO<MyOrderListGetResponseDTO>;
-          result && setMyOrderList([...myOrderList, ...(result as MyOrderListGetResponseDTO)]);
-        }
-      },
-
       retry: false,
     },
   );
+  // const { result } = data as BaseResponseDTO<MyOrderListGetResponseDTO>;
+  useEffect(() => {
+    if (!data) return;
+    if (!data.result) return;
+    const { result } = data;
+    setMyOrderList(result);
+  }, [data]);
 
   return { myOrderList, isMyOrderListError: isError, isMyOrderLoading: isLoading };
 };
-//   u
