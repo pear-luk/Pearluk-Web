@@ -7,7 +7,7 @@ export type Question = {
   contents: string;
   type?: number;
   secret_mode: number;
-  password: string;
+  password?: string;
 
   user_id: string;
   product_id?: string;
