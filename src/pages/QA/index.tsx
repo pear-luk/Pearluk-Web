@@ -14,11 +14,11 @@ function QA() {
   // mode, icon
   const [mode] = useState<ModeType>('white');
 
-  const [qustions, setQustions] = useState<Omit<Question, 'password' | 'contents'>[]>([]);
+  const [questions, setquestions] = useState<Omit<Question, 'password' | 'contents'>[]>([]);
   const [write, setWrite] = useState(false);
   //test
   useEffect(() => {
-    setQustions([questionListItemMock()]);
+    setquestions([questionListItemMock()]);
   }, []);
   const buttonHandler = useCallback(() => {
     setWrite(!write);
@@ -36,7 +36,7 @@ function QA() {
             button_onClick={buttonHandler}
             button_size="xsmall"
           />
-          {qustions && qustions.map((qustion, i) => <QnAListItem mode={mode} key={i} qustion={qustion} />)}
+          {questions && questions.map((question, i) => <QnAListItem mode={mode} key={i} question={question} />)}
         </>
       ) : (
         <>

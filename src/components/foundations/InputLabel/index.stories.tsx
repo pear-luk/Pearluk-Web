@@ -34,7 +34,7 @@ EX.parameters = {
 // };
 
 // LEFT.parameters = {
-//   layout: 'fullscreen',
+
 // };
 
 // export const RIGHT = Template.bind({});
@@ -45,8 +45,4 @@ EX.parameters = {
 //   type: 'text',
 //   label_type: 'top',
 //   label_weight: 'bold',
-// };
-
-// RIGHT.parameters = {
-//   layout: 'fullscreen',
 // };

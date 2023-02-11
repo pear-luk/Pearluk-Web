@@ -2,7 +2,6 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ProductTemplate } from '.';
 import { productListMock } from '../../../mock/product.mock';
 import { questionListItemMock } from '../../../mock/question.mock';
-
 export default {
   title: 'Prototypes/ProductTemplate',
   component: ProductTemplate,

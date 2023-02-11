@@ -46,7 +46,7 @@ export const useProjectList = ({
   };
 };
 
-const getProductDetail = ({ product_id }) => {
+const getProductDetail = ({ product_id }: { product_id: string }) => {
   return async () => (await API<Product>(`/products/${product_id}`, { method: 'get' })).data;
 };
 
