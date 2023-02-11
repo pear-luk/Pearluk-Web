@@ -134,6 +134,7 @@ const NavContainer = styled.nav<{ mode: ModeType }>`
 
   padding: 0 ${({ theme }) => theme.size.space.xxsmall};
 
+  z-index: 9000;
   background-color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.grey.black : theme.color.yellow.yellow)};
 `;
 

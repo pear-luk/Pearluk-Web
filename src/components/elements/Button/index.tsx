@@ -54,6 +54,7 @@ const StyledButton = styled.button<Omit<ButtonProps, 'label'>>`
       : 'transparent';
   }};
 
+  word-break: keep-all;
   font-size: ${({ theme }) => theme.size.font.primary};
   ${({ theme, size }) => size && theme.size.button[size]}
   /* line-height: auto;  */

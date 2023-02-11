@@ -1,10 +1,14 @@
 import { useRouter } from 'next/router';
-import { LayOut } from '../../components/layout';
+import { ArchiveTemplate } from '../../components/prototypes/ArchiveTemplate';
+import { useProjectList } from '../../hooks/queries/productQuery';
 
-const ArchivePage = ({ url }) => {
+const ArchivePage = () => {
   const router = useRouter();
-  const { archive_id } = router.query;
-
-  return <LayOut mode="dark"></LayOut>;
+  const { archive_id, page } = router.query;
+  const { productList, totalCount } = useProjectList({
+    archive: archive_id,
+    page,
+  });
+  return <ArchiveTemplate mode="dark" productList={productList} totalCount={totalCount}></ArchiveTemplate>;
 };
 export default ArchivePage;
