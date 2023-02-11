@@ -4,13 +4,9 @@ import { useQuery } from 'react-query';
 import { BaseResponseDTO } from '../../types/common/baseResponse';
 import { Product } from '../../types/model/product';
 import { ProductListGetResponseDTO } from '../../types/response/product';
+import { getProductList } from '../API/product/getProductList';
 import { API } from '../util/API';
-import { PRODUCT_LIST_KEY } from './key';
-
-const getProductList =
-  ({ page, archive }: { page: string | string[] | undefined; archive: string | string[] | undefined }) =>
-  async () =>
-    (await API<ProductListGetResponseDTO>(`/products?archive=${archive}&page=${page}`, { method: 'get' })).data;
+import { PRODUCT_LIST_KEY, PROUCT_DETAIL_KEY } from './key';
 
 export const useProjectList = ({
   page,
@@ -38,6 +34,7 @@ export const useProjectList = ({
     const { total_count, products } = result;
     setProductList(products);
     setTotalCount(total_count);
+    if (!total_count) setTotalCount(0);
   }, [data]);
 
   return {
@@ -47,4 +44,22 @@ export const useProjectList = ({
     isProjectListLoading: isLoading,
     refetchProjectList: refetch,
   };
+};
+
+const getProductDetail = ({ product_id }) => {
+  return async () => (await API<Product>(`/products/${product_id}`, { method: 'get' })).data;
+};
+
+export const useGetProduct = ({ product_id }: { product_id: string }) => {
+  const [product, setProduct] = useState<Product | undefined>();
+  const { data, isError, isLoading, refetch } = useQuery(
+    PROUCT_DETAIL_KEY({ product_id }),
+    getProductDetail({ product_id }),
+  );
+
+  useEffect(() => {
+    if (!data || !data.result) return;
+    setProduct(data?.result);
+  }, [data]);
+  return { product, isProductError: isError, isProductLoading: isLoading, refetchProduct: refetch };
 };

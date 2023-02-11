@@ -5,7 +5,7 @@ import { LayOut } from '../../components/layout';
 import { Header } from '../../components/foundations/Header';
 import { QnAListItem } from '../../components/foundations/QnAListItem';
 import { QnAForm } from '../../components/modules/QnAWriteCard';
-import { questionListItemMock_NoSecret_NoProduct } from '../../mock/question.mock';
+import { questionListItemMock } from '../../mock/question.mock';
 import { ModeType } from '../../types/common/propsTypes';
 import { Question } from '../../types/model/question';
 
@@ -14,11 +14,11 @@ function QA() {
   // mode, icon
   const [mode] = useState<ModeType>('white');
 
-  const [qustions, setQustions] = useState<Omit<Question, 'password'>[]>([]);
+  const [qustions, setQustions] = useState<Omit<Question, 'password' | 'contents'>[]>([]);
   const [write, setWrite] = useState(false);
   //test
   useEffect(() => {
-    setQustions([questionListItemMock_NoSecret_NoProduct]);
+    setQustions([questionListItemMock()]);
   }, []);
   const buttonHandler = useCallback(() => {
     setWrite(!write);

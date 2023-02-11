@@ -1,28 +1,32 @@
+import { faker } from '@faker-js/faker';
 import { Question } from './../types/model/question';
-import { userMock_NoEmail_NoRole } from './user.mock';
+// Omit<Question, 'password' | 'contents'>
+export const questionListItemMock = (): Omit<Question, 'password' | 'contents'> => ({
+  question_id: faker.lorem.word(26),
+  title: faker.lorem.lines(2),
 
-export const questionListItemMock_NoSecret_NoProduct: Omit<Question, 'password', 'contents'> = {
-  question_id: '01GQHV1R2AEM4TMQ0SRC749KWS',
-  title: '배송언제와배송언제와배송언제와배송언제와',
-
-  secret_mode: 0,
-  user_id: '01GQHMJ6M796AS8BTJ3GCMPZAW',
-
-  // Join
-  writer: userMock_NoEmail_NoRole,
-  created_at: '2023-01-24 12:11:37.931',
-  answer_count: 3,
-};
-
-export const questionListItemMock_Secret_NoProduct: Omit<Question, 'password', 'contents'> = {
-  question_id: '01GQHV1R2AEM4TMQ0SRC749KWS',
-  title: '비번있다~~~~',
-
-  secret_mode: 1,
-  user_id: '01GQHMJ6M796AS8BTJ3GCMPZAW',
+  secret_mode: faker.datatype.number({ min: 0, max: 1 }),
+  user_id: faker.lorem.word(26),
 
   // Join
-  writer: userMock_NoEmail_NoRole,
-  created_at: '2023-01-24 12:11:37.931',
-  answer_count: 3,
-};
+  writer: {
+    user_id: faker.lorem.word(26),
+    nickname: faker.lorem.word(26),
+  },
+  created_at: faker.date.between('2020-01-01T00:00:00.000Z', '2030-01-01T00:00:00.000Z'),
+  answer_count: faker.datatype.number({ min: 0, max: 10 }),
+});
+
+export const questionItem = (): Omit<Question, 'password'> => ({
+  ...questionListItemMock(),
+  contents: faker.lorem.lines(26),
+});
+// product_id: faker.lorem.word(26),
+// name: faker.lorem.word(26),
+// price: faker.datatype.number({ min: 10000, max: 200000 }),
+// introduce: faker.lorem.lines(10),
+// quantity: faker.datatype.number({ min: 0, max: 20 }),
+// product_status: faker.datatype.number({ min: 0, max: 3 }),
+// archive_id: faker.lorem.word(26),
+// category_id: faker.lorem.word(26),
+// imgs: imgFaker,

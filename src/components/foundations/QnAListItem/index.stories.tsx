@@ -1,9 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { QnAListItem } from '.';
-import {
-  questionListItemMock_NoSecret_NoProduct,
-  questionListItemMock_Secret_NoProduct,
-} from '../../../mock/question.mock';
+import { questionItem, questionListItemMock } from '../../../mock/question.mock';
 
 export default {
   title: 'Foundations/QnAListItem',
@@ -15,7 +12,7 @@ const Template: ComponentStory<typeof QnAListItem> = (args) => <QnAListItem {...
 
 export const EX_noSecret = Template.bind({});
 EX_noSecret.args = {
-  qustion: questionListItemMock_NoSecret_NoProduct,
+  question: questionItem(),
 };
 
 EX_noSecret.parameters = {
@@ -24,7 +21,7 @@ EX_noSecret.parameters = {
 
 export const EX_Secret = Template.bind({});
 EX_Secret.args = {
-  qustion: questionListItemMock_Secret_NoProduct,
+  question: questionListItemMock(),
 };
 
 EX_Secret.parameters = {
