@@ -3,23 +3,23 @@ import '@splidejs/splide/css';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { ModeType } from '../../../types/common/propsTypes';
+import { Product } from '../../../types/model/product';
 interface Props {
   mode: ModeType;
-  product_id: string;
-  product_name: string;
-  price: number;
-  images: string[];
+
+  product: Product;
 
   slide?: boolean;
 }
-export const ProductItem = ({ mode, price, product_name, images, slide = false }: Props) => {
+export const ProductItem = ({ mode, product, slide = false }: Props) => {
+  const { price, name, imgs } = product;
   // product_id
   return (
     <Container mode={mode}>
       <ImageBox>
         {slide ? (
           <Splide aria-label="My Favorite Images" options={{ arrows: false, perMove: 1, type: 'loop' }}>
-            {images.map((img, i) => {
+            {imgs.map((img, i) => {
               return (
                 <SplideSlide key={i}>
                   <Image
@@ -38,7 +38,7 @@ export const ProductItem = ({ mode, price, product_name, images, slide = false }
             <Image
               alt="상품 대표 이미지"
               placeholder="blur"
-              src={images[0]}
+              src={imgs ? imgs[0] : '/logo/logo.svg'}
               blurDataURL="/logo/logo.svg"
               width={342}
               height={456}
@@ -51,7 +51,7 @@ export const ProductItem = ({ mode, price, product_name, images, slide = false }
       </ImageBox>
 
       <InfoBox>
-        <NameBox>{product_name && product_name}</NameBox>
+        <NameBox>{name && name}</NameBox>
         <PriceBox>
           <Price>{price.toLocaleString()} KRW</Price>
         </PriceBox>
@@ -80,6 +80,7 @@ const Container = styled.div<{ mode: ModeType }>`
 const InfoBox = styled.div`
   display: flex;
   justify-content: space-between;
+  height: 2.8rem;
 `;
 const NameBox = styled.div`
   font-size: 1.4rem;

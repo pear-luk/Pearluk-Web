@@ -30,13 +30,13 @@ export const Footer = ({ mode, business_info, font_size = 'small' }: Props) => {
 
 const Container = styled.div<Omit<Props, 'business_info'>>`
   width: 100%;
-  height: 20rem;
+  /* height: 20rem; */
   display: flex;
   z-index: 0;
   /* transform: translateY(-100%); */
   justify-content: center;
   position: absolute;
-  padding: 1.6rem;
+  padding: 8rem;
 
   /* color: #8f8c8c; */
   /* background-color: black; */

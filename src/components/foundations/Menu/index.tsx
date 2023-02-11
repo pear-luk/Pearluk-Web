@@ -17,6 +17,7 @@ export interface Props {
   setMenuState: SetType<boolean>;
   archiveList: Archive[];
 }
+
 export const MenuToggle = ({ menuState, setMenuState, archiveList, ...props }: Props) => {
   const [menuSelect, setMenuSelect] = useState<string | null>(null);
   const auth = useRecoilValue(authState);
@@ -81,7 +82,7 @@ export const MenuToggle = ({ menuState, setMenuState, archiveList, ...props }: P
                 ARCHIVE
               </Item>
               <ArchiveItem menuSelect={menuSelect} onClick={menuClickHandler} title={'ALL'}>
-                ALL
+                <Link href={'/archives/all'}>ALL</Link>
               </ArchiveItem>
               {/* 아카이브 모아보기 map 돌려야함. */}
               {archiveList &&
@@ -94,7 +95,7 @@ export const MenuToggle = ({ menuState, setMenuState, archiveList, ...props }: P
                   );
                 })}
               <ArchiveItem menuSelect={menuSelect} onClick={menuClickHandler} title={'OFF'}>
-                OFF
+                <Link href={'/archives/all'}>OFF</Link>
               </ArchiveItem>
             </MenuItem>
           </MenuItemBox>

@@ -3,8 +3,6 @@ import Link from 'next/link';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { LayOut } from '../../components/layout';
-
-import { INavIconType } from '../../recoil/archive/state';
 import { ModeType } from '../../types/common/propsTypes';
 
 function Login() {
@@ -13,13 +11,9 @@ function Login() {
 
   // mode, icon
   const [mode] = useState<ModeType>('dark');
-  const [icon] = useState<INavIconType>({
-    logo: true,
-    menu: false,
-  });
 
   return (
-    <LayOut mode={mode} icon={icon}>
+    <LayOut mode={mode}>
       <Box>
         <Link
           href={`https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`}>

@@ -28,7 +28,14 @@ function QA() {
     <LayOut mode={mode} menu={true} centerLogo={true}>
       {!write ? (
         <>
-          <Header mode={mode} label="QA" button_label="글쓰기" button_onClick={buttonHandler} button_size="xsmall" />
+          <Header
+            mode={mode}
+            label="QA"
+            button_label="글쓰기"
+            button_location="right"
+            button_onClick={buttonHandler}
+            button_size="xsmall"
+          />
           {qustions && qustions.map((qustion, i) => <QnAListItem mode={mode} key={i} qustion={qustion} />)}
         </>
       ) : (

@@ -8,7 +8,7 @@ export const CartTemplate = () => {
 
   return (
     <LayOut mode={mode}>
-      <Header mode={mode} label="MY CART" chechBox={true} />
+      <Header mode={mode} label="CART" chechBox={true} />
     </LayOut>
   );
 };
