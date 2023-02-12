@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Size } from '../../../styles/theme';
 import { ModeType } from '../../../types/common/propsTypes';
@@ -12,8 +13,7 @@ interface Props {
 
   size?: keyof Size['width'];
 
-  plus_onClick?: () => void;
-  minus_onClick?: () => void;
+  mutate?: (updateCount: number) => void;
   onCancle?: () => void;
 }
 export const CartListItem = ({
@@ -21,10 +21,21 @@ export const CartListItem = ({
 
   product,
   size = 'medium',
-  plus_onClick,
-  minus_onClick,
+
+  mutate,
   onCancle,
 }: Props) => {
+  const [count, setCount] = useState(product.count);
+
+  const minusButtonHandler = () => {
+    mutate && mutate(count - 1);
+    setCount(count - 1);
+  };
+  const plusButtonHandler = () => {
+    mutate && mutate(count + 1);
+    setCount(count + 1);
+  };
+
   return (
     <Container mode={mode} size={size}>
       <CheckBox mode={mode} />
@@ -45,18 +56,23 @@ export const CartListItem = ({
         <Info>
           <InfoLeft>
             <CountBox>
-              {product.count === 1 ? (
+              {count === 1 ? (
                 <Button size={'mini'} color={mode === 'white' ? 'grey' : 'dark_yellow'} label="-" />
               ) : (
-                <Button size={'mini'} color={mode === 'white' ? 'black' : 'yellow'} onClick={minus_onClick} label="-" />
+                <Button
+                  size={'mini'}
+                  color={mode === 'white' ? 'black' : 'yellow'}
+                  onClick={minusButtonHandler}
+                  label="-"
+                />
               )}
-              {product.count}
-              <Button size="mini" color={mode === 'white' ? 'black' : 'yellow'} onClick={plus_onClick} label="+" />
+              {count}
+              <Button size="mini" color={mode === 'white' ? 'black' : 'yellow'} onClick={plusButtonHandler} label="+" />
             </CountBox>
           </InfoLeft>
           <InfoRight>
             <P></P>
-            <P>{(Number(product.product.price) * product.count).toLocaleString()} KRW</P>
+            <P>{(Number(product.product.price) * count).toLocaleString()} KRW</P>
           </InfoRight>
         </Info>
       </InfoBox>

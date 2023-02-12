@@ -1,12 +1,11 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { useCartUpdate } from '../../../hooks/mutation/cart';
+import { useCartProductDelete, useCartProductUpdate } from '../../../hooks/mutation/cart';
 import { ModeType } from '../../../types/common/propsTypes';
 import { UpdateCartProductDTO } from '../../../types/request/cart';
 import { CartProductListGetResponseDTO } from '../../../types/response/cart';
 import { Button } from '../../elements/Button';
 import { Header } from '../../foundations/Header';
-import { PriceLabel } from '../../foundations/PriceLabel';
 import { LayOut } from '../../layout';
 import { CartProductListCard } from '../../modules/CartProductListCard';
 
@@ -18,38 +17,25 @@ interface Props {
 export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
   const [totalPrice, setTotalPrice] = useState(0);
   //총합계산
-  useMemo(() => {
-    if (cartProductList.length > 0) {
-      setTotalPrice(cartProductList?.map((a) => Number(a?.product.price) * a?.count || 0)?.reduce((a, b) => a + b));
-    }
-  }, [cartProductList]);
 
-  const { mutate: mutateCartUpdate } = useCartUpdate();
+  const { mutate: updateCartProduct } = useCartProductUpdate();
+  const { mutate: deleteCartProduct } = useCartProductDelete();
   const buttonHandler = useCallback(
-    ({ cart_product_id, count }: UpdateCartProductDTO) => ({
-      plus: () => {
-        mutateCartUpdate({ cart_product_id, count: count + 1 });
+    ({ cart_product_id }: UpdateCartProductDTO) => ({
+      updateCartProduct: (updateCount: number) => {
+        updateCartProduct({ cart_product_id, count: updateCount });
       },
-      minus: () => {
-        mutateCartUpdate({ cart_product_id, count: count - 1 });
+      deleteCartProduct: () => {
+        deleteCartProduct({ cart_product_id });
       },
     }),
-    [mutateCartUpdate],
+    [updateCartProduct, deleteCartProduct],
   );
   return (
     <LayOut mode={mode}>
       <Header mode={mode} label="CART" chechBox={true} />
       <CartProductListCard mode={mode} cartProductList={cartProductList} buttonHandler={buttonHandler} />
-      <PriceBox>
-        <PriceLabel
-          font_size="primary"
-          font_weight="bold"
-          price_weight="bold"
-          mode={mode}
-          label="TOTAL"
-          price={totalPrice}
-        />
-      </PriceBox>
+
       <ButtonBox>
         <Button size="xxlarge" label="BUY" />
         <DeleteButton>DELETE</DeleteButton>
@@ -69,9 +55,7 @@ const ButtonBox = styled.div`
     display: block;
   }
 `;
-const PriceBox = styled.div`
-  margin-top: 0.8rem;
-`;
+
 const DeleteButton = styled.div`
   font-size: 1.4rem;
   font-weight: 700;
