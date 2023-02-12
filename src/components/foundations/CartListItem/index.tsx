@@ -2,17 +2,16 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { Size } from '../../../styles/theme';
 import { ModeType } from '../../../types/common/propsTypes';
-import { OrderProduct } from '../../../types/model/order';
+import { CartProduct } from '../../../types/model/cart';
 import { Button } from '../../elements/Button';
 import { CheckBox } from '../../elements/CheckBox';
 
 interface Props {
   mode: ModeType;
-  product: OrderProduct;
+  product: CartProduct;
 
   size?: keyof Size['width'];
 
-  order_status: string;
   plus_onClick?: () => void;
   minus_onClick?: () => void;
   onCancle?: () => void;
@@ -32,7 +31,7 @@ export const CartListItem = ({
       <ImgBox>
         <Image
           alt="상품 메인이미지"
-          src={product.product.imgs[0] || '/logo/logo.svg'}
+          src={product && product.product && product.product.imgs ? product.product.imgs[0] : '/logo/logo.svg'}
           fill
           style={{ objectFit: 'contain' }}
           sizes="auto 100%"></Image>
@@ -56,8 +55,8 @@ export const CartListItem = ({
             </CountBox>
           </InfoLeft>
           <InfoRight>
-            <P>{product.price.toLocaleString()} KRW </P>
-            <P>{product.price.toLocaleString()} KRW</P>
+            <P></P>
+            <P>{(Number(product.product.price) * product.count).toLocaleString()} KRW</P>
           </InfoRight>
         </Info>
       </InfoBox>
@@ -138,5 +137,6 @@ const CountBox = styled.div`
 `;
 
 const P = styled.p`
+  min-width: 1rem;
   margin-top: 0.4rem;
 `;

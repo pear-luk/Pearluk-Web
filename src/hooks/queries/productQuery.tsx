@@ -50,7 +50,7 @@ const getProductDetail = ({ product_id }: { product_id: string }) => {
   return async () => (await API<Product>(`/products/${product_id}`, { method: 'get' })).data;
 };
 
-export const useGetProduct = ({ product_id }: { product_id: string }) => {
+export const useProduct = ({ product_id }: { product_id: string | string[] | undefined }) => {
   const [product, setProduct] = useState<Product | undefined>();
   const { data, isError, isLoading, refetch } = useQuery(
     PROUCT_DETAIL_KEY({ product_id }),

@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 import { FontWeight, Size } from '../../../styles/theme';
 import { ButtonColorType, ModeType } from '../../../types/common/propsTypes';
@@ -5,20 +6,21 @@ import { Button } from '../../elements/Button';
 
 interface Props {
   mode: ModeType;
-  font_size: keyof Size['font'];
-  font_weight: keyof FontWeight;
-
+  font_size?: keyof Size['font'];
+  font_weight?: keyof FontWeight;
+  message: string;
   OK_Button?: boolean;
   OK_Button_color?: ButtonColorType;
-  OK_Button_onClick?: () => void;
+  OK_Button_onClick?: (() => void) | ((e: React.MouseEvent) => void);
 
   NO_Button?: boolean;
   NO_Button_color?: ButtonColorType;
-  NO_Button_onClick?: () => void;
+  NO_Button_onClick?: (() => void) | ((e: React.MouseEvent) => void);
 }
 
 export const Modal = ({
   mode,
+  message,
   font_size = 'medium',
   font_weight = 'bold',
   OK_Button = true,
@@ -28,12 +30,10 @@ export const Modal = ({
 
   NO_Button_onClick,
 }: Props) => {
-  const a = `RETRY PASSWORD
-(영어, 숫자만 가능)`;
   return (
     <ModalWrapper>
       <ModalCard mode={mode} font_size={font_size} font_weight={font_weight}>
-        <TextBox>{a}</TextBox>
+        <TextBox>{message}</TextBox>
 
         <ButtonBox>
           {OK_Button && (
@@ -67,6 +67,7 @@ const ModalWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 99999;
 `;
 
 const TextBox = styled.div`

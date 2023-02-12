@@ -4,6 +4,7 @@ import { OrderListCard } from '.';
 export default {
   title: 'Modules/OrderListCard',
   component: OrderListCard,
+
   argTypes: {},
 } as ComponentMeta<typeof OrderListCard>;
 
@@ -11,6 +12,7 @@ const Template: ComponentStory<typeof OrderListCard> = (args) => <OrderListCard 
 
 export const EX = Template.bind({});
 EX.args = {
+  order: [],
   mode: 'white',
 };
 

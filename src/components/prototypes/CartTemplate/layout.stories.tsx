@@ -1,5 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { CartTemplate } from '.';
+import { cartProductListMock } from '../../../mock/cart.mock';
 
 export default {
   title: 'Prototypes/CartTemplate',
@@ -13,6 +14,7 @@ const Template: ComponentStory<typeof CartTemplate> = (args) => <CartTemplate {.
 export const EX = Template.bind({});
 
 EX.args = {
+  cartProductList: cartProductListMock,
   // orders: [orderMock, orderMock, orderMock],
 };
 EX.parameters = {
