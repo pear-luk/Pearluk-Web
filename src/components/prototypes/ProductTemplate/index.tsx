@@ -26,11 +26,12 @@ export const ProductTemplate = ({ mode, product, quetionList }: Props) => {
     setWrite(!write);
   };
 
-  const { mutate, isError } = useCartADD();
+  const { mutate: mutateCartADD, isError } = useCartADD();
+
   const addOKbuttonHandler = (e: React.MouseEvent) => {
     e.preventDefault();
     closeAddModal();
-    mutate({ product_id: product.product_id, count: 1 });
+    mutateCartADD({ product_id: product.product_id, count: 1 });
   };
   const existOKbuttonHandler = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -60,6 +61,7 @@ GO CART?`,
   useEffect(() => {
     if (isError) openExistModal();
   }, [openExistModal, isError]);
+
   return (
     <LayOut mode={mode} contentSize="large">
       {<AddModal />}
