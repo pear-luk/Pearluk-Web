@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -16,16 +17,11 @@ interface Props {
 }
 
 export const ArchiveTemplate = ({ mode, productList, totalCount }: Props) => {
-  // const { productList, isProjectListError, isProjectListLoading, refetchProjectList } = useProjectList({
-  //   page: 1,
-  //   archive: 'all',
-  // });
   const archiveLists = useRecoilValue(archiveListState);
   const [archiveList, archiveListsss] = useState(
     archiveLists.map((archive) => ({ ...archive, id: archive.archive_id })),
   );
   const [pageList, setPageList] = useState<PageNationButtonItemType[]>([]);
-  // Array(totalCount/10)
 
   useEffect(() => {
     archiveListsss(archiveLists.map((archive) => ({ ...archive, id: archive.archive_id })));
@@ -55,7 +51,11 @@ export const ArchiveTemplate = ({ mode, productList, totalCount }: Props) => {
       <ProductBox>
         {productList &&
           productList.map((proudct) => {
-            return <ProductItem mode={mode} product={proudct} key={proudct.product_id}></ProductItem>;
+            return (
+              <Link key={proudct.product_id} href={`/products/${proudct.product_id}`}>
+                <ProductItem mode={mode} product={proudct} />
+              </Link>
+            );
           })}
       </ProductBox>
       <PageNationBox>

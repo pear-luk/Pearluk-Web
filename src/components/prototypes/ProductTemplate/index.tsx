@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useCartADD } from '../../../hooks/mutation/cart';
+import { useModal } from '../../../hooks/util/useModal';
 import { ModeType } from '../../../types/common/propsTypes';
 import { Product } from '../../../types/model/product';
 import { Question } from '../../../types/model/question';
@@ -18,18 +21,54 @@ interface Props {
 
 export const ProductTemplate = ({ mode, product, quetionList }: Props) => {
   const [write, setWrite] = useState(false);
-  //test
-
+  const router = useRouter();
   const writeButtonHandler = () => {
     setWrite(!write);
   };
+
+  const { mutate, isError } = useCartADD();
+  const addOKbuttonHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    closeAddModal();
+    mutate({ product_id: product.product_id, count: 1 });
+  };
+  const existOKbuttonHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    closeAddModal();
+    router.push('/cart');
+  };
+  const {
+    Modal: AddModal,
+    open: openAddModal,
+    close: closeAddModal,
+  } = useModal({
+    mode,
+    message: 'PUT IN THE CART',
+    OK_Button: true,
+    NO_Button: true,
+    OK_Button_onClick: addOKbuttonHandler,
+  });
+
+  const { Modal: ExistModal, open: openExistModal } = useModal({
+    mode,
+    message: `ALREADY IN THE CART
+GO CART?`,
+    OK_Button: true,
+    OK_Button_onClick: existOKbuttonHandler,
+    NO_Button: true,
+  });
+  useEffect(() => {
+    if (isError) openExistModal();
+  }, [openExistModal, isError]);
   return (
     <LayOut mode={mode} contentSize="large">
+      {<AddModal />}
+      {<ExistModal />}
       <>
         <ProductItem mode={mode} product={product} slide={true}></ProductItem>
-        <Text mode={mode} size="large" contents={product.introduce} />
+        <Text mode={mode} size="large" contents={product && product.introduce} />
         <ButtonBox>
-          <Button size="xxlarge" color={mode === 'dark' ? 'yellow' : 'black'} label="CART" />
+          <Button size="xxlarge" color={mode === 'dark' ? 'yellow' : 'black'} label="CART" onClick={openAddModal} />
           <Button size="xxlarge" color={mode === 'dark' ? 'yellow' : 'black'} label="BUY" />
         </ButtonBox>
       </>

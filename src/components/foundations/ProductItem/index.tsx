@@ -10,35 +10,53 @@ interface Props {
   product: Product;
 
   slide?: boolean;
+  link?: boolean;
 }
-export const ProductItem = ({ mode, product, slide = false }: Props) => {
-  const { price, name, imgs } = product;
+export const ProductItem = ({ mode, product, slide = false, link = false }: Props) => {
+  // const { price, name, imgs } = product;
   // product_id
+
   return (
     <Container mode={mode}>
       <ImageBox>
         {slide ? (
           <Splide aria-label="My Favorite Images" options={{ arrows: false, perMove: 1, type: 'loop' }}>
-            {imgs.map((img, i) => {
-              return (
-                <SplideSlide key={i}>
-                  <Image
-                    alt={`상품 이미지${i}`}
-                    placeholder="blur"
-                    src={img}
-                    blurDataURL="/logo/logo.svg"
-                    width={342}
-                    height={456}></Image>
-                </SplideSlide>
-              );
-            })}
+            {product && product.imgs?.length > 0 ? (
+              product.imgs.map((img, i) => {
+                return (
+                  <SplideSlide key={i}>
+                    <Image
+                      alt={`상품 이미지${i}`}
+                      placeholder="blur"
+                      src={img}
+                      blurDataURL="/logo/logo.svg"
+                      width={342}
+                      height={456}></Image>
+                  </SplideSlide>
+                );
+              })
+            ) : (
+              <SplideSlide>
+                <Image
+                  alt="상품 대표 이미지"
+                  placeholder="blur"
+                  src={'/logo/logo.svg'}
+                  blurDataURL="/logo/logo.svg"
+                  width={342}
+                  height={456}
+
+                  // fill
+                  // style={{ objectFit: 'contain' }}
+                ></Image>
+              </SplideSlide>
+            )}
           </Splide>
         ) : (
           <ImageBox>
             <Image
               alt="상품 대표 이미지"
               placeholder="blur"
-              src={imgs ? imgs[0] : '/logo/logo.svg'}
+              src={product && product.imgs ? product.imgs[0] : '/logo/logo.svg'}
               blurDataURL="/logo/logo.svg"
               width={342}
               height={456}
@@ -49,11 +67,10 @@ export const ProductItem = ({ mode, product, slide = false }: Props) => {
           </ImageBox>
         )}
       </ImageBox>
-
       <InfoBox>
-        <NameBox>{name && name}</NameBox>
+        <NameBox>{product && product.name}</NameBox>
         <PriceBox>
-          <Price>{price.toLocaleString()} KRW</Price>
+          <Price>{product && product.price.toLocaleString()} KRW</Price>
         </PriceBox>
       </InfoBox>
     </Container>
@@ -81,6 +98,7 @@ const InfoBox = styled.div`
   display: flex;
   justify-content: space-between;
   height: 2.8rem;
+  margin-top: 0.4rem;
 `;
 const NameBox = styled.div`
   font-size: 1.4rem;

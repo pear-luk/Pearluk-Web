@@ -3,15 +3,13 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { BaseResponseDTO } from '../../types/common/baseResponse';
 import { MyOrderListGetResponseDTO } from '../../types/response/order';
-import { API } from '../util/API';
+import { getMyOrderList } from '../API/order/getMyOrderList';
 
 type UseMyOrderListType = {
   myOrderList: MyOrderListGetResponseDTO;
   isMyOrderListError: boolean;
   isMyOrderLoading: boolean;
 };
-
-const getMyOrderList = async () => (await API<MyOrderListGetResponseDTO>('/orders', { method: 'get' })).data;
 
 export const useMyOrderList = (): UseMyOrderListType => {
   const [myOrderList, setMyOrderList] = useState<MyOrderListGetResponseDTO>([]);
