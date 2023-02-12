@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { CartProduct } from './../../types/model/cart';
-import { CreateCartProductDTO } from './../../types/request/cart';
+import { CreateCartProductDTO, UpdateCartProductDTO } from './../../types/request/cart';
 import { CART_KEY } from './../queries/key/index';
 import { API } from './../util/API';
 
@@ -19,5 +19,19 @@ export const useCartADD = () => {
     },
   });
 };
+
+const updateCartProduct = async (mudationData: UpdateCartProductDTO) => {
+  return (await API<CartProduct>('/cart', { method: 'patch', data: mudationData })).data;
+};
+
+export const useCartUpdate = () => {
+  const queryClient = useQueryClient();
+  return useMutation<BaseResponseDTO<CartProduct>, AxiosError, UpdateCartProductDTO>(updateCartProduct, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(CART_KEY);
+    },
+  });
+};
+
 // export const useSocialLogin = (loginInfo: SocailLoginRequestDTO) =>
 //   useMutation(API('/login', { method: 'post', data: loginInfo }), { retry: false });
