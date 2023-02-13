@@ -1,8 +1,9 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useCartProductDelete, useCartProductUpdate } from '../../../hooks/mutation/cart';
+import { useDeleteCart, useDeleteCartProduct, useUpdateCartProduct } from '../../../hooks/mutation/cart';
+import { useModal } from '../../../hooks/util/useModal';
 import { ModeType } from '../../../types/common/propsTypes';
-import { UpdateCartProductDTO } from '../../../types/request/cart';
+import { CartProduct } from '../../../types/model/cart';
 import { CartProductListGetResponseDTO } from '../../../types/response/cart';
 import { Button } from '../../elements/Button';
 import { Header } from '../../foundations/Header';
@@ -15,13 +16,14 @@ interface Props {
 }
 
 export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
-  const [totalPrice, setTotalPrice] = useState(0);
-  //총합계산
+  const [productList, setProductList] = useState<CartProductListGetResponseDTO>([]);
 
-  const { mutate: updateCartProduct } = useCartProductUpdate();
-  const { mutate: deleteCartProduct } = useCartProductDelete();
+  const { mutate: updateCartProduct } = useUpdateCartProduct();
+  const { mutate: deleteCartProduct } = useDeleteCartProduct();
+  const { mutate: deleteCart } = useDeleteCart();
+
   const buttonHandler = useCallback(
-    ({ cart_product_id }: UpdateCartProductDTO) => ({
+    ({ cart_product_id }: Pick<CartProduct, 'cart_product_id'>) => ({
       updateCartProduct: (updateCount: number) => {
         updateCartProduct({ cart_product_id, count: updateCount });
       },
@@ -31,15 +33,40 @@ export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
     }),
     [updateCartProduct, deleteCartProduct],
   );
+  const deleteModalOkHandler = () => {
+    setProductList([]);
+    closeDeleteModal();
+    deleteCart();
+  };
+  const {
+    Modal: DeleteModal,
+    open: openDeleteModal,
+    close: closeDeleteModal,
+  } = useModal({
+    message: 'REAL DELETE?',
+    mode,
+    OK_Button: true,
+    NO_Button: true,
+    OK_Button_onClick: deleteModalOkHandler,
+  });
+  useEffect(() => {
+    setProductList(cartProductList);
+  }, [cartProductList]);
   return (
     <LayOut mode={mode}>
       <Header mode={mode} label="CART" chechBox={true} />
-      <CartProductListCard mode={mode} cartProductList={cartProductList} buttonHandler={buttonHandler} />
+      <CartProductListCard
+        mode={mode}
+        cartProductList={productList}
+        buttonHandler={buttonHandler}
+        setProductList={setProductList}
+      />
 
       <ButtonBox>
         <Button size="xxlarge" label="BUY" />
-        <DeleteButton>DELETE</DeleteButton>
+        <DeleteButton onClick={openDeleteModal}>DELETE</DeleteButton>
       </ButtonBox>
+      <DeleteModal />
     </LayOut>
   );
 };

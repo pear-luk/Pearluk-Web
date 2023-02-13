@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Size } from '../../../styles/theme';
 import { ModeType } from '../../../types/common/propsTypes';
-import { UpdateCartProductDTO } from '../../../types/request/cart';
+import { CartProduct } from '../../../types/model/cart';
 import { CartProductListGetResponseDTO } from '../../../types/response/cart';
 import { CartListItem } from '../../foundations/CartListItem';
 import { PriceLabel } from '../../foundations/PriceLabel';
@@ -11,33 +11,36 @@ interface Props {
   mode: ModeType;
   size?: keyof Size['width'];
   cartProductList: CartProductListGetResponseDTO;
-
-  buttonHandler?: ({ cart_product_id }: Pick<UpdateCartProductDTO, 'cart_product_id'>) => {
+  setProductList?: Dispatch<SetStateAction<CartProductListGetResponseDTO>>;
+  buttonHandler?: ({ cart_product_id }: Pick<CartProduct, 'cart_product_id'>) => {
     updateCartProduct: (updateCount: number) => void;
     deleteCartProduct: () => void;
   };
 }
 
-export const CartProductListCard = ({ mode, size = 'medium', cartProductList, buttonHandler }: Props) => {
+export const CartProductListCard = ({
+  mode,
+  size = 'medium',
+  cartProductList,
+  buttonHandler,
+  setProductList,
+}: Props) => {
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const [productList, setProductList] = useState<CartProductListGetResponseDTO>([]);
   const deleteButtonHandler = (cart_product_id: string) => () => {
-    setProductList(productList.filter((product) => product.cart_product_id !== cart_product_id));
+    setProductList && setProductList(cartProductList.filter((product) => product.cart_product_id !== cart_product_id));
     buttonHandler && buttonHandler({ cart_product_id }).deleteCartProduct();
   };
-  useEffect(() => {
-    setProductList(cartProductList);
-  }, [cartProductList]);
+
   useMemo(() => {
-    if (productList.length > 0) {
-      setTotalPrice(productList?.map((a) => Number(a?.product.price) * a?.count || 0)?.reduce((a, b) => a + b));
+    if (cartProductList.length > 0) {
+      setTotalPrice(cartProductList?.map((a) => Number(a?.product.price) * a?.count || 0)?.reduce((a, b) => a + b));
     }
-  }, [productList]);
+  }, [cartProductList]);
   return (
     <Container mode={mode} size={size}>
-      {productList.map((product) => {
-        const { cart_product_id, count } = product;
+      {cartProductList.map((product) => {
+        const { cart_product_id } = product;
         return (
           <ProductBox mode={mode} key={product.cart_product_id}>
             <CartListItem
@@ -50,7 +53,7 @@ export const CartProductListCard = ({ mode, size = 'medium', cartProductList, bu
           </ProductBox>
         );
       })}
-      {productList.length > 0 && (
+      {cartProductList.length > 0 && (
         <PriceBox>
           <PriceLabel
             font_size="primary"

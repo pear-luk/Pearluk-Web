@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useCartADD } from '../../../hooks/mutation/cart';
+import { useAddCart } from '../../../hooks/mutation/cart';
 import { useModal } from '../../../hooks/util/useModal';
 import { ModeType } from '../../../types/common/propsTypes';
 import { Product } from '../../../types/model/product';
@@ -26,7 +26,7 @@ export const ProductTemplate = ({ mode, product, quetionList }: Props) => {
     setWrite(!write);
   };
 
-  const { mutate: mutateCartADD, isError } = useCartADD();
+  const { mutate: mutateCartADD, isError } = useAddCart();
 
   const addOKbuttonHandler = (e: React.MouseEvent) => {
     e.preventDefault();

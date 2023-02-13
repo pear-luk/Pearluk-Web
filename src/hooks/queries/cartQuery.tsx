@@ -10,6 +10,6 @@ const getCartProductList = async () => {
 
 export const useCart = () => {
   const { state, isLoading, refetch } = useRecoilQuery(cartState, CART_KEY, getCartProductList);
-  console.log(state);
+
   return { cartProductList: state, isCartLoading: isLoading, refetchCart: refetch };
 };
