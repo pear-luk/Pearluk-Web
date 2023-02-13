@@ -1,17 +1,13 @@
 import { AxiosError } from 'axios';
 import { CartProduct } from './../../types/model/cart';
 import { CreateCartProductDTO, UpdateCartProductDTO } from './../../types/request/cart';
+import { addCartProduct, deleteCart, deleteCartProduct, updateCartProduct } from './../API/cart/deleteCartProduct';
 import { CART_KEY } from './../queries/key/index';
-import { API } from './../util/API';
 
 import { useMutation, useQueryClient } from 'react-query';
 import { BaseResponseDTO } from '../../types/common/baseResponse';
 
-const addCartProduct = async (mudationData: CreateCartProductDTO) => {
-  return (await API<CartProduct>('/cart', { method: 'post', data: mudationData })).data;
-};
-
-export const useCartADD = () => {
+export const useAddCart = () => {
   const queryClient = useQueryClient();
   return useMutation<BaseResponseDTO<CartProduct>, AxiosError, CreateCartProductDTO>(addCartProduct, {
     onSuccess: () => {
@@ -20,11 +16,7 @@ export const useCartADD = () => {
   });
 };
 
-const updateCartProduct = async (mudationData: UpdateCartProductDTO) => {
-  return (await API<CartProduct>('/cart', { method: 'patch', data: mudationData })).data;
-};
-
-export const useCartProductUpdate = () => {
+export const useUpdateCartProduct = () => {
   const queryClient = useQueryClient();
   return useMutation<BaseResponseDTO<CartProduct>, AxiosError, UpdateCartProductDTO>(updateCartProduct, {
     onSuccess: () => {
@@ -33,12 +25,7 @@ export const useCartProductUpdate = () => {
   });
 };
 
-const deleteCartProduct = async (mudationData: Pick<UpdateCartProductDTO, 'cart_product_id'>) => {
-  const { cart_product_id } = mudationData;
-  return (await API<CartProduct>(`/cart/${cart_product_id}`, { method: 'put' })).data;
-};
-
-export const useCartProductDelete = () => {
+export const useDeleteCartProduct = () => {
   const queryClient = useQueryClient();
   return useMutation<BaseResponseDTO<CartProduct>, AxiosError, Pick<UpdateCartProductDTO, 'cart_product_id'>>(
     deleteCartProduct,
@@ -50,5 +37,11 @@ export const useCartProductDelete = () => {
   );
 };
 
-// export const useSocialLogin = (loginInfo: SocailLoginRequestDTO) =>
-//   useMutation(API('/login', { method: 'post', data: loginInfo }), { retry: false });
+export const useDeleteCart = () => {
+  const queryClient = useQueryClient();
+  return useMutation<BaseResponseDTO<CartProduct[]>, AxiosError>(deleteCart, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(CART_KEY);
+    },
+  });
+};
