@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ModeType } from '../../../types/common/propsTypes';
-import { MyInfoGetResponseDTO } from '../../../types/response/my';
+import { OrderCustomerInfo } from '../../../types/model/order';
 import { Header } from '../../foundations/Header';
 
 import { InputLabel } from '../../foundations/InputLabel';
@@ -9,18 +9,18 @@ import { InputPhone } from '../../foundations/InputPhone';
 
 interface Props {
   mode: ModeType;
-  user: MyInfoGetResponseDTO;
-  setUser?: Dispatch<SetStateAction<MyInfoGetResponseDTO | undefined>>;
+  customerInfo: Omit<OrderCustomerInfo, 'order_id'>;
+  setCustomerInfo?: Dispatch<SetStateAction<Omit<OrderCustomerInfo, 'order_id'>>>;
 }
 
-export const CustomerInfoCard = ({ mode, user, setUser }: Props) => {
-  const [phone, setPhone] = useState<string>(user?.phone_number ? user.phone_number : '');
+export const CustomerInfoCard = ({ mode, customerInfo, setCustomerInfo }: Props) => {
+  const [phone, setPhone] = useState<string>(customerInfo?.phone_number ? customerInfo.phone_number : '');
 
   const nameHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (setUser) setUser({ ...user, nickname: e.target.value });
+      if (setCustomerInfo) setCustomerInfo({ ...customerInfo, name: e.target.value });
     },
-    [user, setUser],
+    [customerInfo, setCustomerInfo],
   );
 
   // const phoneHandler = useCallback(() => {
@@ -30,14 +30,15 @@ export const CustomerInfoCard = ({ mode, user, setUser }: Props) => {
   //   setUser({ ...user, email: phone });
   // };
   useEffect(() => {
-    if (setUser) setUser((user) => ({ ...(user as MyInfoGetResponseDTO), phone_number: phone }));
-  }, [phone, setUser]);
+    if (setCustomerInfo)
+      setCustomerInfo((customerInfo) => ({ ...(customerInfo as OrderCustomerInfo), phone_number: phone }));
+  }, [phone, setCustomerInfo]);
 
   return (
     <Container>
       <Header label="CUSTOMER" mode={mode} />
       <Box>
-        <InputLabel mode={mode} value={user?.nickname || undefined} onChange={nameHandler} label="NAME" />
+        <InputLabel mode={mode} value={customerInfo?.name || undefined} onChange={nameHandler} label="NAME" />
       </Box>
       <Box>
         <InputPhone mode={mode} value={phone} setPhoneNumber={setPhone} label="PHONE"></InputPhone>

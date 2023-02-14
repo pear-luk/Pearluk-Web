@@ -35,6 +35,7 @@ export type OrderRecipientInfo = {
   order_id: string;
   name: string;
   phone_number: string;
+  post_code: string;
   full_address: string;
   address: string;
   detail_address: string;

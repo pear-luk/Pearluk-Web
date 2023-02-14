@@ -1,6 +1,6 @@
 import { UserAddress } from './../model/user';
 export type MyInfoGetResponseDTO = {
-  uesr_id: string;
+  user_id: string;
   nickname: string;
   email: string;
   phone_number?: string;
