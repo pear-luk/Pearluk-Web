@@ -11,7 +11,7 @@ interface Props {
   font_weight?: keyof FontWeight;
   price_weight?: keyof FontWeight;
 
-  label: string;
+  label?: string;
   price?: number;
   sign?: '+' | '-';
   // 선택한 아이템에따른 쿼리 (상품, QA ....)
@@ -30,7 +30,7 @@ export const PriceLabel = ({
 }: Props) => {
   return (
     <Container mode={mode} size={size} font_size={font_size} font_weight={font_weight}>
-      <Label mode={mode} label={label} label_size={font_size} label_weight={font_weight} />
+      <Label mode={mode} label={label || ''} label_size={font_size} label_weight={font_weight} />
       <Box>
         {sign}
         <Price price_weight={price_weight}>{price ? price?.toLocaleString() : ''} </Price>
