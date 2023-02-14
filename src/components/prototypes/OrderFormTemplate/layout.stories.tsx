@@ -18,6 +18,7 @@ EX.args = {
   cartProductList: cartProductListMock,
   user: userWithAddressMock,
 };
+
 EX.parameters = {
   layout: 'fullscreen',
 };

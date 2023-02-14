@@ -1,7 +1,9 @@
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ModeType } from '../../../types/common/propsTypes';
+
 import { OrderCustomerInfo } from '../../../types/model/order';
+
 import { Header } from '../../foundations/Header';
 
 import { InputLabel } from '../../foundations/InputLabel';
@@ -9,6 +11,7 @@ import { InputPhone } from '../../foundations/InputPhone';
 
 interface Props {
   mode: ModeType;
+
   customerInfo: Omit<OrderCustomerInfo, 'order_id'>;
   setCustomerInfo?: Dispatch<SetStateAction<Omit<OrderCustomerInfo, 'order_id'>>>;
 }
@@ -21,6 +24,7 @@ export const CustomerInfoCard = ({ mode, customerInfo, setCustomerInfo }: Props)
       if (setCustomerInfo) setCustomerInfo({ ...customerInfo, name: e.target.value });
     },
     [customerInfo, setCustomerInfo],
+
   );
 
   // const phoneHandler = useCallback(() => {
@@ -30,15 +34,18 @@ export const CustomerInfoCard = ({ mode, customerInfo, setCustomerInfo }: Props)
   //   setUser({ ...user, email: phone });
   // };
   useEffect(() => {
+
     if (setCustomerInfo)
       setCustomerInfo((customerInfo) => ({ ...(customerInfo as OrderCustomerInfo), phone_number: phone }));
   }, [phone, setCustomerInfo]);
+
 
   return (
     <Container>
       <Header label="CUSTOMER" mode={mode} />
       <Box>
         <InputLabel mode={mode} value={customerInfo?.name || undefined} onChange={nameHandler} label="NAME" />
+
       </Box>
       <Box>
         <InputPhone mode={mode} value={phone} setPhoneNumber={setPhone} label="PHONE"></InputPhone>
