@@ -1,5 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { OrderFormTemplate } from '.';
+import { cartProductListMock } from '../../../mock/cart.mock';
+import { userWithAddressMock } from '../../../mock/user.mock';
 
 export default {
   title: 'Prototypes/OrderFormTemplate',
@@ -12,7 +14,11 @@ const Template: ComponentStory<typeof OrderFormTemplate> = (args) => <OrderFormT
 
 export const EX = Template.bind({});
 
-EX.args = {};
+EX.args = {
+  cartProductList: cartProductListMock,
+  user: userWithAddressMock,
+};
+
 EX.parameters = {
   layout: 'fullscreen',
 };

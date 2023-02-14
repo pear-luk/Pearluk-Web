@@ -1,8 +1,9 @@
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ModeType } from '../../../types/common/propsTypes';
+import { OrderRecipientInfo } from '../../../types/model/order';
 import { UserAddress } from '../../../types/model/user';
-import { MyInfoGetResponseDTO } from '../../../types/response/my';
+
 import { Header } from '../../foundations/Header';
 import { InputAddress } from '../../foundations/InputAddress';
 
@@ -11,49 +12,48 @@ import { InputPhone } from '../../foundations/InputPhone';
 
 interface Props {
   mode: ModeType;
-  user: MyInfoGetResponseDTO;
-  setUser?: Dispatch<SetStateAction<MyInfoGetResponseDTO | undefined>>;
+  recipientInfo: Omit<OrderRecipientInfo, 'order_id'>;
+  setRecipientInfo?: Dispatch<SetStateAction<Omit<OrderRecipientInfo, 'order_id'>>>;
 }
 
-export const RecipientInfoCard = ({ mode, user, setUser }: Props) => {
-  const [phone, setPhone] = useState<string>(user?.phone_number ? user.phone_number : '');
-  const [userAddress, setUserAddress] = useState<Partial<UserAddress>>(user?.address ? user.address : {});
+export const RecipientInfoCard = ({ mode, recipientInfo, setRecipientInfo }: Props) => {
+  const [phone, setPhone] = useState<string>(recipientInfo?.phone_number ? recipientInfo.phone_number : '');
+  const [address, setAddress] = useState<Partial<UserAddress>>({});
 
   const nameHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (setUser) setUser({ ...user, nickname: e.target.value });
+      if (setRecipientInfo) setRecipientInfo({ ...recipientInfo, name: e.target.value });
     },
-    [user, setUser],
+    [recipientInfo, setRecipientInfo],
   );
 
-  // const phoneHandler = useCallback(() => {
-  //   setUser({ ...user, email: phone });
-  // }, [user, phone]);
-  // const setAddress = () => {
-  //   setUser({ ...user, email: phone });
-  // };
   useEffect(() => {
-    if (setUser) setUser((user) => ({ ...(user as MyInfoGetResponseDTO), phone_number: phone }));
-  }, [phone, setUser]);
+    if (setRecipientInfo)
+      setRecipientInfo((recipientInfo) => ({ ...(recipientInfo as OrderRecipientInfo), phone_number: phone }));
+  }, [phone, setRecipientInfo]);
+
   useEffect(() => {
-    if (setUser) setUser((user) => ({ ...(user as MyInfoGetResponseDTO), address: userAddress as UserAddress }));
-  }, [userAddress, setUser]);
+    if (setRecipientInfo)
+      setRecipientInfo((recipientInfo) => ({
+        ...(recipientInfo as OrderRecipientInfo),
+        ...(address as UserAddress),
+      }));
+  }, [address, setRecipientInfo]);
+
 
   return (
     <Container>
       <Header label="SHIPPING" mode={mode} label_size="medium" />
       <Box>
-        <InputLabel mode={mode} value={user?.nickname || undefined} onChange={nameHandler} label="NAME" />
+        <InputLabel mode={mode} value={recipientInfo?.name || undefined} onChange={nameHandler} label="NAME" />
+
       </Box>
       <Box>
         <InputPhone mode={mode} value={phone} setPhoneNumber={setPhone} label="PHONE"></InputPhone>
       </Box>
       <Box>
-        <InputAddress
-          mode={mode}
-          address={user?.address || undefined}
-          userAddress={userAddress}
-          setUserAddress={setUserAddress}></InputAddress>
+        <InputAddress mode={mode} addressInfo={address} setAddressInfo={setAddress}></InputAddress>
+
       </Box>
     </Container>
   );

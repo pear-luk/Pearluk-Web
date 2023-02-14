@@ -1,4 +1,5 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
+
 
 import { LayOut } from '../../../components/layout';
 
@@ -9,11 +10,12 @@ function OrderFormPage() {
   // mode, icon
   const [mode] = useState<ModeType>('white');
 
-  const [write, setWrite] = useState(false);
+  // const [write, setWrite] = useState(false);
 
-  const buttonHandler = useCallback(() => {
-    setWrite(!write);
-  }, [write]);
+  // const buttonHandler = useCallback(() => {
+  //   setWrite(!write);
+  // }, [write]);
+
 
   return <LayOut mode={mode} menu={true} centerLogo={true}></LayOut>;
 }

@@ -56,11 +56,7 @@ export const MyInfoCard = ({ mode, user, setUser }: Props) => {
         <InputPhone mode={mode} value={phone} setPhoneNumber={setPhone} label="PHONE"></InputPhone>
       </Box>
       <Box>
-        <InputAddress
-          mode={mode}
-          address={user?.address || undefined}
-          userAddress={userAddress}
-          setUserAddress={setUserAddress}></InputAddress>
+        <InputAddress mode={mode} addressInfo={userAddress} setAddressInfo={setUserAddress}></InputAddress>
       </Box>
       <BottonBox>
         <Button color={mode === 'dark' ? 'yellow' : 'black'} size="large" label="SAVE"></Button>

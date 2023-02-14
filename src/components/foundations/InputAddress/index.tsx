@@ -1,4 +1,4 @@
-import React, { RefObject, useCallback, useEffect, useState } from 'react';
+import React, { RefObject, useCallback, useState } from 'react';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import styled from 'styled-components';
 
@@ -16,10 +16,8 @@ interface Props {
   label_size?: keyof Size['font'];
   label_weight?: keyof FontWeight;
 
-  address?: Partial<UserAddress>;
-  userAddress: Partial<UserAddress> | undefined;
-  setUserAddress: React.Dispatch<React.SetStateAction<Partial<UserAddress>>>;
-  setAddress?: () => void;
+  addressInfo: Partial<UserAddress> | undefined;
+  setAddressInfo: React.Dispatch<React.SetStateAction<Partial<UserAddress>>>;
   ref?: RefObject<HTMLInputElement>;
 
   // setPhoneNumber?: Dispatch<SetStateAction<string>>;
@@ -29,9 +27,8 @@ export const InputAddress = ({
 
   input_width = 'medium',
   input_height = 'base',
-  // address,
-  userAddress,
-  setUserAddress,
+  addressInfo,
+  setAddressInfo,
   label_size = 'medium',
   label_weight = 'bold',
 }: Props) => {
@@ -39,27 +36,24 @@ export const InputAddress = ({
   const onCompletePost = ({ address, zonecode }: Address) => {
     const full_address = `${address}`;
     const post_code = zonecode;
-    setUserAddress({ ...userAddress, address, full_address, post_code });
+    setAddressInfo({ ...addressInfo, address, full_address, post_code });
     setIsOpenPost(false);
   };
   const onChangeOpenPost = useCallback(() => {
     setIsOpenPost(!isOpenPost);
   }, [isOpenPost]);
-  useEffect(() => {
-
-  }, [userAddress]);
 
   const detailOnChangeHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target) {
-        setUserAddress({
-          ...userAddress,
-          full_address: `${userAddress?.address}, ${e.target.value}`,
+        setAddressInfo({
+          ...addressInfo,
+          full_address: `${addressInfo?.address}, ${e.target.value}`,
           detail_address: e.target.value,
         });
       }
     },
-    [userAddress, setUserAddress],
+    [addressInfo, setAddressInfo],
   );
   return (
     <Container
@@ -76,7 +70,7 @@ export const InputAddress = ({
         <>
           <Label>POSTCODE</Label>
           <PostCodeBox>
-            <PostCodeInput value={(userAddress && userAddress.post_code) || ''} disabled></PostCodeInput>
+            <PostCodeInput value={(addressInfo && addressInfo.post_code) || ''} disabled></PostCodeInput>
             <ButtonBox>
               <Button
                 color={mode === 'dark' ? 'yellow' : 'black'}
@@ -89,13 +83,13 @@ export const InputAddress = ({
           <AddressInput
             rows={2}
             cols={20}
-            value={(userAddress && userAddress.address) || ''}
+            value={(addressInfo && addressInfo.address) || ''}
             readOnly
             disabled></AddressInput>
           <DetailAddressInput
             onChange={detailOnChangeHandler}
-            value={userAddress && userAddress.detail_address}
-            disabled={!userAddress}></DetailAddressInput>
+            value={(addressInfo && addressInfo.detail_address) || ''}
+            disabled={!addressInfo}></DetailAddressInput>
         </>
       )}
       {/* <DaumPostcodeEmbed autoClose onComplete={onCompletePost} />

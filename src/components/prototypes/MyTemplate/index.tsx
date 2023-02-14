@@ -18,7 +18,7 @@ interface Props {
   size?: keyof Size['width'];
 }
 
-export const MyTemplate = ({ mode, user, orders, setUser, size }: Props) => {
+export const MyTemplate = ({ mode, user, orders, setUser }: Props) => {
   return (
     <LayOut mode={mode} menu={true} centerLogo={true}>
       <Header mode={mode} label="MY PAGE" />
@@ -33,7 +33,6 @@ export const MyTemplate = ({ mode, user, orders, setUser, size }: Props) => {
       <Header mode={mode} label="MY ORDER" header_type="left" />
       {Array.isArray(orders) &&
         orders.map((order, i) => {
-          // const { order_id } = order;
           return <OrderListCard mode={mode} key={i} order={order}></OrderListCard>;
         })}
     </LayOut>

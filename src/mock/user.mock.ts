@@ -9,6 +9,7 @@ export const userMock: User = {
   nickname: '박준혁',
   email: 'vo0v0000@naver.com',
   role: 'user',
+  phone_number: '01073616616',
 };
 
 export const userMock_NoEmail_NoRole = {

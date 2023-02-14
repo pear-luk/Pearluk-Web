@@ -10,12 +10,8 @@ interface Props {
   product: Product;
 
   slide?: boolean;
-  link?: boolean;
 }
-export const ProductItem = ({ mode, product, slide = false, link = false }: Props) => {
-  // const { price, name, imgs } = product;
-  // product_id
-
+export const ProductItem = ({ mode, product, slide = false }: Props) => {
   return (
     <Container mode={mode}>
       <ImageBox>
