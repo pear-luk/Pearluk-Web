@@ -40,20 +40,17 @@ export const RecipientInfoCard = ({ mode, recipientInfo, setRecipientInfo }: Pro
       }));
   }, [address, setRecipientInfo]);
 
-
   return (
     <Container>
       <Header label="SHIPPING" mode={mode} label_size="medium" />
       <Box>
         <InputLabel mode={mode} value={recipientInfo?.name || undefined} onChange={nameHandler} label="NAME" />
-
       </Box>
       <Box>
         <InputPhone mode={mode} value={phone} setPhoneNumber={setPhone} label="PHONE"></InputPhone>
       </Box>
       <Box>
         <InputAddress mode={mode} addressInfo={address} setAddressInfo={setAddress}></InputAddress>
-
       </Box>
     </Container>
   );
@@ -65,4 +62,3 @@ const Container = styled.div`
 const Box = styled.div`
   margin: 0.8rem 0;
 `;
-

@@ -114,4 +114,3 @@ const Line = styled.div`
   height: 1px;
   border-bottom: 1px solid black;
 `;
-
