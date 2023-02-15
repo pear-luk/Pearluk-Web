@@ -1,9 +1,10 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Size } from '../../../styles/theme';
 import { ModeType } from '../../../types/common/propsTypes';
 import { CartProduct } from '../../../types/model/cart';
+import { CartProductListGetResponseDTO } from '../../../types/response/cart';
 import { Button } from '../../elements/Button';
 import { CheckBox } from '../../elements/CheckBox';
 
@@ -15,6 +16,9 @@ interface Props {
 
   mutate?: (updateCount: number) => void;
   onCancle?: () => void;
+  checked?: boolean;
+  checkProductList?: CartProductListGetResponseDTO;
+  checkBox_onChange?: (() => void) | ((e: ChangeEvent<Element>) => void);
 }
 export const CartListItem = ({
   mode,
@@ -24,9 +28,11 @@ export const CartListItem = ({
 
   mutate,
   onCancle,
+  checkBox_onChange,
+  checkProductList,
 }: Props) => {
   const [count, setCount] = useState(product.count);
-
+  const [check, setCheck] = useState(false);
   const minusButtonHandler = () => {
     mutate && mutate(count - 1);
     setCount(count - 1);
@@ -35,10 +41,17 @@ export const CartListItem = ({
     mutate && mutate(count + 1);
     setCount(count + 1);
   };
+  useEffect(() => {
+    checkProductList &&
+      setCheck(
+        Boolean(checkProductList.find((checkProduct) => checkProduct.cart_product_id === product.cart_product_id)),
+      );
+    console.log;
+  }, [checkProductList, product.cart_product_id]);
 
   return (
     <Container mode={mode} size={size}>
-      <CheckBox mode={mode} />
+      <CheckBox mode={mode} onChange={checkBox_onChange} checked={check ? true : false} />
       <ImgBox>
         <Image
           alt="상품 메인이미지"

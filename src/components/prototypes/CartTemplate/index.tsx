@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDeleteCart, useDeleteCartProduct, useUpdateCartProduct } from '../../../hooks/mutation/cart';
 import { useModal } from '../../../hooks/util/useModal';
@@ -17,7 +17,7 @@ interface Props {
 
 export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
   const [productList, setProductList] = useState<CartProductListGetResponseDTO>([]);
-
+  const [checkProductList, setCheckProductList] = useState<CartProductListGetResponseDTO>([]);
   const { mutate: updateCartProduct } = useUpdateCartProduct();
   const { mutate: deleteCartProduct } = useDeleteCartProduct();
   const { mutate: deleteCart } = useDeleteCart();
@@ -49,17 +49,35 @@ export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
     NO_Button: true,
     OK_Button_onClick: deleteModalOkHandler,
   });
+
   useEffect(() => {
     setProductList(cartProductList);
   }, [cartProductList]);
+
+  const allCheckBoxHandler = (e: React.ChangeEvent<Element>) => {
+    const { target } = e;
+    const { checked } = target as HTMLInputElement;
+    if (checked) return setCheckProductList(productList);
+
+    return setCheckProductList([]);
+  };
+
   return (
     <LayOut mode={mode}>
-      <Header mode={mode} label="CART" chechBox={true} />
+      <Header
+        mode={mode}
+        label="CART"
+        chechBox={true}
+        checkBox_onChange={allCheckBoxHandler}
+        checkBox_checked={productList.length === checkProductList.length}
+      />
       <CartProductListCard
         mode={mode}
         cartProductList={productList}
         buttonHandler={buttonHandler}
         setProductList={setProductList}
+        checkProductList={checkProductList}
+        setCheckProductList={setCheckProductList}
       />
 
       <ButtonBox>

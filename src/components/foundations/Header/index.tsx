@@ -19,6 +19,7 @@ interface Props {
   chechBox?: boolean;
   checkBox_location?: 'left' | 'right';
   checkBox_onChange?: (() => void) | ((e: React.ChangeEvent) => void);
+  checkBox_checked?: boolean;
 }
 
 export const Header = ({
@@ -34,13 +35,14 @@ export const Header = ({
   chechBox = false,
   checkBox_location = 'left',
   checkBox_onChange,
+  checkBox_checked,
 }: Props) => {
   return (
     <Container mode={mode} header_type={header_type} label_size={label_size} size={size} button_label={button_label}>
       {chechBox && checkBox_location === 'left' ? (
         <LeftItemBox>
           <LeftItem>
-            <CheckBox mode={mode} onChange={checkBox_onChange} />
+            <CheckBox mode={mode} onChange={checkBox_onChange} checked={checkBox_checked} />
           </LeftItem>
         </LeftItemBox>
       ) : button_label && button_location === 'left' ? (
@@ -71,7 +73,7 @@ export const Header = ({
       {chechBox && checkBox_location === 'right' ? (
         <RightItemBox>
           <RightItem>
-            <CheckBox mode={mode} />
+            <CheckBox mode={mode} onChange={checkBox_onChange} checked={checkBox_checked} />
           </RightItem>
         </RightItemBox>
       ) : button_label && button_location === 'right' ? (
