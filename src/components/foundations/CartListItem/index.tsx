@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useModal } from '../../../hooks/util/useModal';
 import { Size } from '../../../styles/theme';
 import { ModeType } from '../../../types/common/propsTypes';
 import { CartProduct } from '../../../types/model/cart';
@@ -48,9 +49,24 @@ export const CartListItem = ({
       );
     console.log;
   }, [checkProductList, product.cart_product_id]);
-
+  const cancleModalOkHandler = () => {
+    closeCancleModal();
+    onCancle && onCancle();
+  };
+  const {
+    Modal: CancleModal,
+    open: openCancleModal,
+    close: closeCancleModal,
+  } = useModal({
+    message: 'REAL DELETE?',
+    mode,
+    OK_Button: true,
+    NO_Button: true,
+    OK_Button_onClick: cancleModalOkHandler,
+  });
   return (
     <Container mode={mode} size={size}>
+      <CancleModal />
       <CheckBox mode={mode} onChange={checkBox_onChange} checked={check ? true : false} />
       <ImgBox>
         <Image
@@ -64,7 +80,7 @@ export const CartListItem = ({
         <TopBox>
           <ProductName>{product.product.name}</ProductName>
 
-          <CancleButton onClick={onCancle}>X</CancleButton>
+          <CancleButton onClick={openCancleModal}>X</CancleButton>
         </TopBox>
         <Info>
           <InfoLeft>

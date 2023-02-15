@@ -1,7 +1,10 @@
+import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { useDeleteCart, useDeleteCartProduct, useUpdateCartProduct } from '../../../hooks/mutation/cart';
 import { useModal } from '../../../hooks/util/useModal';
+import { cartState } from '../../../recoil/cart/state';
 import { ModeType } from '../../../types/common/propsTypes';
 import { CartProduct } from '../../../types/model/cart';
 import { CartProductListGetResponseDTO } from '../../../types/response/cart';
@@ -16,6 +19,7 @@ interface Props {
 }
 
 export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
+  const router = useRouter();
   const [productList, setProductList] = useState<CartProductListGetResponseDTO>([]);
   const [checkProductList, setCheckProductList] = useState<CartProductListGetResponseDTO>([]);
   const { mutate: updateCartProduct } = useUpdateCartProduct();
@@ -44,17 +48,14 @@ export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
     open: openDeleteModal,
     close: closeDeleteModal,
   } = useModal({
-    message: 'REAL DELETE?',
+    message: 'REAL DELETE THE SELECTION?',
     mode,
     OK_Button: true,
     NO_Button: true,
     OK_Button_onClick: deleteModalOkHandler,
   });
 
-  useEffect(() => {
-    setProductList(cartProductList);
-  }, [cartProductList]);
-
+  const setCartState = useSetRecoilState(cartState);
   const allCheckBoxHandler = (e: React.ChangeEvent<Element>) => {
     const { target } = e;
     const { checked } = target as HTMLInputElement;
@@ -62,6 +63,15 @@ export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
 
     return setCheckProductList([]);
   };
+  const buyBottonHandler = () => {
+    if (checkProductList.length > 0) {
+      setCartState(checkProductList);
+      router.push('/order/form');
+    }
+  };
+  useEffect(() => {
+    setProductList(cartProductList);
+  }, [cartProductList]);
 
   return (
     <LayOut mode={mode}>
@@ -82,8 +92,8 @@ export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
       />
 
       <ButtonBox>
-        <Button size="xxlarge" label="BUY" />
-        <DeleteButton onClick={openDeleteModal}>DELETE</DeleteButton>
+        <Button size="xxlarge" label="BUY" onClick={buyBottonHandler} />
+        <DeleteButton onClick={checkProductList.length > 0 ? openDeleteModal : undefined}>DELETE</DeleteButton>
       </ButtonBox>
       <DeleteModal />
     </LayOut>

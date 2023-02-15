@@ -14,14 +14,14 @@ function Home() {
   });
 
   return (
-    <LayOut mode={mode} icon={icon}>
+    <LayOut mode={mode}>
       <AboutContainer>
         <TextBox>
           <p>PEARLUK</p>
-          <p>펄럭</p>
+          <p>펄룩</p>
           <p>ALL LUK ACC</p>
           <p>HANDMADE</p>
-          <p>{`LUK≠LUCK.IT'S ACQUIRES`}</p>
+          <p>{`LUK≠LUCK. IT'S ACQUIRES.`}</p>
         </TextBox>
       </AboutContainer>
     </LayOut>
