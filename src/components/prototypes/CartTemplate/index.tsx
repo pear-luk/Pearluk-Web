@@ -34,9 +34,10 @@ export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
     [updateCartProduct, deleteCartProduct],
   );
   const deleteModalOkHandler = () => {
-    setProductList([]);
+    setProductList(productList.filter((product) => !checkProductList.includes(product)));
     closeDeleteModal();
-    deleteCart();
+    deleteCart({ product_list: checkProductList });
+    setCheckProductList([]);
   };
   const {
     Modal: DeleteModal,
@@ -69,7 +70,7 @@ export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
         label="CART"
         chechBox={true}
         checkBox_onChange={allCheckBoxHandler}
-        checkBox_checked={productList.length === checkProductList.length}
+        checkBox_checked={checkProductList.length > 0 && productList.length === checkProductList.length}
       />
       <CartProductListCard
         mode={mode}
