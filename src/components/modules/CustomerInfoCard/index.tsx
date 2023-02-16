@@ -24,7 +24,6 @@ export const CustomerInfoCard = ({ mode, customerInfo, setCustomerInfo }: Props)
       if (setCustomerInfo) setCustomerInfo({ ...customerInfo, name: e.target.value });
     },
     [customerInfo, setCustomerInfo],
-
   );
 
   // const phoneHandler = useCallback(() => {
@@ -34,18 +33,15 @@ export const CustomerInfoCard = ({ mode, customerInfo, setCustomerInfo }: Props)
   //   setUser({ ...user, email: phone });
   // };
   useEffect(() => {
-
     if (setCustomerInfo)
       setCustomerInfo((customerInfo) => ({ ...(customerInfo as OrderCustomerInfo), phone_number: phone }));
   }, [phone, setCustomerInfo]);
-
 
   return (
     <Container>
       <Header label="CUSTOMER" mode={mode} />
       <Box>
         <InputLabel mode={mode} value={customerInfo?.name || undefined} onChange={nameHandler} label="NAME" />
-
       </Box>
       <Box>
         <InputPhone mode={mode} value={phone} setPhoneNumber={setPhone} label="PHONE"></InputPhone>

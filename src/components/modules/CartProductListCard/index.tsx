@@ -16,6 +16,8 @@ interface Props {
     updateCartProduct: (updateCount: number) => void;
     deleteCartProduct: () => void;
   };
+  checkProductList?: CartProductListGetResponseDTO;
+  setCheckProductList?: React.Dispatch<React.SetStateAction<CartProductListGetResponseDTO>>;
 }
 
 export const CartProductListCard = ({
@@ -24,12 +26,27 @@ export const CartProductListCard = ({
   cartProductList,
   buttonHandler,
   setProductList,
+  checkProductList,
+  setCheckProductList,
 }: Props) => {
   const [totalPrice, setTotalPrice] = useState(0);
 
   const deleteButtonHandler = (cart_product_id: string) => () => {
     setProductList && setProductList(cartProductList.filter((product) => product.cart_product_id !== cart_product_id));
     buttonHandler && buttonHandler({ cart_product_id }).deleteCartProduct();
+  };
+  const itemChechBoxHandler = (product: CartProduct) => () => {
+    const checked =
+      checkProductList &&
+      checkProductList.find((checkedProduct) => checkedProduct.cart_product_id === product.cart_product_id);
+    if (checked) {
+      setCheckProductList &&
+        setCheckProductList(
+          checkProductList.filter((checkedProduct) => checkedProduct.cart_product_id !== product.cart_product_id),
+        );
+    } else {
+      setCheckProductList && checkProductList && setCheckProductList([...checkProductList, product]);
+    }
   };
 
   useMemo(() => {
@@ -49,6 +66,8 @@ export const CartProductListCard = ({
               product={product}
               onCancle={deleteButtonHandler(cart_product_id)}
               mutate={buttonHandler && buttonHandler({ cart_product_id }).updateCartProduct}
+              checkProductList={checkProductList}
+              checkBox_onChange={itemChechBoxHandler(product)}
             />
           </ProductBox>
         );

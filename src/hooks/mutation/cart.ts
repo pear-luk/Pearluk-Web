@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { CartProduct } from './../../types/model/cart';
-import { CreateCartProductDTO, UpdateCartProductDTO } from './../../types/request/cart';
+import { CreateCartProductDTO, DeleteCartDTO, UpdateCartProductDTO } from './../../types/request/cart';
 import { addCartProduct, deleteCart, deleteCartProduct, updateCartProduct } from './../API/cart/deleteCartProduct';
 import { CART_KEY } from './../queries/key/index';
 
@@ -39,7 +39,7 @@ export const useDeleteCartProduct = () => {
 
 export const useDeleteCart = () => {
   const queryClient = useQueryClient();
-  return useMutation<BaseResponseDTO<CartProduct[]>, AxiosError>(deleteCart, {
+  return useMutation<BaseResponseDTO<CartProduct[]>, AxiosError, DeleteCartDTO>(deleteCart, {
     onSuccess: () => {
       queryClient.invalidateQueries(CART_KEY);
     },

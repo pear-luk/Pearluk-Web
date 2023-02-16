@@ -1,5 +1,5 @@
 import { CartProduct } from './../../../types/model/cart';
-import { CreateCartProductDTO, UpdateCartProductDTO } from './../../../types/request/cart';
+import { CreateCartProductDTO, DeleteCartDTO, UpdateCartProductDTO } from './../../../types/request/cart';
 import { API } from './../../util/API';
 export const addCartProduct = async (mudationData: CreateCartProductDTO) => {
   return (await API<CartProduct>('/cart', { method: 'post', data: mudationData })).data;
@@ -14,6 +14,6 @@ export const deleteCartProduct = async (mudationData: Pick<UpdateCartProductDTO,
   return (await API<CartProduct>(`/cart/${cart_product_id}`, { method: 'put' })).data;
 };
 
-export const deleteCart = async () => {
-  return (await API<CartProduct[]>(`/cart`, { method: 'put' })).data;
+export const deleteCart = async (mutationData: DeleteCartDTO) => {
+  return (await API<CartProduct[]>(`/cart`, { method: 'put', data: mutationData })).data;
 };

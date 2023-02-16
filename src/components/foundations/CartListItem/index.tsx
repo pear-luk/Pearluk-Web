@@ -1,9 +1,11 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useModal } from '../../../hooks/util/useModal';
 import { Size } from '../../../styles/theme';
 import { ModeType } from '../../../types/common/propsTypes';
 import { CartProduct } from '../../../types/model/cart';
+import { CartProductListGetResponseDTO } from '../../../types/response/cart';
 import { Button } from '../../elements/Button';
 import { CheckBox } from '../../elements/CheckBox';
 
@@ -15,6 +17,9 @@ interface Props {
 
   mutate?: (updateCount: number) => void;
   onCancle?: () => void;
+  checked?: boolean;
+  checkProductList?: CartProductListGetResponseDTO;
+  checkBox_onChange?: (() => void) | ((e: ChangeEvent<Element>) => void);
 }
 export const CartListItem = ({
   mode,
@@ -24,9 +29,11 @@ export const CartListItem = ({
 
   mutate,
   onCancle,
+  checkBox_onChange,
+  checkProductList,
 }: Props) => {
   const [count, setCount] = useState(product.count);
-
+  const [check, setCheck] = useState(false);
   const minusButtonHandler = () => {
     mutate && mutate(count - 1);
     setCount(count - 1);
@@ -35,10 +42,32 @@ export const CartListItem = ({
     mutate && mutate(count + 1);
     setCount(count + 1);
   };
-
+  useEffect(() => {
+    checkProductList &&
+      setCheck(
+        Boolean(checkProductList.find((checkProduct) => checkProduct.cart_product_id === product.cart_product_id)),
+      );
+    console.log;
+  }, [checkProductList, product.cart_product_id]);
+  const cancleModalOkHandler = () => {
+    closeCancleModal();
+    onCancle && onCancle();
+  };
+  const {
+    Modal: CancleModal,
+    open: openCancleModal,
+    close: closeCancleModal,
+  } = useModal({
+    message: 'REAL DELETE?',
+    mode,
+    OK_Button: true,
+    NO_Button: true,
+    OK_Button_onClick: cancleModalOkHandler,
+  });
   return (
     <Container mode={mode} size={size}>
-      <CheckBox mode={mode} />
+      <CancleModal />
+      <CheckBox mode={mode} onChange={checkBox_onChange} checked={check ? true : false} />
       <ImgBox>
         <Image
           alt="상품 메인이미지"
@@ -51,7 +80,7 @@ export const CartListItem = ({
         <TopBox>
           <ProductName>{product.product.name}</ProductName>
 
-          <CancleButton onClick={onCancle}>X</CancleButton>
+          <CancleButton onClick={openCancleModal}>X</CancleButton>
         </TopBox>
         <Info>
           <InfoLeft>
