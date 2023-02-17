@@ -16,7 +16,7 @@ import { RecipientInfoCard } from '../../modules/RecipientInfoCard';
 interface Props {
   mode: ModeType;
   cartProductList: CartProductListGetResponseDTO;
-  user: MyInfoGetResponseDTO;
+  user?: MyInfoGetResponseDTO;
 }
 
 export const OrderFormTemplate = ({ mode, cartProductList, user }: Props) => {
@@ -47,6 +47,7 @@ export const OrderFormTemplate = ({ mode, cartProductList, user }: Props) => {
   useEffect(() => {
     user && setCustomerInfo({ name: user.nickname, phone_number: user.phone_number || '' });
   }, [user]);
+
   useMemo(() => {
     if (cartProductList.length > 0) {
       setPrice(cartProductList?.map((a) => Number(a?.product.price) * a?.count || 0)?.reduce((a, b) => a + b));
@@ -56,14 +57,6 @@ export const OrderFormTemplate = ({ mode, cartProductList, user }: Props) => {
   useEffect(() => {
     setTotalPrice(price + shippingFee);
   }, [price, shippingFee]);
-  useMemo(() => {
-    if (cartProductList.length > 0) {
-      setPrice(cartProductList?.map((a) => Number(a?.product.price) * a?.count || 0)?.reduce((a, b) => a + b));
-    }
-  }, [cartProductList]);
-  // useMemo(() => {
-  //   setTotalPrice(price + shippingFee);
-  // }, [price, shippingFee]);
 
   return (
     <LayOut mode={mode} menu={true} centerLogo={true}>

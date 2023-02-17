@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { useDeleteCart, useDeleteCartProduct, useUpdateCartProduct } from '../../../hooks/mutation/cart';
 import { useModal } from '../../../hooks/util/useModal';
-import { cartState } from '../../../recoil/cart/state';
+import { orderProductState } from '../../../recoil/order/state';
 import { ModeType } from '../../../types/common/propsTypes';
 import { CartProduct } from '../../../types/model/cart';
 import { CartProductListGetResponseDTO } from '../../../types/response/cart';
@@ -22,6 +22,8 @@ export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
   const router = useRouter();
   const [productList, setProductList] = useState<CartProductListGetResponseDTO>([]);
   const [checkProductList, setCheckProductList] = useState<CartProductListGetResponseDTO>([]);
+
+  const setOrderProduct = useSetRecoilState(orderProductState);
   const { mutate: updateCartProduct } = useUpdateCartProduct();
   const { mutate: deleteCartProduct } = useDeleteCartProduct();
   const { mutate: deleteCart } = useDeleteCart();
@@ -43,6 +45,7 @@ export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
     deleteCart({ product_list: checkProductList });
     setCheckProductList([]);
   };
+
   const {
     Modal: DeleteModal,
     open: openDeleteModal,
@@ -55,7 +58,6 @@ export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
     OK_Button_onClick: deleteModalOkHandler,
   });
 
-  const setCartState = useSetRecoilState(cartState);
   const allCheckBoxHandler = (e: React.ChangeEvent<Element>) => {
     const { target } = e;
     const { checked } = target as HTMLInputElement;
@@ -63,9 +65,9 @@ export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
 
     return setCheckProductList([]);
   };
-  const buyBottonHandler = () => {
+  const buyButtonHandler = () => {
     if (checkProductList.length > 0) {
-      setCartState(checkProductList);
+      setOrderProduct(checkProductList);
       router.push('/order/form');
     }
   };
@@ -92,7 +94,7 @@ export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
       />
 
       <ButtonBox>
-        <Button size="xxlarge" label="BUY" onClick={buyBottonHandler} />
+        <Button size="xxlarge" label="BUY" onClick={buyButtonHandler} />
         <DeleteButton onClick={checkProductList.length > 0 ? openDeleteModal : undefined}>DELETE</DeleteButton>
       </ButtonBox>
       <DeleteModal />

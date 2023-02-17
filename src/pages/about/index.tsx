@@ -2,16 +2,11 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { LayOut } from '../../components/layout';
 
-import { INavIconType } from '../../recoil/archive/state';
 import { ModeType } from '../../types/common/propsTypes';
 
 function Home() {
   // mode, icon
   const [mode] = useState<ModeType>('white');
-  const [icon] = useState<INavIconType>({
-    logo: true,
-    menu: true,
-  });
 
   return (
     <LayOut mode={mode}>
