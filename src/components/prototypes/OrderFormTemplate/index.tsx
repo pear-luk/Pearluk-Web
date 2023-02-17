@@ -1,5 +1,7 @@
+import { loadTossPayments } from '@tosspayments/payment-sdk';
 import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
+import { ulid } from 'ulid';
 import { ModeType } from '../../../types/common/propsTypes';
 import { OrderCustomerInfo, OrderRecipientInfo } from '../../../types/model/order';
 import { CartProductListGetResponseDTO } from '../../../types/response/cart';
@@ -20,6 +22,11 @@ interface Props {
 }
 
 export const OrderFormTemplate = ({ mode, cartProductList, user }: Props) => {
+  const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
+  const tossSuccessUrl = process.env.NEXT_PUBLIC_TOSS_SUCCESS_URL;
+  const tossFailUrl = process.env.NEXT_PUBLIC_TOSS_FAIL_URL;
+  const [orderName, orderNameSet] = useState('');
+
   const [productList, setProductList] = useState<CartProductListGetResponseDTO>([]);
   const [customerInfo, setCustomerInfo] = useState<Omit<OrderCustomerInfo, 'order_id'>>({
     name: '',
@@ -33,6 +40,7 @@ export const OrderFormTemplate = ({ mode, cartProductList, user }: Props) => {
     address: '',
     detail_address: '',
   });
+
   /**
    * 포인트 추후 적용예정
    */
@@ -40,6 +48,19 @@ export const OrderFormTemplate = ({ mode, cartProductList, user }: Props) => {
   const [shippingFee] = useState(3500);
   const [totalPrice, setTotalPrice] = useState(0);
   // const [point, setPoint] = useState(0);
+  const buyButtonOnclick = async () => {
+    if (tossClientKey && tossSuccessUrl && tossFailUrl) {
+      const tossPayments = await loadTossPayments(tossClientKey);
+      tossPayments.requestPayment({
+        amount: totalPrice,
+        orderId: ulid(),
+        orderName: orderName,
+        customerName: customerInfo.name,
+        successUrl: tossSuccessUrl,
+        failUrl: tossFailUrl,
+      });
+    }
+  };
   useEffect(() => {
     setProductList(cartProductList);
   }, [cartProductList]);
@@ -51,12 +72,22 @@ export const OrderFormTemplate = ({ mode, cartProductList, user }: Props) => {
   useMemo(() => {
     if (cartProductList.length > 0) {
       setPrice(cartProductList?.map((a) => Number(a?.product.price) * a?.count || 0)?.reduce((a, b) => a + b));
+      const count = cartProductList.map((a) => a.count).reduce((a, b) => a + b);
+      orderNameSet(
+        `${cartProductList[0].product.name} ${cartProductList[0].count}개 ${
+          count - cartProductList[0].count > 0 ? `외 ${count - cartProductList[0].count}개` : ''
+        }`,
+      );
     }
   }, [cartProductList]);
 
   useEffect(() => {
     setTotalPrice(price + shippingFee);
   }, [price, shippingFee]);
+
+  useEffect(() => {
+    console.log(orderName);
+  }, [orderName]);
 
   return (
     <LayOut mode={mode} menu={true} centerLogo={true}>
@@ -85,7 +116,7 @@ export const OrderFormTemplate = ({ mode, cartProductList, user }: Props) => {
         <CheckBox mode={mode} label="구매조건 확인 및 결제진행에 동의" />
       </Box>
       <BoxLarge>
-        <Button color={mode === 'dark' ? 'yellow' : 'black'} size="huge" label="BUY" />
+        <Button color={mode === 'dark' ? 'yellow' : 'black'} size="huge" label="BUY" onClick={buyButtonOnclick} />
       </BoxLarge>
     </LayOut>
   );

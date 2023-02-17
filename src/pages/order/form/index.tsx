@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
-import { LayOut } from '../../../components/layout';
 import { OrderFormTemplate } from '../../../components/prototypes/OrderFormTemplate';
 import { useMyInfo } from '../../../hooks/queries/MyQuery';
 import { orderProductState } from '../../../recoil/order/state';
@@ -26,11 +25,7 @@ function OrderFormPage() {
   //   setWrite(!write);
   // }, [write]);
 
-  return (
-    <LayOut mode={mode} menu={true} centerLogo={true}>
-      <OrderFormTemplate mode={mode} user={user} cartProductList={productList} />
-    </LayOut>
-  );
+  return <OrderFormTemplate mode={mode} user={user} cartProductList={productList} />;
 }
 
 export default OrderFormPage;
