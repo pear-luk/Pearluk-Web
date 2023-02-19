@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { BaseResponseDTO } from '../../types/common/baseResponse';
 import { MyOrderListGetResponseDTO } from '../../types/response/order';
-import { getMyOrderList } from '../API/order/getMyOrderList';
+import { getMyOrderList } from '../API/order';
 
 type UseMyOrderListType = {
   myOrderList: MyOrderListGetResponseDTO;

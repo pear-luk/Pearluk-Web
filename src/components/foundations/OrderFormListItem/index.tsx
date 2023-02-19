@@ -2,12 +2,12 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { Size } from '../../../styles/theme';
 import { ModeType } from '../../../types/common/propsTypes';
-import { CartProduct } from '../../../types/model/cart';
+import { OrderProductRequestDTO } from '../../../types/request/order';
 import { Button } from '../../elements/Button';
 
 interface Props {
   mode: ModeType;
-  product: CartProduct;
+  product: OrderProductRequestDTO;
 
   size?: keyof Size['width'];
 

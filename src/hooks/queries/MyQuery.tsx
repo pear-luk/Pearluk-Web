@@ -10,7 +10,7 @@ import { API } from '../util/API';
 const getMyInfo = async () => (await API<MyInfoGetResponseDTO>('/my', { method: 'get' })).data;
 
 export const useMyInfo = () => {
-  const [myInfo, setMyInfo] = useState<MyInfoGetResponseDTO | null>();
+  const [myInfo, setMyInfo] = useState<MyInfoGetResponseDTO | undefined>();
   const { data, isLoading, isError } = useQuery<BaseResponseDTO<MyInfoGetResponseDTO>, AxiosError>(
     ['myInfo'],
     getMyInfo,

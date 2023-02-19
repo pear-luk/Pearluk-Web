@@ -13,3 +13,5 @@ export const PRODUCT_LIST_KEY = ({
 export const PROUCT_DETAIL_KEY = ({ product_id }: { product_id: string }) => ['products', product_id];
 
 export const CART_KEY = ['cart'];
+
+export const ORDER_KEY = ['order'];
