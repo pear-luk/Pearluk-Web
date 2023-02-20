@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { createOrder } from './../API/order/index';
+import { confirmOrder, createOrder } from './../API/order/index';
 import { ORDER_KEY } from './../queries/key/index';
 
 export const useCreateOrder = () => {
@@ -13,10 +13,14 @@ export const useCreateOrder = () => {
     },
   });
 };
-//   export const useAddCart = () => {
-//     const queryClient = useQueryClient();
-//     return useMutation<BaseResponseDTO<CartProduct>, AxiosError, CreateCartProductDTO>(addCartProduct, {
-//       onSuccess: () => {
-//         queryClient.invalidateQueries(CART_KEY);
-//       },
-//     });
+export const useConfirmOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(confirmOrder, {
+    retry: false,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries(ORDER_KEY);
+    },
+  });
+};

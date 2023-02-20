@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
 import { LayOut } from '../../components/layout';
-import { orderState } from '../../recoil/order/state';
+import { useConfirmOrder } from '../../hooks/mutation/order';
 
 import { ModeType } from '../../types/common/propsTypes';
 
@@ -11,15 +10,23 @@ function OrderSuccess() {
   const [mode] = useState<ModeType>('white');
   const router = useRouter();
   // const { myInfo } = useMyInfo();
-  const [orderValue] = useRecoilState(orderState);
-  // const [user, setUser] = useState<MyInfoGetResponseDTO | undefined>();
 
+  // const [user, setUser] = useState<MyInfoGetResponseDTO | undefined>();
+  const { mutate } = useConfirmOrder();
   useEffect(() => {
-    router && console.log(router);
-  }, [router]);
-  useEffect(() => {
-    console.log(orderValue);
-  }, [orderValue]);
+    router && console.log(router.query);
+    if (router.query) {
+      const { amount, orderId, paymentKey } = router.query;
+      amount &&
+        orderId &&
+        paymentKey &&
+        mutate({
+          amount: amount as string,
+          order_id: orderId as string,
+          payment_key: paymentKey as string,
+        });
+    }
+  }, [router, mutate]);
 
   // const [write, setWrite] = useState(false);
 
