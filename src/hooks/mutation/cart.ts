@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
+import { addCartProduct, deleteCart, deleteCartProduct, updateCartProduct } from '../API/cart';
 import { CartProduct } from './../../types/model/cart';
 import { CreateCartProductDTO, DeleteCartDTO, UpdateCartProductDTO } from './../../types/request/cart';
-import { addCartProduct, deleteCart, deleteCartProduct, updateCartProduct } from './../API/cart/deleteCartProduct';
 import { CART_KEY } from './../queries/key/index';
 
 import { useMutation, useQueryClient } from 'react-query';

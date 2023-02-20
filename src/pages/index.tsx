@@ -1,7 +1,9 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { LayOut } from '../components/layout';
+import { cartState } from '../recoil/cart/state';
 
 import { ModeType } from '../types/common/propsTypes';
 const MainBackGroundContainer = styled.div`
@@ -21,6 +23,10 @@ const ImgBox = styled.div`
 function Home() {
   // mode, icon
   const [mode] = useState<ModeType>('dark');
+  const [orderValue] = useRecoilState(cartState);
+  useEffect(() => {
+    orderValue && console.log(orderValue);
+  }, [orderValue]);
 
   return (
     <>

@@ -8,6 +8,7 @@ function Cart() {
   // mode, icon
   const [mode] = useState<ModeType>('white');
   const { cartProductList, isCartLoading } = useCart();
+
   if (isCartLoading) {
     return <LayOut mode={mode} />;
   }

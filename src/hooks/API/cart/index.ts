@@ -1,6 +1,6 @@
-import { CartProduct } from './../../../types/model/cart';
-import { CreateCartProductDTO, DeleteCartDTO, UpdateCartProductDTO } from './../../../types/request/cart';
-import { API } from './../../util/API';
+import { CartProduct } from '../../../types/model/cart';
+import { CreateCartProductDTO, DeleteCartDTO, UpdateCartProductDTO } from '../../../types/request/cart';
+import { API } from '../../util/API';
 export const addCartProduct = async (mudationData: CreateCartProductDTO) => {
   return (await API<CartProduct>('/cart', { method: 'post', data: mudationData })).data;
 };
