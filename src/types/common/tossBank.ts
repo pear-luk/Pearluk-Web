@@ -1,4 +1,4 @@
-export const Bank = {
+export const Bank: Record<string, string> = {
   경남은행: '039',
   광주은행: '034',
   교보증권: '261',
@@ -26,7 +26,6 @@ export const Bank = {
   카카오뱅크: '090',
   카카오페이증권: '288',
   케이뱅크: '089',
-
   토스뱅크: '092',
   토스증권: '271',
   '펀드온라인코리아(한국포스증권)': '294',
@@ -52,4 +51,4 @@ export const Bank = {
   SK증권: '266',
 };
 
-const BankList = Object.keys(Bank).map((name) => ({ name, code: Bank. }));
+export const BankList = Object.keys(Bank).map((name) => ({ name, code: Bank[name] }));
