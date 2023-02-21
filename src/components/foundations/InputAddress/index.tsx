@@ -19,7 +19,7 @@ interface Props {
   addressInfo: Partial<UserAddress> | undefined;
   setAddressInfo: React.Dispatch<React.SetStateAction<Partial<UserAddress>>>;
   ref?: RefObject<HTMLInputElement>;
-
+  disabled?: boolean;
   // setPhoneNumber?: Dispatch<SetStateAction<string>>;
 }
 export const InputAddress = ({
@@ -31,6 +31,7 @@ export const InputAddress = ({
   setAddressInfo,
   label_size = 'medium',
   label_weight = 'bold',
+  disabled = false,
 }: Props) => {
   const [isOpenPost, setIsOpenPost] = useState<boolean>(false);
   const onCompletePost = ({ address, zonecode }: Address) => {
@@ -76,7 +77,7 @@ export const InputAddress = ({
                 color={mode === 'dark' ? 'yellow' : 'black'}
                 label="SEARCH"
                 size="large"
-                onClick={onChangeOpenPost}></Button>
+                onClick={!disabled ? onChangeOpenPost : undefined}></Button>
             </ButtonBox>
           </PostCodeBox>
           <Label>ADDRESS</Label>
@@ -89,7 +90,7 @@ export const InputAddress = ({
           <DetailAddressInput
             onChange={detailOnChangeHandler}
             value={(addressInfo && addressInfo.detail_address) || ''}
-            disabled={!addressInfo}></DetailAddressInput>
+            disabled={!addressInfo || disabled}></DetailAddressInput>
         </>
       )}
       {/* <DaumPostcodeEmbed autoClose onComplete={onCompletePost} />

@@ -14,11 +14,12 @@ interface Props {
   mode: ModeType;
   recipientInfo: Omit<OrderRecipientInfo, 'order_id'>;
   setRecipientInfo?: Dispatch<SetStateAction<Omit<OrderRecipientInfo, 'order_id'>>>;
+  disabled?: boolean;
 }
 
-export const RecipientInfoCard = ({ mode, recipientInfo, setRecipientInfo }: Props) => {
+export const RecipientInfoCard = ({ mode, recipientInfo, setRecipientInfo, disabled = false }: Props) => {
   const [phone, setPhone] = useState<string>(recipientInfo?.phone_number ? recipientInfo.phone_number : '');
-  const [address, setAddress] = useState<Partial<UserAddress>>({});
+  const [address, setAddress] = useState<Partial<UserAddress>>();
 
   const nameHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +34,13 @@ export const RecipientInfoCard = ({ mode, recipientInfo, setRecipientInfo }: Pro
   }, [phone, setRecipientInfo]);
 
   useEffect(() => {
+    if (recipientInfo && !address) {
+      const { full_address, address, detail_address, post_code } = recipientInfo;
+      setAddress({ full_address, address, detail_address, post_code });
+    }
+  }, [recipientInfo, address]);
+
+  useEffect(() => {
     if (setRecipientInfo)
       setRecipientInfo((recipientInfo) => ({
         ...(recipientInfo as OrderRecipientInfo),
@@ -44,13 +52,19 @@ export const RecipientInfoCard = ({ mode, recipientInfo, setRecipientInfo }: Pro
     <Container>
       <Header label="SHIPPING" mode={mode} label_size="medium" />
       <Box>
-        <InputLabel mode={mode} value={recipientInfo?.name || undefined} onChange={nameHandler} label="NAME" />
+        <InputLabel
+          mode={mode}
+          value={recipientInfo?.name || undefined}
+          onChange={nameHandler}
+          label="NAME"
+          disabled={disabled}
+        />
       </Box>
       <Box>
-        <InputPhone mode={mode} value={phone} setPhoneNumber={setPhone} label="PHONE"></InputPhone>
+        <InputPhone mode={mode} value={phone} setPhoneNumber={setPhone} label="PHONE" disabled={disabled}></InputPhone>
       </Box>
       <Box>
-        <InputAddress mode={mode} addressInfo={address} setAddressInfo={setAddress}></InputAddress>
+        <InputAddress mode={mode} addressInfo={address} setAddressInfo={setAddress} disabled={disabled}></InputAddress>
       </Box>
     </Container>
   );

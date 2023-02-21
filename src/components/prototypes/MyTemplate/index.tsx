@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { Size } from '../../../styles/theme';
@@ -32,8 +33,12 @@ export const MyTemplate = ({ mode, user, orders, setUser }: Props) => {
 
       <Header mode={mode} label="MY ORDER" header_type="left" />
       {Array.isArray(orders) &&
-        orders.map((order, i) => {
-          return <OrderListCard mode={mode} key={i} order={order}></OrderListCard>;
+        orders.map((order) => {
+          return (
+            <Link href={`/orders/${order.order_id}`} key={order.order_id}>
+              <OrderListCard mode={mode} order={order} />
+            </Link>
+          );
         })}
     </LayOut>
   );

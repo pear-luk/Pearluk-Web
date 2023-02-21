@@ -11,3 +11,5 @@ export const createOrder = async (mudationData: OrderCreateRequestDTO) => {
 export const confirmOrder = async (mudationData: OrderConfirmRequestDTO) => {
   return (await API<Order>('/orders/confirm', { method: 'post', data: mudationData })).data;
 };
+
+export const getDetailOrder = (order_id: string) => async () => (await API<Order>(`/orders/${order_id}`)).data;

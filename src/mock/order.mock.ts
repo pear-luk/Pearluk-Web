@@ -31,6 +31,7 @@ export const orderCustomerInfoMock: OrderCustomerInfo = {
 export const orderRecipientInfoMock: OrderRecipientInfo = {
   order_id: faker.lorem.word(26),
   name: faker.name.fullName(),
+  post_code: faker.address.zipCode(),
   phone_number: faker.phone.number(),
   full_address: faker.lorem.word(26),
   address: faker.lorem.word(20),
@@ -48,7 +49,7 @@ export const payMentInfoMock: PaymentInfo = {
   order_id: faker.lorem.word(26),
   key: faker.lorem.word(26),
   method: '카드',
-  payment_status: faker.lorem.word(26),
+  payment_status: 'DONE',
 };
 
 export const orderMock: Order = {

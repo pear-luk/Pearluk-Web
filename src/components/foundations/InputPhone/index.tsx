@@ -26,6 +26,7 @@ interface Props {
   label_size?: keyof Size['font'];
   label_weight?: keyof FontWeight;
 
+  disabled?: boolean;
   value?: string;
   placeholder?: string;
   ref?: RefObject<HTMLInputElement>;
@@ -44,6 +45,7 @@ export const InputPhone = ({
   placeholder,
   value,
   setPhoneNumber,
+  disabled = false,
 }: Props) => {
   const [phoneNum, setPhoneNum] = useState({
     first: value?.slice(0, 3),
@@ -138,6 +140,7 @@ export const InputPhone = ({
           ref={phoneRef_first}
           placeholder={placeholder}
           value={phoneNum.first}
+          disabled={disabled}
         />
         <Hyphen />
         <InputText
@@ -151,6 +154,7 @@ export const InputPhone = ({
           ref={phoneRef_second}
           placeholder={placeholder}
           value={phoneNum.second}
+          disabled={disabled}
         />
         <Hyphen />
         <InputText
@@ -164,6 +168,7 @@ export const InputPhone = ({
           ref={phoneRef_third}
           placeholder={placeholder}
           value={phoneNum.third}
+          disabled={disabled}
         />
 
         {label_type === 'right' && (
