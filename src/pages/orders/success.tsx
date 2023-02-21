@@ -12,7 +12,7 @@ function OrderSuccess() {
   // const { myInfo } = useMyInfo();
 
   // const [user, setUser] = useState<MyInfoGetResponseDTO | undefined>();
-  const { mutate } = useConfirmOrder();
+  const { mutateAsync } = useConfirmOrder();
   useEffect(() => {
     router && console.log(router.query);
     if (router.query) {
@@ -20,13 +20,13 @@ function OrderSuccess() {
       amount &&
         orderId &&
         paymentKey &&
-        mutate({
+        mutateAsync({
           amount: amount as string,
           order_id: orderId as string,
           payment_key: paymentKey as string,
-        });
+        }).then(() => router.push(`/orders/${orderId}`));
     }
-  }, [router, mutate]);
+  }, [router, mutateAsync]);
 
   // const [write, setWrite] = useState(false);
 

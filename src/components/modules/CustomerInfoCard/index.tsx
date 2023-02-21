@@ -14,9 +14,10 @@ interface Props {
 
   customerInfo: Omit<OrderCustomerInfo, 'order_id'>;
   setCustomerInfo?: Dispatch<SetStateAction<Omit<OrderCustomerInfo, 'order_id'>>>;
+  disabled?: boolean;
 }
 
-export const CustomerInfoCard = ({ mode, customerInfo, setCustomerInfo }: Props) => {
+export const CustomerInfoCard = ({ mode, customerInfo, setCustomerInfo, disabled = false }: Props) => {
   const [phone, setPhone] = useState<string>(customerInfo?.phone_number ? customerInfo.phone_number : '');
 
   const nameHandler = useCallback(
@@ -41,10 +42,16 @@ export const CustomerInfoCard = ({ mode, customerInfo, setCustomerInfo }: Props)
     <Container>
       <Header label="CUSTOMER" mode={mode} />
       <Box>
-        <InputLabel mode={mode} value={customerInfo?.name || undefined} onChange={nameHandler} label="NAME" />
+        <InputLabel
+          mode={mode}
+          value={customerInfo?.name || undefined}
+          onChange={nameHandler}
+          label="NAME"
+          disabled={disabled}
+        />
       </Box>
       <Box>
-        <InputPhone mode={mode} value={phone} setPhoneNumber={setPhone} label="PHONE"></InputPhone>
+        <InputPhone mode={mode} value={phone} setPhoneNumber={setPhone} label="PHONE" disabled={disabled}></InputPhone>
       </Box>
     </Container>
   );
