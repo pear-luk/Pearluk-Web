@@ -9,7 +9,7 @@ const OrderDetailPage = () => {
   const router = useRouter();
   const [mode] = useState<ModeType>('dark');
   const { order_id } = router.query;
-  const { order, isLoading, isError } = useDetailOrder(order_id);
+  const { order, isLoading, isError } = useDetailOrder(order_id as string);
   useEffect(() => {
     console.log(order);
   }, [order]);

@@ -1,51 +1,22 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { QATemplate } from '../../components/prototypes/QnAListTemplate';
 
-import { LayOut } from '../../components/layout';
-
-import { Header } from '../../components/foundations/Header';
-import { QnAListItem } from '../../components/foundations/QnAListItem';
-import { QnAForm } from '../../components/modules/QnAWriteCard';
-import { questionListItemMock } from '../../mock/question.mock';
+import { useQuestionList } from '../../hooks/queries/questionQuery';
 import { ModeType } from '../../types/common/propsTypes';
-import { Question } from '../../types/model/question';
 
 // interface Props {}
 function QA() {
   // mode, icon
   const [mode] = useState<ModeType>('white');
+  const router = useRouter();
+  const { page } = router.query;
 
-  const [questions, setquestions] = useState<Omit<Question, 'password' | 'contents'>[]>([]);
-  const [write, setWrite] = useState(false);
+  // const [questions, setquestions] = useState<Omit<Question, 'password' | 'contents'>[]>([]);
+  const { questionList, totalCount } = useQuestionList({ page: page as string, type: '0' });
   //test
-  useEffect(() => {
-    setquestions([questionListItemMock()]);
-  }, []);
-  const buttonHandler = useCallback(() => {
-    setWrite(!write);
-  }, [write]);
 
-  return (
-    <LayOut mode={mode} menu={true} centerLogo={true}>
-      {!write ? (
-        <>
-          <Header
-            mode={mode}
-            label="QA"
-            button_label="글쓰기"
-            button_location="right"
-            button_onClick={buttonHandler}
-            button_size="xsmall"
-          />
-          {questions && questions.map((question, i) => <QnAListItem mode={mode} key={i} question={question} />)}
-        </>
-      ) : (
-        <>
-          <Header mode={mode} label="QA" button_label="취소" button_onClick={buttonHandler} button_size="xsmall" />
-          <QnAForm mode={mode} size="medium"></QnAForm>
-        </>
-      )}
-    </LayOut>
-  );
+  return <QATemplate mode={mode} questions={questionList} totalCount={totalCount} />;
 }
 
 export default QA;

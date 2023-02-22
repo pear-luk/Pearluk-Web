@@ -13,7 +13,7 @@ export type Question = {
   product_id?: string;
 
   // Join
-  writer?: Pick<User, 'nickname' | 'user_id'>;
+  user?: Pick<User, 'nickname' | 'user_id'>;
   answers?: Answer[];
   answer_count?: number;
 } & CommonInfo;
