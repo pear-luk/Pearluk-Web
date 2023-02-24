@@ -12,10 +12,16 @@ export const getQuestionList = (query: { page?: string; type?: string; product?:
 //   async () =>
 //     (await API<ProductListGetResponseDTO>(`/products?archive=${archive}&page=${page}`, { method: 'get' })).data;
 
-export const postQusetion = async (data) => {
+export const postQuestion = async (data) => {
   return await axios.post('/api/upload', data);
 };
 
 export const getQusetionDetail = (question_id: string) => async () => {
   return (await API<QuestionDetailGetResponseDTO>(`/questions/${question_id}`, { method: 'get' })).data;
+};
+
+export const getSecretQuestion = (cart_product_id: string) => async (mudationData: { password: string }) => {
+  return (
+    await API<QuestionDetailGetResponseDTO>(`/questions/${cart_product_id}`, { method: 'post', data: mudationData })
+  ).data;
 };

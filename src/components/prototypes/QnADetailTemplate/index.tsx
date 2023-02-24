@@ -1,7 +1,9 @@
+import styled from 'styled-components';
 import { ModeType } from '../../../types/common/propsTypes';
 import { Question } from '../../../types/model/question';
 import { Header } from '../../foundations/Header';
 import { LayOut } from '../../layout';
+import { AnswerCard } from '../../modules/AnswerCard';
 import { QuestionCard } from '../../modules/QuestionCard';
 
 interface Props {
@@ -19,7 +21,16 @@ export const QnADeatailTemplate = ({ mode, question }: Props) => {
       {
         // answers
       }
-      {/* {question && question.answers?.map((answer) => <AnswerCard key={answer.answer_id} answer={answer} mode={mode} />)} */}
+      {question &&
+        question.answers?.map((answer) => (
+          <AnswerBox key={answer.answer_id}>
+            <AnswerCard answer={answer} mode={mode} />
+          </AnswerBox>
+        ))}
     </LayOut>
   );
 };
+
+const AnswerBox = styled.div`
+  margin: 4.8rem 0;
+`;

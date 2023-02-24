@@ -2,6 +2,7 @@ import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { LayOut } from '../../components/layout';
+import { QnADetailSecretTemplate } from '../../components/prototypes/QnADetailSecretTemplate';
 import { QnADeatailTemplate } from '../../components/prototypes/QnADetailTemplate';
 import { useQuestionDetail } from '../../hooks/queries/questionQuery';
 
@@ -22,7 +23,11 @@ function QuestionDetail() {
   if (isLoading || question === undefined) return <LayOut mode={mode} />;
   if (isError) return <LayOut mode={mode} />;
 
-  return question.secret_mode === 0 ? <QnADeatailTemplate mode={mode} question={question as Question} /> : <></>;
+  return question.secret_mode === 0 ? (
+    <QnADeatailTemplate mode={mode} question={question as Question} />
+  ) : (
+    <QnADetailSecretTemplate mode={mode} question={question as Question} question_id={question_id} />
+  );
 }
 
 export default QuestionDetail;

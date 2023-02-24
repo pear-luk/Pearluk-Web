@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { OrderFormListCard } from '.';
-import { cartProductListMock } from '../../../mock/cart.mock';
+import { orderProductListMock } from '../../../mock/order.mock';
 
 export default {
   title: 'Modules/OrderFormListCard',
@@ -12,7 +12,7 @@ const Template: ComponentStory<typeof OrderFormListCard> = (args) => <OrderFormL
 // mode, type, label, label_type, label_size, label_weight, onChange,
 export const TOP = Template.bind({});
 TOP.args = {
-  cartProductList: cartProductListMock,
+  productList: orderProductListMock,
   mode: 'dark',
 };
 

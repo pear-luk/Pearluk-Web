@@ -3,6 +3,7 @@ import '@splidejs/splide/css';
 import Image from 'next/image';
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import { Size } from '../../../styles/theme';
 import { ModeType } from '../../../types/common/propsTypes';
 import { Question } from '../../../types/model/question';
 import { H1 } from '../../elements/H1';
@@ -11,14 +12,15 @@ import { Text } from '../../elements/Text';
 interface Props {
   mode: ModeType;
   question: Question;
+  size?: keyof Size['width'];
 }
 
-export const QuestionCard = ({ mode, question }: Props) => {
+export const QuestionCard = ({ mode, question, size = 'medium' }: Props) => {
   useEffect(() => {
     console.log(question.imgs);
   }, [question.imgs]);
   return (
-    <>
+    <Container mode={mode} size={size}>
       <Box>
         <H1 mode={mode} contents={question.title} />
       </Box>
@@ -46,7 +48,7 @@ export const QuestionCard = ({ mode, question }: Props) => {
       <Box>
         <Text mode={mode} contents={question.contents} />
       </Box>
-    </>
+    </Container>
   );
 };
 const Box = styled.div`
@@ -55,4 +57,9 @@ const Box = styled.div`
 
 const UserInfoBox = styled.div`
   margin: 0.8rem 0;
+`;
+const Container = styled.div<Omit<Props, 'question'>>`
+  /* margin: 4.8rem 0; */
+  color: ${({ theme, mode }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
+  width: ${({ theme, size }) => size && theme.size.width[size]};
 `;
