@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  images: { domains: ['loremflickr.com'], formats: ['image/avif', 'image/webp'] },
+  images: {
+    domains: ['loremflickr.com', 'pearluk-dev.s3.ap-northeast-2.amazonaws.com'],
+    formats: ['image/avif', 'image/webp'],
+  },
   async rewrites() {
     return [
       {

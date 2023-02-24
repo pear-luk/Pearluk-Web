@@ -26,7 +26,7 @@ function QuestionDetail() {
   return question.secret_mode === 0 ? (
     <QnADeatailTemplate mode={mode} question={question as Question} />
   ) : (
-    <QnADetailSecretTemplate mode={mode} question={question as Question} question_id={question_id} />
+    <QnADetailSecretTemplate mode={mode} question_id={question_id as string} />
   );
 }
 
