@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { LayOut } from '../../components/layout';
@@ -19,3 +20,13 @@ const OrderDetailPage = () => {
   // return <LayOut mode={mode} />;
 };
 export default OrderDetailPage;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { query } = context;
+  const { order_id } = query;
+  return {
+    props: {
+      order_id,
+    },
+  };
+};

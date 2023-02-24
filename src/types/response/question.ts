@@ -3,3 +3,5 @@ export type QuestionListGetResponseDTO = {
   questions: Question[];
   total_count: number;
 };
+
+export type QuestionDetailGetResponseDTO = Question;

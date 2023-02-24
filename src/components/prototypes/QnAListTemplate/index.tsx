@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -26,7 +27,6 @@ export const QATemplate = ({ mode, questions, totalCount }: Props) => {
           .fill(0)
           .map((_, i) => ({ id: String(i + 1), title: String(i + 1) })),
       );
-    console.log(totalCount);
   }, [totalCount]);
   const buttonHandler = useCallback(() => {
     setWrite(!write);
@@ -44,7 +44,12 @@ export const QATemplate = ({ mode, questions, totalCount }: Props) => {
             button_onClick={buttonHandler}
             button_size="xsmall"
           />
-          {questions && questions.map((question, i) => <QnAListItem mode={mode} key={i} question={question} />)}
+          {questions &&
+            questions.map((question) => (
+              <Link key={question.question_id} href={`/qa/${question.question_id}`}>
+                <QnAListItem mode={mode} question={question} />{' '}
+              </Link>
+            ))}
         </>
       ) : (
         <>

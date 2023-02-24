@@ -1,7 +1,8 @@
 import { faker } from '@faker-js/faker';
-import { Question } from './../types/model/question';
+import { Answer, AnswerImg } from './../types/model/answer';
+import { Question, QuestionImg } from './../types/model/question';
 // Omit<Question, 'password' | 'contents'>
-export const questionListItemMock = (): Omit<Question, 'password' | 'contents'> => ({
+export const questionListItemMock = (): Omit<Question, 'password' | 'contents' | 'imgs'> => ({
   question_id: faker.lorem.word(26),
   title: faker.lorem.lines(2),
 
@@ -9,7 +10,7 @@ export const questionListItemMock = (): Omit<Question, 'password' | 'contents'> 
   user_id: faker.lorem.word(26),
 
   // Join
-  writer: {
+  user: {
     user_id: faker.lorem.word(26),
     nickname: faker.lorem.word(26),
   },
@@ -17,7 +18,7 @@ export const questionListItemMock = (): Omit<Question, 'password' | 'contents'> 
   answer_count: faker.datatype.number({ min: 0, max: 10 }),
 });
 
-export const questionItem = (): Omit<Question, 'password'> => ({
+export const questionItem = (): Omit<Question, 'password' | 'imgs'> => ({
   ...questionListItemMock(),
   contents: faker.lorem.lines(26),
 });
@@ -30,3 +31,51 @@ export const questionItem = (): Omit<Question, 'password'> => ({
 // archive_id: faker.lorem.word(26),
 // category_id: faker.lorem.word(26),
 // imgs: imgFaker,
+export const questionDetailMock = (): Question => ({
+  question_id: faker.lorem.word(26),
+  title: faker.lorem.lines(2),
+  contents: faker.lorem.lines(6),
+  secret_mode: faker.datatype.number({ min: 0, max: 1 }),
+  user_id: faker.lorem.word(26),
+
+  // Join
+  user: {
+    user_id: faker.lorem.word(26),
+    nickname: faker.lorem.word(26),
+  },
+  created_at: faker.date.between('2020-01-01T00:00:00.000Z', '2030-01-01T00:00:00.000Z'),
+  answer_count: faker.datatype.number({ min: 0, max: 10 }),
+  imgs: Array(faker.datatype.number({ min: 0, max: 10 }))
+    .fill(0)
+    .map(() => qustionImgMock()),
+
+  answers: Array(faker.datatype.number({ min: 0, max: 3 }))
+    .fill(0)
+    .map(() => answerMock()),
+});
+
+export const qustionImgMock = (): QuestionImg => ({
+  question_img_id: faker.lorem.word(26),
+  question_id: faker.lorem.word(26),
+  url: faker.image.cats(),
+  sequence: faker.datatype.number({ min: 0, max: 10 }),
+});
+
+export const answerMock = (): Answer => ({
+  answer_id: faker.lorem.word(26),
+
+  contents: faker.lorem.lines(5),
+  product_id: null,
+  question_id: faker.lorem.word(26),
+
+  imgs: Array(faker.datatype.number({ min: 0, max: 10 }))
+    .fill(0)
+    .map(() => answerImgMock()),
+});
+
+export const answerImgMock = (): AnswerImg => ({
+  answer_img_id: faker.lorem.word(26),
+  answer_id: faker.lorem.word(26),
+  url: faker.image.animals(),
+  sequence: faker.datatype.number({ min: 0, max: 10 }),
+});

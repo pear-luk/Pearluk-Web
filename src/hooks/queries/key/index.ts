@@ -22,3 +22,5 @@ export const QUESTION_LIST_KEY = ({ page, type, product }: { page?: string; type
   'questions',
   { page, type, product },
 ];
+
+export const QUESTION_DETAIL_KEY = (question_id: string) => ['questions', { question_id: question_id }];

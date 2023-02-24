@@ -13,7 +13,6 @@ interface Props {
 
   //QnA requestDTO필요
   setQnA?: React.Dispatch<React.SetStateAction<object>>;
-  submitButtonOnclick?: () => void;
 }
 
 export const QnAForm = ({ mode = 'white', size = 'medium' }: Props) => {
@@ -24,6 +23,15 @@ export const QnAForm = ({ mode = 'white', size = 'medium' }: Props) => {
   const [images, setImages] = useState<File[]>([]);
   const [secret, setSecret] = useState<boolean>(false);
   const [action, setAction] = useState<'ADD' | 'DELETE' | null>(null);
+
+  const submitButtonOnclick = () => {
+    // images.forEach((img) => formData.append('imgs', img));
+    // axios('/api/upload', {
+    //   method: 'post',
+    //   data: formData,
+    //   headers: { 'Content-Type': 'multipart/form-data' },
+    // });
+  };
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -37,6 +45,7 @@ export const QnAForm = ({ mode = 'white', size = 'medium' }: Props) => {
     if (imageAreaRef.current && action === 'ADD') {
       imageAreaRef.current.scrollTo({ left: imageAreaRef.current.scrollWidth });
     }
+    console.log(images);
   }, [images, action]);
 
   useEffect(() => {
@@ -91,6 +100,7 @@ export const QnAForm = ({ mode = 'white', size = 'medium' }: Props) => {
           <ImageLable mode={mode}>
             +
             <Input
+              multiple={true}
               type={'file'}
               onChange={(e) => {
                 if (e.currentTarget.files) {
@@ -118,7 +128,7 @@ export const QnAForm = ({ mode = 'white', size = 'medium' }: Props) => {
           비밀번호
           <PasswordInput mode={mode} disabled={secret === false ? true : false} ref={passwordRef} />
         </PasswordLabel>
-        <Button label="OK" color={mode === 'white' ? 'black' : 'yellow'}></Button>
+        <Button label="OK" color={mode === 'white' ? 'black' : 'yellow'} onClick={submitButtonOnclick}></Button>
       </SubmitBox>
     </Container>
   );
