@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { LayOut } from '../../components/layout';
@@ -26,12 +27,12 @@ function QuestionDetail() {
 
 export default QuestionDetail;
 
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const { query } = context;
-//   const { question_id } = query;
-//   return {
-//     props: {
-//       question_id,
-//     },
-//   };
-// };
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { query } = context;
+  const { question_id } = query;
+  return {
+    props: {
+      question_id,
+    },
+  };
+};
