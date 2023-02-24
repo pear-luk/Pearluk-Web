@@ -1,6 +1,5 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ModeType, PageNationButtonItemType } from '../../../types/common/propsTypes';
 import { Question } from '../../../types/model/question';
@@ -8,18 +7,17 @@ import { Header } from '../../foundations/Header';
 import { PageNationBotton } from '../../foundations/PageNationButton';
 import { QnAListItem } from '../../foundations/QnAListItem';
 import { LayOut } from '../../layout';
-import { QnAForm } from '../../modules/QnAWriteCard';
 
 interface Props {
   mode: ModeType;
   questions: Omit<Question, 'password' | 'contents'>[];
   totalCount: number;
+  buttonHandler?: () => void;
+  page?: string;
 }
-export const QATemplate = ({ mode, questions, totalCount }: Props) => {
-  const [write, setWrite] = useState(false);
+export const QATemplate = ({ mode, questions, totalCount, buttonHandler, page }: Props) => {
   const [pageList, setPageList] = useState<PageNationButtonItemType[]>([]);
-  const router = useRouter();
-  const { page } = router.query as { page?: string };
+
   useEffect(() => {
     if (totalCount)
       setPageList(
@@ -28,35 +26,24 @@ export const QATemplate = ({ mode, questions, totalCount }: Props) => {
           .map((_, i) => ({ id: String(i + 1), title: String(i + 1) })),
       );
   }, [totalCount]);
-  const buttonHandler = useCallback(() => {
-    setWrite(!write);
-  }, [write]);
 
   return (
     <LayOut mode={mode} menu={true} centerLogo={true}>
-      {!write ? (
-        <>
-          <Header
-            mode={mode}
-            label="QA"
-            button_label="글쓰기"
-            button_location="right"
-            button_onClick={buttonHandler}
-            button_size="xsmall"
-          />
-          {questions &&
-            questions.map((question) => (
-              <Link key={question.question_id} href={`/qa/${question.question_id}`}>
-                <QnAListItem mode={mode} question={question} />{' '}
-              </Link>
-            ))}
-        </>
-      ) : (
-        <>
-          <Header mode={mode} label="QA" button_label="취소" button_onClick={buttonHandler} button_size="xsmall" />
-          <QnAForm mode={mode} size="medium"></QnAForm>
-        </>
-      )}
+      <Header
+        mode={mode}
+        label="QA"
+        button_label="글쓰기"
+        button_location="right"
+        button_onClick={buttonHandler}
+        button_size="xsmall"
+      />
+      {questions &&
+        questions.map((question) => (
+          <Link key={question.question_id} href={`/qa/${question.question_id}`}>
+            <QnAListItem mode={mode} question={question} />{' '}
+          </Link>
+        ))}
+
       {totalCount > 0 && (
         <PageNationBox>
           <PageNationBotton items={pageList} mode={mode} size="medium" now_id={page} url={`/qa?page=`} />

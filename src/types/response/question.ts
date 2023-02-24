@@ -5,3 +5,5 @@ export type QuestionListGetResponseDTO = {
 };
 
 export type QuestionDetailGetResponseDTO = Question;
+
+export type QuestionPostResponseDTO = Question;
