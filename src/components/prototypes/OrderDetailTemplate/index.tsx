@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const OrderDetailTemplate = ({ mode, order }: Props) => {
-  console.log(order);
+
   return (
     <LayOut mode={mode} menu={true} centerLogo={true}>
       <Header mode={mode} label="MY ORDER" />

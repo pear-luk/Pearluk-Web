@@ -13,9 +13,7 @@ function Home() {
       <AboutContainer>
         <TextBox>
           <p>PEARLUK</p>
-          <p>펄룩</p>
           <p>ALL LUK ACC</p>
-          <p>HANDMADE</p>
           <p>{`LUK≠LUCK. IT'S ACQUIRES.`}</p>
         </TextBox>
       </AboutContainer>

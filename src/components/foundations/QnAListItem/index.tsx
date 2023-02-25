@@ -13,8 +13,8 @@ interface Props {
 
 export const QnAListItem = ({ mode, question, size = 'medium' }: Props) => {
   // question_id,
-  const { title, writer, secret_mode, created_at, answer_count } = question;
-  const { nickname } = writer as Pick<User, 'nickname' | 'user_id'>;
+  const { title, user, secret_mode, created_at, answer_count } = question;
+  const { nickname } = user as Pick<User, 'nickname' | 'user_id'>;
   return (
     <Container size={size} mode={mode}>
       <TitleBox>

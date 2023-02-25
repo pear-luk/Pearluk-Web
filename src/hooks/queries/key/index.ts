@@ -17,3 +17,12 @@ export const CART_KEY = ['cart'];
 export const ORDER_KEY = ['order'];
 
 export const ORDER_DETAIL_KEY = (order_id: string) => ['order', `${order_id}`];
+
+export const QUESTION_KEY = ['questions'];
+
+export const QUESTION_LIST_KEY = ({ page, type, product }: { page?: string; type?: string; product?: string }) => [
+  'questions',
+  { page, type, product },
+];
+
+export const QUESTION_DETAIL_KEY = (question_id: string) => ['questions', { question_id: question_id }];

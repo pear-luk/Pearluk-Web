@@ -68,7 +68,7 @@ export const CartTemplate = ({ mode = 'white', cartProductList }: Props) => {
   const buyButtonHandler = () => {
     if (checkProductList.length > 0) {
       setOrderProduct(checkProductList);
-      router.push('/order/form');
+      router.push('/orders/form');
     }
   };
   useEffect(() => {

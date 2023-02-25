@@ -13,7 +13,15 @@ export type Question = {
   product_id?: string;
 
   // Join
-  writer?: Pick<User, 'nickname' | 'user_id'>;
+  user?: Pick<User, 'nickname' | 'user_id'>;
   answers?: Answer[];
   answer_count?: number;
+  imgs?: QuestionImg[];
 } & CommonInfo;
+
+export type QuestionImg = {
+  question_img_id: string;
+  question_id: string;
+  url: string;
+  sequence: number;
+};

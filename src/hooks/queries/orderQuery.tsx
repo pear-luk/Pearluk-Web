@@ -37,7 +37,7 @@ export const useMyOrderList = (): UseMyOrderListType => {
   return { myOrderList, isMyOrderListError: isError, isMyOrderLoading: isLoading };
 };
 
-export const useDetailOrder = (order_id: stirng) => {
+export const useDetailOrder = (order_id: string) => {
   const [order, setOrder] = useState<Order>();
   const router = useRouter();
   const { data, isLoading, isError, refetch } = useQuery<BaseResponseDTO<Order>, AxiosError>(

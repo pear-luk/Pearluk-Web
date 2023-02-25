@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { LayOut } from '../../components/layout';
@@ -20,3 +21,13 @@ function ProductDetail() {
 }
 
 export default ProductDetail;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { query } = context;
+  const { product_id } = query;
+  return {
+    props: {
+      product_id,
+    },
+  };
+};

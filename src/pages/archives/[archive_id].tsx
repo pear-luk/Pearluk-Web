@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { ArchiveTemplate } from '../../components/prototypes/ArchiveTemplate';
@@ -17,3 +18,13 @@ const ArchivePage = () => {
   return <ArchiveTemplate mode={mode} productList={productList} totalCount={totalCount}></ArchiveTemplate>;
 };
 export default ArchivePage;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { query } = context;
+  const { archive_id } = query;
+  return {
+    props: {
+      archive_id,
+    },
+  };
+};

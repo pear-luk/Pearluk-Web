@@ -1,7 +1,12 @@
 import Image from 'next/image';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
+import { useModal } from '../../../hooks/util/useModal';
+import { BaseResponseDTO } from '../../../types/common/baseResponse';
 import { ModeType } from '../../../types/common/propsTypes';
+import { Question, QuestionImg } from '../../../types/model/question';
+import { QuestionCreateRequestDTO } from '../../../types/request/question';
 
 import { Button } from '../../elements/Button';
 import { CheckBox } from '../../elements/CheckBox';
@@ -11,32 +16,114 @@ interface Props {
   mode: ModeType;
   size: 'large' | 'medium';
 
+  product_id?: string;
   //QnA requestDTO필요
-  setQnA?: React.Dispatch<React.SetStateAction<object>>;
-  submitButtonOnclick?: () => void;
+  setQuestionId?: Dispatch<SetStateAction<string>>;
+  submit?: UseMutateAsyncFunction<BaseResponseDTO<Question>, unknown, QuestionCreateRequestDTO, unknown>;
+  uploadImgs?: UseMutateAsyncFunction<BaseResponseDTO<QuestionImg[]>, unknown, FormData, unknown>;
 }
 
-export const QnAForm = ({ mode = 'white', size = 'medium' }: Props) => {
+export const QnAForm = ({ mode = 'white', size = 'medium', submit, product_id, setQuestionId, uploadImgs }: Props) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const imageAreaRef = useRef<HTMLDivElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const [currentValue, setCurrentValue] = useState('');
-  const [images, setImages] = useState<File[]>([]);
+  const [title, setTitle] = useState<string>('');
+  const [contents, setContents] = useState('');
   const [secret, setSecret] = useState<boolean>(false);
   const [action, setAction] = useState<'ADD' | 'DELETE' | null>(null);
+  const [images, setImages] = useState<File[]>([]);
+  const [password, setPassword] = useState('');
+  const titleChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target && setTitle(e.target.value);
+  };
+  const textAreaChangeHandler = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    e.target.value && setContents(e.target.value);
+  }, []);
 
+  const checkBoxClickHandler = useCallback(() => {
+    setSecret(!secret);
+    setPassword('');
+  }, [secret]);
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = '0px';
       const scrollHeight = textareaRef.current.scrollHeight;
       textareaRef.current.style.height = scrollHeight + 'px';
     }
-  }, [currentValue]);
+  }, [contents]);
+  const passwordInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target && setPassword(e.target.value);
+  };
+  const resetHandler = () => {
+    setTitle('');
+    setSecret(false);
+    setPassword('');
+    setImages([]);
+    if (textareaRef.current) {
+      textareaRef.current.value = '';
+    }
+  };
+  const { Modal, close, open } = useModal({
+    OK_Button: true,
+    message: 'SUCCEX',
+    mode,
+    OK_Button_onClick: () => {
+      resetHandler();
+      close();
+    },
+  });
+  const { Modal: ErrorModal, open: errorModalOpen } = useModal({
+    OK_Button: true,
+    message: 'FAIL',
+    mode,
+  });
+
+  const submitHandler = useCallback(() => {
+    if (title.length < 5) {
+      return;
+    }
+    if (contents.length < 10) {
+      return;
+    }
+    if (secret && password.length < 5) {
+      return;
+    }
+    if (submit)
+      submit({
+        title,
+        contents,
+        type: product_id ? 1 : 0,
+        secret_mode: secret ? 1 : 0,
+        password: secret ? password : undefined,
+        product_id,
+      })
+        .then(({ result }) => {
+          if (setQuestionId && result) {
+            setQuestionId(result.question_id);
+          }
+        })
+        .then(() => {
+          if (uploadImgs && images.length > 0) {
+            const formData = new FormData();
+            images.forEach((img) => {
+              formData.append('imgs', img);
+            });
+            uploadImgs(formData);
+          }
+        })
+        .then(() => {
+          open();
+        })
+        .catch(() => {
+          errorModalOpen();
+        });
+  }, [contents, errorModalOpen, images, open, password, product_id, secret, setQuestionId, submit, title, uploadImgs]);
 
   useEffect(() => {
     if (imageAreaRef.current && action === 'ADD') {
       imageAreaRef.current.scrollTo({ left: imageAreaRef.current.scrollWidth });
     }
+    console.log(images);
   }, [images, action]);
 
   useEffect(() => {
@@ -45,16 +132,14 @@ export const QnAForm = ({ mode = 'white', size = 'medium' }: Props) => {
     }
   }, [secret]);
 
-  const textAreaChangeHandler = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    e.target.value && setCurrentValue(e.target.value);
-  }, []);
-
-  const checkBoxClickHandler = useCallback(() => {
-    setSecret(!secret);
-  }, [secret]);
+  useEffect(() => {
+    console.log(password);
+  }, [password]);
   return (
     <Container mode={mode} size={size}>
-      <InputLabel mode={mode} input_width={size} label="TITLE"></InputLabel>
+      <Modal />
+      <ErrorModal />
+      <InputLabel mode={mode} input_width={size} label="TITLE" onChange={titleChangeHandler} value={'' || title} />
       <ImageInputBox ref={imageAreaRef}>
         {images?.map((image, i) => {
           if (image as MediaSource | Blob) {
@@ -91,6 +176,7 @@ export const QnAForm = ({ mode = 'white', size = 'medium' }: Props) => {
           <ImageLable mode={mode}>
             +
             <Input
+              multiple={true}
               type={'file'}
               onChange={(e) => {
                 if (e.currentTarget.files) {
@@ -116,9 +202,15 @@ export const QnAForm = ({ mode = 'white', size = 'medium' }: Props) => {
 
         <PasswordLabel>
           비밀번호
-          <PasswordInput mode={mode} disabled={secret === false ? true : false} ref={passwordRef} />
+          <PasswordInput
+            mode={mode}
+            disabled={secret === false ? true : false}
+            ref={passwordRef}
+            onChange={passwordInputHandler}
+            value={password}
+          />
         </PasswordLabel>
-        <Button label="OK" color={mode === 'white' ? 'black' : 'yellow'}></Button>
+        <Button label="OK" color={mode === 'white' ? 'black' : 'yellow'} onClick={submitHandler}></Button>
       </SubmitBox>
     </Container>
   );

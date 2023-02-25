@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { LayOut } from '../../components/layout';
@@ -9,7 +10,7 @@ const OrderDetailPage = () => {
   const router = useRouter();
   const [mode] = useState<ModeType>('dark');
   const { order_id } = router.query;
-  const { order, isLoading, isError } = useDetailOrder(order_id);
+  const { order, isLoading, isError } = useDetailOrder(order_id as string);
   useEffect(() => {
     console.log(order);
   }, [order]);
@@ -19,3 +20,13 @@ const OrderDetailPage = () => {
   // return <LayOut mode={mode} />;
 };
 export default OrderDetailPage;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { query } = context;
+  const { order_id } = query;
+  return {
+    props: {
+      order_id,
+    },
+  };
+};
