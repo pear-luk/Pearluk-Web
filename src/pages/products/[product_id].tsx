@@ -1,9 +1,10 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { LayOut } from '../../components/layout';
+import { LayOut } from '../../components/layout/layout';
 import { ProductTemplate } from '../../components/prototypes/ProductTemplate';
 import { useProduct } from '../../hooks/queries/productQuery';
+import { useQuestionList } from '../../hooks/queries/questionQuery';
 
 import { ModeType } from '../../types/common/propsTypes';
 import { Product } from '../../types/model/product';
@@ -15,9 +16,11 @@ function ProductDetail() {
 
   const { product_id } = router.query;
   const { product, isProductError, isProductLoading } = useProduct({ product_id });
+  const { questionList } = useQuestionList({ product: product_id as string });
+
   if (isProductLoading) return <LayOut mode={mode} />;
   if (isProductError) return <LayOut mode={mode} />;
-  return <ProductTemplate mode={mode} product={product as Product} quetionList={[]} />;
+  return <ProductTemplate mode={mode} product={product as Product} quetionList={questionList} />;
 }
 
 export default ProductDetail;

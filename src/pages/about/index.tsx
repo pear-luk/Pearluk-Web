@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { LayOut } from '../../components/layout';
+import { LayOut } from '../../components/layout/layout';
 
 import { ModeType } from '../../types/common/propsTypes';
 

@@ -10,7 +10,7 @@ import { CartProduct } from '../../../types/model/cart';
 import { CartProductListGetResponseDTO } from '../../../types/response/cart';
 import { Button } from '../../elements/Button';
 import { Header } from '../../foundations/Header';
-import { LayOut } from '../../layout';
+import { LayOut } from '../../layout/layout';
 import { CartProductListCard } from '../../modules/CartProductListCard';
 
 interface Props {

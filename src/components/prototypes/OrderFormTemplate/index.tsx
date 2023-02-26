@@ -14,7 +14,7 @@ import { CheckBox } from '../../elements/CheckBox';
 import { Header } from '../../foundations/Header';
 import { PriceLabel } from '../../foundations/PriceLabel';
 
-import { LayOut } from '../../layout';
+import { LayOut } from '../../layout/layout';
 import { CustomerInfoCard } from '../../modules/CustomerInfoCard';
 import { OrderFormListCard } from '../../modules/OrderFormListCard';
 import { RecipientInfoCard } from '../../modules/RecipientInfoCard';

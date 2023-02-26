@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import { businessInfoMock } from '../mock/businessInfo.mock';
-import { ModeType } from '../types/common/propsTypes';
+import { businessInfoMock } from '../../mock/businessInfo.mock';
+import { ModeType } from '../../types/common/propsTypes';
 
-import { useArchiveList } from '../hooks/queries/archiveQuery';
-import { Size } from '../styles/theme';
-import { Footer } from './foundations/Footer';
-import { Nav } from './foundations/Nav';
+import { useArchiveList } from '../../hooks/queries/archiveQuery';
+import { Size } from '../../styles/theme';
+import { Footer } from '../foundations/Footer';
+import { Nav } from '../foundations/Nav';
 
 interface Props {
   children?: React.ReactNode;

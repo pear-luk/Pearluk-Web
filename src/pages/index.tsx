@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { LayOut } from '../components/layout';
+import { LayOut } from '../components/layout/layout';
 import { cartState } from '../recoil/cart/state';
 
 import { ModeType } from '../types/common/propsTypes';

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { objectToQuery } from '../../util/objectToQuery';
 import { QuestionImg } from './../../../types/model/question';
 import { QuestionCreateRequestDTO } from './../../../types/request/question';
@@ -12,11 +11,6 @@ import { API } from './../../util/API';
 
 export const getQuestionList = (query: { page?: string; type?: string; product?: string }) => async () => {
   return (await API<QuestionListGetResponseDTO>(`/questions?${objectToQuery(query)}`, { method: 'get' })).data;
-};
-
-//img
-export const postQuestion = async (data) => {
-  return await axios.post('/api/upload', data);
 };
 
 export const getQusetionDetail = (question_id: string) => async () => {

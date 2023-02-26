@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { LayOut } from '../../components/layout';
+import { LayOut } from '../../components/layout/layout';
 import { useConfirmOrder } from '../../hooks/mutation/order';
 
 import { ModeType } from '../../types/common/propsTypes';

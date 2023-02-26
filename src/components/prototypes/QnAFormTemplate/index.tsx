@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useCreateQuestion, useUploadQuestionImg } from '../../../hooks/mutation/question';
 import { ModeType } from '../../../types/common/propsTypes';
 import { Header } from '../../foundations/Header';
-import { LayOut } from '../../layout';
+import { LayOut } from '../../layout/layout';
 import { QnAForm } from '../../modules/QnAWriteCard';
 
 interface Props {

@@ -19,7 +19,13 @@ export const QnAListItem = ({ mode, question, size = 'medium' }: Props) => {
     <Container size={size} mode={mode}>
       <TitleBox>
         <IconBox>
-          {Boolean(secret_mode) && <Image alt="잠금버튼" src="./icon/lock.svg" width={10} height={10}></Image>}
+          {Boolean(secret_mode) && (
+            <Image
+              alt="잠금버튼"
+              src={mode === 'dark' ? '/icon/white_lock.svg' : '/icon/black_lock.svg'}
+              width={10}
+              height={10}></Image>
+          )}
         </IconBox>
         <Title>{title}</Title>
         <IconBox>({answer_count})</IconBox>

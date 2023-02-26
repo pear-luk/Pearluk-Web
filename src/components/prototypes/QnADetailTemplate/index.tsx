@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { ModeType } from '../../../types/common/propsTypes';
 import { Question } from '../../../types/model/question';
 import { Header } from '../../foundations/Header';
-import { LayOut } from '../../layout';
+import { LayOut } from '../../layout/layout';
 import { AnswerCard } from '../../modules/AnswerCard';
 import { QuestionCard } from '../../modules/QuestionCard';
 
