@@ -11,4 +11,5 @@ export function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/api/auth')) {
     if (!request.cookies.get('access_token')) return NextResponse.json({ is_login: false });
   }
+  
 }
