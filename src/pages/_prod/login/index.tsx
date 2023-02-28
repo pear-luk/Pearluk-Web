@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { LayOut } from '../../../components/layout/layout';
+import { LayOut } from '../../../components/_layout/layout';
 import { ModeType } from '../../../types/common/propsTypes';
 
 function Login() {

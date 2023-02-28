@@ -12,8 +12,8 @@ import { Text } from '../../elements/Text';
 import { Header } from '../../foundations/Header';
 import { ProductItem } from '../../foundations/ProductItem';
 import { QnAListItem } from '../../foundations/QnAListItem';
-import { LayOut } from '../../layout/layout';
 import { QnAForm } from '../../modules/QnAWriteCard';
+import { LayOut } from '../../_layout/layout';
 interface Props {
   mode: ModeType;
   product: Product;

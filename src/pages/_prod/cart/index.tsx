@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { LayOut } from '../../../components/layout/layout';
 import { CartTemplate } from '../../../components/prototypes/CartTemplate';
+import { LayOut } from '../../../components/_layout/layout';
 import { useCart } from '../../../hooks/queries/cartQuery';
 import { ModeType } from '../../../types/common/propsTypes';
 

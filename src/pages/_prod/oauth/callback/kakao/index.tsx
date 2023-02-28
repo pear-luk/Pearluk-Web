@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { LayOut } from '../../../../../components/layout/layout';
+import { LayOut } from '../../../../../components/_layout/layout';
 import { useSocialLogin } from '../../../../../hooks/mutation/login';
 
 import { ModeType } from '../../../../../types/common/propsTypes';

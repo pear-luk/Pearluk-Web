@@ -1,18 +1,12 @@
 import { useState } from 'react';
-import { LayOut } from '../../../components/layout/layout';
-import { CartTemplate } from '../../../components/prototypes/CartTemplate';
-import { useCart } from '../../../hooks/queries/cartQuery';
+import { LayOut } from '../../../components/_layout/layout';
 import { ModeType } from '../../../types/common/propsTypes';
 
-function PROD() {
+function AdminHome() {
   // mode, icon
   const [mode] = useState<ModeType>('dark');
-  const { cartProductList, isCartLoading } = useCart();
 
-  if (isCartLoading) {
-    return <LayOut mode={mode} />;
-  }
-  return <CartTemplate mode={mode} cartProductList={cartProductList} />;
+  return <LayOut mode={mode} />;
 }
 
-export default PROD;
+export default AdminHome;

@@ -7,10 +7,10 @@ import { MyInfoGetResponseDTO } from '../../../types/response/my';
 import { MyOrderListGetResponseDTO } from '../../../types/response/order';
 
 import { Header } from '../../foundations/Header';
-import { LayOut } from '../../layout/layout';
 import { AmountCard } from '../../modules/AmountCard';
 import { MyInfoCard } from '../../modules/MyInfoCard';
 import { OrderListCard } from '../../modules/OrderListCard';
+import { LayOut } from '../../_layout/layout';
 interface Props {
   mode: ModeType;
   user?: MyInfoGetResponseDTO;

@@ -1,8 +1,8 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { LayOut } from '../../../components/layout/layout';
 import { ProductTemplate } from '../../../components/prototypes/ProductTemplate';
+import { LayOut } from '../../../components/_layout/layout';
 import { useProduct } from '../../../hooks/queries/productQuery';
 import { useQuestionList } from '../../../hooks/queries/questionQuery';
 

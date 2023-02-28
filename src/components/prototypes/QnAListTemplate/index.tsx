@@ -6,7 +6,7 @@ import { Question } from '../../../types/model/question';
 import { Header } from '../../foundations/Header';
 import { PageNationBotton } from '../../foundations/PageNationButton';
 import { QnAListItem } from '../../foundations/QnAListItem';
-import { LayOut } from '../../layout/layout';
+import { LayOut } from '../../_layout/layout';
 
 interface Props {
   mode: ModeType;

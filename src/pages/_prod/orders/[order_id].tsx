@@ -1,8 +1,8 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { LayOut } from '../../../components/layout/layout';
 import { OrderDetailTemplate } from '../../../components/prototypes/OrderDetailTemplate';
+import { LayOut } from '../../../components/_layout/layout';
 import { useDetailOrder } from '../../../hooks/queries/orderQuery';
 import { ModeType } from '../../../types/common/propsTypes';
 

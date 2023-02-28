@@ -1,9 +1,9 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { LayOut } from '../../../components/layout/layout';
 import { QnADetailSecretTemplate } from '../../../components/prototypes/QnADetailSecretTemplate';
 import { QnADeatailTemplate } from '../../../components/prototypes/QnADetailTemplate';
+import { LayOut } from '../../../components/_layout/layout';
 import { useQuestionDetail } from '../../../hooks/queries/questionQuery';
 
 import { ModeType } from '../../../types/common/propsTypes';
