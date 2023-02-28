@@ -19,20 +19,15 @@ export function middleware(request: NextRequest) {
     throw Error('Middleware -> No hostname');
   }
   if (hostname === 'localhost:3000') {
-    console.log('test');
     url.pathname = `/_prod${url.pathname}`;
     return NextResponse.rewrite(url);
   }
   const currentHost = hostname.replace(`.${process.env.NEXT_PUBLIC_DOMAIN}`, '');
 
   if (currentHost === 'www' || currentHost === process.env.NEXT_PUBLIC_DOMAIN) {
-    console.log('test2');
-
     url.pathname = `/_prod${url.pathname}`;
   } else {
-    console.log('test3');
     url.pathname = `/_subdomains/${currentHost}${url.pathname}`;
   }
-  console.log(url.pathname);
   return NextResponse.rewrite(url);
 }

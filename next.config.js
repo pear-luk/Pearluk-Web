@@ -16,10 +16,6 @@ const nextConfig = {
         // destination: 'http://localhost:8000/api/:path*',
         destination: domain ? `http://api.${domain}/api/:path*` : 'http://localhost:8000/api/:path*',
       },
-      {
-        source: '/:path*',
-        destination: '/prod/:path*',
-      },
     ];
   },
 };
