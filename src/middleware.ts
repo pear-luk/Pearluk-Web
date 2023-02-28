@@ -19,15 +19,21 @@ export function middleware(request: NextRequest) {
     throw Error('Middleware -> No hostname');
   }
   if (hostname === 'localhost:3000') {
-    url.pathname = `/_prod${url.pathname}`;
+    const pathList = url.pathname.slice(1).split('/');
+    if (pathList[0] === 'subdomains') {
+      url.pathname = `/_${pathList.join('/')}`;
+    } else {
+      url.pathname = `/_prod${url.pathname}`;
+    }
     return NextResponse.rewrite(url);
   }
-  const currentHost = hostname.replace(`.${process.env.NEXT_PUBLIC_DOMAIN}`, '');
 
+  const currentHost = hostname.replace(`.${process.env.NEXT_PUBLIC_DOMAIN}`, '');
   if (currentHost === 'www' || currentHost === process.env.NEXT_PUBLIC_DOMAIN) {
     url.pathname = `/_prod${url.pathname}`;
   } else {
     url.pathname = `/_subdomains/${currentHost}${url.pathname}`;
   }
+
   return NextResponse.rewrite(url);
 }
