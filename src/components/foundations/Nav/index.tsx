@@ -124,7 +124,7 @@ const NavContainer = styled.nav<{ mode: ModeType }>`
   position: fixed;
   top: 0;
 
-  display: flexbox;
+  /* display: flexbox; */
   justify-content: space-between;
   align-items: center;
   text-align: center;

@@ -22,15 +22,5 @@ Medium.args = {
   children: <Contents />,
 };
 Medium.parameters = {
-  AdminLayout: 'fullscreen',
-};
-
-export const Large = Template.bind({});
-
-Large.args = {
-  contentSize: 'large',
-  children: <Contents />,
-};
-Large.parameters = {
-  AdminLayout: 'fullscreen',
+  layout: 'fullscreen',
 };
