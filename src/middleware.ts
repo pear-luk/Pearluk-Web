@@ -34,6 +34,6 @@ export function middleware(request: NextRequest) {
   } else {
     url.pathname = `/_subdomains/${currentHost}${url.pathname}`;
   }
-
+  console.log(url);
   return NextResponse.rewrite(url);
 }
