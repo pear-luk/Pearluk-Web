@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import { ModeType } from '../../../types/common/propsTypes';
 import { Question } from '../../../types/model/question';
 import { Header } from '../../foundations/Header';
-import { LayOut } from '../../layout';
 import { AnswerCard } from '../../modules/AnswerCard';
 import { QuestionCard } from '../../modules/QuestionCard';
+import { LayOut } from '../../_layout/layout';
 
 interface Props {
   mode: ModeType;

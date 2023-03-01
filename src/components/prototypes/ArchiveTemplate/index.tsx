@@ -8,7 +8,7 @@ import { ModeType, PageNationButtonItemType } from '../../../types/common/propsT
 import { Product } from '../../../types/model/product';
 import { PageNationBotton } from '../../foundations/PageNationButton';
 import { ProductItem } from '../../foundations/ProductItem';
-import { LayOut } from '../../layout';
+import { LayOut } from '../../_layout/layout';
 interface Props {
   mode: ModeType;
   // archiveList: Archive[];

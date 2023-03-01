@@ -1,4 +1,8 @@
+const { redirect } = require('next/dist/server/api-utils');
+
 /** @type {import('next').NextConfig} */
+
+const domain = process.env.NEXT_PUBLIC_DOMAIN || 'localhost';
 const nextConfig = {
   reactStrictMode: true,
   images: {
@@ -9,17 +13,11 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:8000/api/:path*',
+        // destination: 'http://localhost:8000/api/:path*',
+        destination: domain ? `http://api.${domain}/api/:path*` : 'http://localhost:8000/api/:path*',
       },
     ];
   },
-  // images: {
-  //   remotePatterns: {
-  //     protocol: 'http',
-  //     hostname: 'localhost',
-  //     port:""
-  //   },
-  // },
 };
 
 module.exports = nextConfig;

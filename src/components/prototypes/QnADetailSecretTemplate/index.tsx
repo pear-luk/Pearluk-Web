@@ -7,7 +7,7 @@ import { Button } from '../../elements/Button';
 import { InputText } from '../../elements/InputText';
 import { Label } from '../../elements/Label';
 import { Header } from '../../foundations/Header';
-import { LayOut } from '../../layout';
+import { LayOut } from '../../_layout/layout';
 import { QnADeatailTemplate } from '../QnADetailTemplate';
 
 interface Props {

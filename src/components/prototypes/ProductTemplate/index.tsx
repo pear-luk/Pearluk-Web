@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -11,8 +12,8 @@ import { Text } from '../../elements/Text';
 import { Header } from '../../foundations/Header';
 import { ProductItem } from '../../foundations/ProductItem';
 import { QnAListItem } from '../../foundations/QnAListItem';
-import { LayOut } from '../../layout';
 import { QnAForm } from '../../modules/QnAWriteCard';
+import { LayOut } from '../../_layout/layout';
 interface Props {
   mode: ModeType;
   product: Product;
@@ -89,7 +90,11 @@ GO CART?`,
         ) : (
           quetionList &&
           quetionList.map((question) => {
-            return <QnAListItem size="large" key={question.question_id} mode={mode} question={question} />;
+            return (
+              <Link key={question.question_id} href={`/qa/${question.question_id}`}>
+                <QnAListItem size="large" mode={mode} question={question} />;
+              </Link>
+            );
           })
         )}
       </>
