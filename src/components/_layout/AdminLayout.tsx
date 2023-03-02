@@ -1,9 +1,7 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 
 import { ModeType } from '../../types/common/propsTypes';
 
-import { useArchiveList } from '../../hooks/queries/archiveQuery';
 import { Size } from '../../styles/theme';
 import { AdminMenu } from '../foundations_admin/Menu';
 
@@ -15,16 +13,14 @@ interface Props {
   contentSize?: keyof Size['width'];
 }
 
-export const AdminLayout = ({ children, mode, centerLogo = true, menu = true, contentSize = 'medium' }: Props) => {
-  const [menuState, setMenuState] = useState(false);
-  const { archiveList } = useArchiveList();
-
+export const AdminLayout = ({ children, mode, contentSize = 'medium' }: Props) => {
   // const { isLoginLoading, isLoginError } = useIsLogin();
   // const { authState } = useAuth();
 
   return (
     <Container>
       <AdminMenu />
+
       <ContentContainer mode={mode}>
         <Content contentSize={contentSize}>{children}</Content>
       </ContentContainer>

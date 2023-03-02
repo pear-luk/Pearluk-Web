@@ -1,6 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { CartListItem } from '.';
-import { orderProductMock } from '../../../mock/order.mock';
 
 export default {
   title: 'Foundations/CartListItem',
@@ -13,7 +12,6 @@ const Template: ComponentStory<typeof CartListItem> = (args) => <CartListItem {.
 export const EX = Template.bind({});
 EX.args = {
   mode: 'dark',
-  product: orderProductMock(),
 };
 
 EX.parameters = {

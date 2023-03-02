@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { LayOut } from '../../../components/_layout/layout';
+import { AdminLayout } from '../../../components/_layout/AdminLayout';
 import { ModeType } from '../../../types/common/propsTypes';
 
 function AdminHome() {
   // mode, icon
   const [mode] = useState<ModeType>('dark');
 
-  return <LayOut mode={mode} />;
+  return <AdminLayout mode={mode} />;
 }
 
 export default AdminHome;

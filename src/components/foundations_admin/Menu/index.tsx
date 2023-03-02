@@ -95,7 +95,7 @@ export const AdminMenu = ({ menuState = true, ...props }: Props) => {
 
 const Container = styled.div`
   width: 29.6rem;
-  height: 100vh;
+  min-height: 100vh;
   background-color: ${({ theme }) => theme.color.yellow.yellow};
 `;
 
