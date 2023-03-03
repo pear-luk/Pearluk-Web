@@ -12,7 +12,7 @@ const Template: ComponentStory<typeof AdminArchiveListCard> = (args) => <AdminAr
 
 export const EX = Template.bind({});
 EX.args = {
-  archives: archiveLsitMock,
+  archiveList: archiveLsitMock,
 };
 
 EX.parameters = {

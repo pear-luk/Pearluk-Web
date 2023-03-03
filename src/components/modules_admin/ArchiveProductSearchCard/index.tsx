@@ -1,13 +1,19 @@
 import styled from 'styled-components';
+import { Category } from '../../../types/model/category';
+import { Product } from '../../../types/model/product';
+import { Button } from '../../elements/Button';
 import { CheckBox } from '../../elements/CheckBox';
 import { InputLabel } from '../../foundations/InputLabel';
+import { ProductListCard_Admin } from '../ProductListCard';
 
 type Status = Record<string, { title: string; number: number }>;
 
 interface Props {
   status: Status;
+  categoryList: Category[];
+  productList: Product[];
 }
-export const ArchiveProductSearchCard = ({ status = {} }: Props) => {
+export const ArchiveProductSearchCard = ({ status = {}, categoryList, productList }: Props) => {
   return (
     <Container>
       <Box>
@@ -55,6 +61,93 @@ export const ArchiveProductSearchCard = ({ status = {} }: Props) => {
           </CheckItem>
         </div>
       </BoxCheck>
+      <Box>
+        카테고리
+        <Select name="category" id="adf">
+          <option value={'all'}>all</option>
+          {categoryList &&
+            categoryList.map((category) => (
+              <option key={category.category_id} value={category.category_id}>
+                {category.name}
+              </option>
+            ))}
+          <option value={'sale'}>sale</option>
+        </Select>
+      </Box>
+      <ButtonBox>
+        <ButtonItem>
+          <Button label="search" size="huge" />
+        </ButtonItem>
+        <ButtonItem>
+          <Button label="reset" size="huge" />
+        </ButtonItem>
+      </ButtonBox>
+      <ButtonBox>
+        <ButtonItem>
+          <Button label="ADD PRODUCT" size="huge" />
+        </ButtonItem>
+      </ButtonBox>
+      <ProductBox>
+        <ProductListCard_Admin mode="white" productList={productList} />
+      </ProductBox>
+
+      <BoxCheck>
+        <p>판매상태</p>
+        <div>
+          판매대기
+          <CheckItem>
+            <CheckBox mode="white" />
+          </CheckItem>
+        </div>
+        <div>
+          판매대기
+          <CheckItem>
+            <CheckBox mode="white" />
+          </CheckItem>
+        </div>
+        <div>
+          판매대기
+          <CheckItem>
+            <CheckBox mode="white" />
+          </CheckItem>
+        </div>
+        <div>
+          판매대기
+          <CheckItem>
+            <CheckBox mode="white" />
+          </CheckItem>
+        </div>
+        <div>
+          판매대기
+          <CheckItem>
+            <CheckBox mode="white" />
+          </CheckItem>
+        </div>
+        <div>
+          판매대기
+          <CheckItem>
+            <CheckBox mode="white" />
+          </CheckItem>
+        </div>
+      </BoxCheck>
+      <Box>
+        카테고리
+        <Select name="category" id="adf">
+          <option value={'all'}>all</option>
+          {categoryList &&
+            categoryList.map((category) => (
+              <option key={category.category_id} value={category.category_id}>
+                {category.name}
+              </option>
+            ))}
+          <option value={'sale'}>sale</option>
+        </Select>
+      </Box>
+      <ButtonBox>
+        <ButtonItem>
+          <Button label="SAVE" size="huge" />
+        </ButtonItem>
+      </ButtonBox>
     </Container>
   );
 };
@@ -67,6 +160,8 @@ const Container = styled.div`
 
   justify-content: space-around;
   justify-items: center;
+
+  flex: 1 0 auto;
 `;
 
 const Box = styled.div`
@@ -76,10 +171,12 @@ const Box = styled.div`
   font-size: 1.6rem;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 1.6rem;
 `;
 
 const BoxCheck = styled(Box)`
-  margin: 0.8rem 0;
+  margin-bottom: 1.6rem;
+
   text-align: center;
 
   align-items: start;
@@ -88,4 +185,25 @@ const BoxCheck = styled(Box)`
 const CheckItem = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+const Select = styled.select`
+  border: 1px solid black;
+  width: ${({ theme }) => theme.size.width.medium};
+  height: ${({ theme }) => theme.size.space.base};
+
+  background-color: transparent;
+`;
+
+const ProductBox = styled(Box)`
+  overflow: scroll;
+  height: 50rem;
+`;
+
+const ButtonBox = styled(Box)`
+  justify-content: space-between;
+`;
+const ButtonItem = styled.div`
+  margin: 0.4rem;
+  width: 100%;
 `;

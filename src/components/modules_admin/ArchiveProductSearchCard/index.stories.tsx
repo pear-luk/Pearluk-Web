@@ -1,5 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ArchiveProductSearchCard } from '.';
+import { categoryListMock } from '../../../mock/category.mock';
+import { productListMock } from '../../../mock/product.mock';
 
 export default {
   title: 'Modules_admin/ArchiveProductSearchCard',
@@ -41,6 +43,8 @@ EX.args = {
       number: 1000,
     },
   },
+  categoryList: categoryListMock,
+  productList: productListMock,
 };
 
 EX.parameters = {

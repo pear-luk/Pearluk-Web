@@ -1,5 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { Product } from './../types/model/product';
+import { archiveMock } from './archive.mock';
+import { categoryMock } from './category.mock';
 const imgFaker = Array(10)
   .fill(0)
   .map(() => `/imgs/test${faker.datatype.number({ min: 1, max: 10 })}.png`);
@@ -14,6 +16,8 @@ export const productMock = (): Product => {
     archive_id: faker.lorem.word(26),
     category_id: faker.lorem.word(26),
     imgs: imgFaker,
+    archive: archiveMock(),
+    category: categoryMock(),
   };
 };
 

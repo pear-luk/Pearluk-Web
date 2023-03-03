@@ -1,10 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { useLogout } from '../../../hooks/mutation/logout';
-import { authState } from '../../../recoil/auth/state';
 
 // export interface MenuProps {}
 
@@ -17,8 +14,6 @@ export interface Props {
 
 export const AdminMenu = ({ menuState = true, ...props }: Props) => {
   const [menuSelect, setMenuSelect] = useState<string | null>(null);
-  const auth = useRecoilValue(authState);
-  const { mutate: logoutMutate } = useLogout();
 
   const itemClickHandler = useCallback(
     (e: React.MouseEvent): void => {
@@ -94,9 +89,11 @@ export const AdminMenu = ({ menuState = true, ...props }: Props) => {
 };
 
 const Container = styled.div`
-  width: 29.6rem;
+  /* width: 29.6rem; */
   min-height: 100vh;
   background-color: ${({ theme }) => theme.color.yellow.yellow};
+  position: relative;
+  min-width: 20rem;
 `;
 
 const LogoBox = styled.div`
@@ -113,8 +110,9 @@ const LoginBox = styled.div`
 `;
 
 const MenuBox = styled.div`
+  position: absolute;
+
   margin: 17.2rem 0;
-  /* background-color: green; */
 `;
 const MenuItemBox = styled.div`
   width: 100%;

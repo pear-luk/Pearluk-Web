@@ -6,9 +6,9 @@ import { InputText } from '../../elements/InputText';
 import { ArchiveListItemAdmin } from '../../foundations_admin/ArchiveListItem';
 
 interface Props {
-  archives: Archive[];
+  archiveList: Archive[];
 }
-export const AdminArchiveListCard = ({ archives }: Props) => {
+export const AdminArchiveListCard = ({ archiveList }: Props) => {
   const [newArchive, setNewArchive] = useState('');
   const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target) setNewArchive(e.target.value);
@@ -27,13 +27,14 @@ export const AdminArchiveListCard = ({ archives }: Props) => {
         <Button size="mini" label="+" />
       </Box>
       <Item>ALL</Item>
-      {archives.map((archive) => {
-        return (
-          <Item key={archive.archive_id}>
-            <ArchiveListItemAdmin archive={archive} />
-          </Item>
-        );
-      })}
+      {archiveList &&
+        archiveList.map((archive) => {
+          return (
+            <Item key={archive.archive_id}>
+              <ArchiveListItemAdmin archive={archive} />
+            </Item>
+          );
+        })}
       <Item>SALE</Item>
     </Container>
   );

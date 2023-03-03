@@ -30,11 +30,13 @@ export const AdminLayout = ({ children, mode, contentSize = 'medium' }: Props) =
 
 const Container = styled.div`
   display: flex;
+  background-color: ${({ theme }) => theme.color.yellow.yellow};
 `;
 const ContentContainer = styled.main<{ mode: ModeType }>`
   height: auto;
-  width: 100%;
+
   min-height: calc(100vh);
+  margin: 0 auto;
 
   /* padding-bottom: 20rem; */
 

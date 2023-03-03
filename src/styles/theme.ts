@@ -45,6 +45,7 @@ const size = {
     small: '16.7rem',
     medium: '29.4rem',
     large: '34.2rem',
+    xlarge: '47.2rem',
   },
   button: {
     mini: 'width: 2.4rem; height: 2.4rem;',

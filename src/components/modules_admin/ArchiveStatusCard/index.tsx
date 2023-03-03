@@ -19,7 +19,7 @@ export const ArchiveStatusCard_Admin = ({ status = {} }: Props) => {
 };
 
 const Container = styled.div`
-  width: fit-content;
+  width: 100%;
   padding: 3.2rem 4.8rem;
   border: 1px solid black;
   min-width: 50.4rem;

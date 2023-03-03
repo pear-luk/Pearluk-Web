@@ -12,7 +12,7 @@ const Template: ComponentStory<typeof ArchiveListItemAdmin> = (args) => <Archive
 
 export const EX = Template.bind({});
 EX.args = {
-  archive: archiveMock,
+  archive: archiveMock(),
 };
 
 EX.parameters = {
