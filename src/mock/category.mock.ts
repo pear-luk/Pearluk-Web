@@ -4,6 +4,12 @@ export const categoryMock = (): Category => ({
   category_id: faker.lorem.word(26),
   name: faker.lorem.word(26),
   parent_category_id: null,
+  child_categories: [childCategoryMock(), childCategoryMock()],
+});
+export const childCategoryMock = (): Category => ({
+  category_id: faker.lorem.word(26),
+  name: faker.lorem.word(26),
+  parent_category_id: null,
 });
 
 export const categoryListMock: Category[] = Array(10)

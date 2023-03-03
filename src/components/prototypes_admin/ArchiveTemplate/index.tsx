@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useCreateArchive } from '../../../hooks/mutation/archive';
 import { Archive } from '../../../types/model/archive';
 import { Category } from '../../../types/model/category';
 import { Product } from '../../../types/model/product';
@@ -14,10 +15,12 @@ interface Props {
 }
 
 export const AdminArchiveTemplate = ({ archiveList, categoryList, productList }: Props) => {
+  const { mutateAsync } = useCreateArchive();
+
   return (
     <AdminLayout mode="white">
       <Container>
-        <AdminArchiveListCard archiveList={archiveList} />
+        <AdminArchiveListCard mode="white" archiveList={archiveList} createArchive={mutateAsync} />
         <Box>
           <Content>
             <ArchiveStatusCard_Admin

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Category } from '../../../types/model/category';
 import { Product } from '../../../types/model/product';
@@ -14,12 +15,27 @@ interface Props {
   productList: Product[];
 }
 export const ArchiveProductSearchCard = ({ status = {}, categoryList, productList }: Props) => {
+  const [parentCategory, setParentCategory] = useState<Category | 'all' | 'off'>();
+  const [productName, setProductName] = useState('');
+  const selectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setParentCategory(categoryList.find((category) => category.category_id === e.target.value));
+  };
+  const productNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target) setProductName(e.target.value);
+  };
   return (
     <Container>
       <Box>
         <p>검색</p>
         <div>
-          <InputLabel label="상품명" mode="white" label_type="left" input_width="medium" />
+          <InputLabel
+            label="상품명"
+            mode="white"
+            label_type="left"
+            input_width="medium"
+            value={productName}
+            onChange={productNameHandler}
+          />
         </div>
       </Box>
       <BoxCheck>
@@ -33,7 +49,7 @@ export const ArchiveProductSearchCard = ({ status = {}, categoryList, productLis
         <div>
           판매대기
           <CheckItem>
-            <CheckBox mode="white" />
+            <CheckBox mode="white" /> s
           </CheckItem>
         </div>
         <div>
@@ -62,8 +78,8 @@ export const ArchiveProductSearchCard = ({ status = {}, categoryList, productLis
         </div>
       </BoxCheck>
       <Box>
-        카테고리
-        <Select name="category" id="adf">
+        대 카테고리
+        <Select name="parent_category" id="parent_category" onChange={selectOnChange}>
           <option value={'all'}>all</option>
           {categoryList &&
             categoryList.map((category) => (
@@ -72,6 +88,23 @@ export const ArchiveProductSearchCard = ({ status = {}, categoryList, productLis
               </option>
             ))}
           <option value={'sale'}>sale</option>
+        </Select>
+      </Box>
+      <Box>
+        소 카테고리
+        <Select name="child_category" id="child_category">
+          <option value={'선택'}>선택</option>
+          {parentCategory &&
+            parentCategory !== 'all' &&
+            parentCategory !== 'off' &&
+            parentCategory.child_categories &&
+            parentCategory.child_categories.map((category) => {
+              return (
+                <option key={category.category_id} value={category.category_id}>
+                  {category.name}
+                </option>
+              );
+            })}
         </Select>
       </Box>
       <ButtonBox>
