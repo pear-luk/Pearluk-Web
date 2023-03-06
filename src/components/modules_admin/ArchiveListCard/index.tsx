@@ -17,8 +17,14 @@ interface Props {
   archiveList: Archive[];
   mode: ModeType;
   createArchive?: UseMutateAsyncFunction<BaseResponseDTO<Archive>, AxiosError<unknown, any>, CreateArchiveDTO, unknown>;
+  deleteArchive?: UseMutateAsyncFunction<
+    BaseResponseDTO<Archive>,
+    AxiosError<unknown, any>,
+    Pick<Archive, 'archive_id'>,
+    unknown
+  >;
 }
-export const AdminArchiveListCard = ({ archiveList, mode, createArchive }: Props) => {
+export const AdminArchiveListCard = ({ archiveList, mode, createArchive, deleteArchive }: Props) => {
   const [archiveListDup, setArchiveListDup] = useState<Archive[]>([]);
   const [newArchive, setNewArchive] = useState('');
   const [archiveId, setArchiveId] = useState('');
@@ -30,7 +36,17 @@ export const AdminArchiveListCard = ({ archiveList, mode, createArchive }: Props
     setArchiveListDup(archiveList);
   }, [archiveList]);
   const deleteOkButtonHandler = (archive_id: string) => () => {
-    setArchiveListDup(archiveListDup?.filter((archive) => archive.archive_id !== archive_id));
+    if (deleteArchive)
+      deleteArchive({ archive_id })
+        .then(() => {
+          setArchiveListDup(archiveListDup?.filter((archive) => archive.archive_id !== archive_id));
+        })
+        .catch((e) => {
+          alert(e.message);
+        });
+    else {
+      setArchiveListDup(archiveListDup?.filter((archive) => archive.archive_id !== archive_id));
+    }
     // 아카이브 제거 mutate
     // ...
     close();
