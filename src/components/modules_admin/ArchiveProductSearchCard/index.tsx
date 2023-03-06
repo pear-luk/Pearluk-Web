@@ -23,6 +23,10 @@ export const ArchiveProductSearchCard = ({ status = {}, categoryList, productLis
   const productNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target) setProductName(e.target.value);
   };
+
+
+
+  
   return (
     <Container>
       <Box>

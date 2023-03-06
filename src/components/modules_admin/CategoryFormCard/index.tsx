@@ -1,16 +1,11 @@
-import { AxiosError } from 'axios';
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
-import { UseMutateAsyncFunction } from 'react-query';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { FontWeight, Size } from '../../../styles/theme';
-import { BaseResponseDTO } from '../../../types/common/baseResponse';
 import { ButtonColorType, ModeType } from '../../../types/common/propsTypes';
-import { Archive } from '../../../types/model/archive';
-import { CreateArchiveDTO } from '../../../types/request/archive';
+import { Category } from '../../../types/model/category';
 import { Button } from '../../elements/Button';
 import { Label } from '../../elements/Label';
-import { TextArea } from '../../elements/Textarea';
 import { InputLabel } from '../../foundations/InputLabel';
 
 interface Props {
@@ -30,17 +25,10 @@ interface Props {
   NO_Button_color?: ButtonColorType;
   NO_Button_onClick?: (() => void) | ((e: React.MouseEvent) => void);
 
-  createArchive?: UseMutateAsyncFunction<
-    BaseResponseDTO<Archive>,
-    AxiosError<unknown, unknown>,
-    CreateArchiveDTO,
-    unknown
-  >;
-
-  archiveList?: Archive[];
-  setArchiveList?: Dispatch<SetStateAction<Archive[]>>;
+  categoryList?: Category[];
+  // setArchiveList?: Dispatch<SetStateAction<Archive[]>>;
 }
-export const ArchiveForm = ({
+export const CategoryForm = ({
   mode,
 
   input_width = 'medium',
@@ -52,46 +40,33 @@ export const ArchiveForm = ({
   OK_Button_onClick,
   NO_Button = true,
   NO_Button_onClick,
-  archiveList,
-  setArchiveList,
-  createArchive,
+  categoryList,
 }: Props) => {
-  const [title, setTitle] = useState('');
+  const [name, setName] = useState('');
   const [year, setYear] = useState('');
   const [introduce, setIntroduce] = useState('');
-
-  const onChangeTitle = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const [parentCategoryId, setParentCategoryId] = useState<string>();
+  const onChangeName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target) {
-      setTitle(e.target.value);
+      setName(e.target.value);
     }
   }, []);
-  const onChangeYear = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    // if(e.target.value)
-    if (e.target) {
-      if (isNaN(Number(e.target.value))) {
-        alert('숫자입력하세요');
-        setYear('');
-      } else setYear(e.target.value);
-      // setArchiveInfo && setArchiveInfo(() => ({ ...archiveInfo, year: Number(e.target.value) }));
-    }
-  }, []);
-  const onChangeIntroduce = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (e.target) {
-      setIntroduce(e.target.value);
-      // setArchiveInfo && setArchiveInfo(() => ({ ...archiveInfo, introduce: e.target.value }));
-    }
-  }, []);
+  const selectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setParentCategoryId(e.target.value);
+  };
+  useEffect(() => {
+    console.log(parentCategoryId);
+  }, [parentCategoryId]);
   const okButtonHandler = (e: React.MouseEvent) => {
-    createArchive &&
-      setArchiveList &&
-      archiveList &&
-      createArchive({ title, year: Number(year), introduce }).then(({ result }) => {
-        const archive = result;
-        archive && setArchiveList([archive, ...archiveList]);
-      });
-
-    OK_Button_onClick && OK_Button_onClick(e);
-    NO_Button_onClick && NO_Button_onClick(e);
+    // createArchive &&
+    //   setArchiveList &&
+    //   archiveList &&
+    //   createArchive({ name, year: Number(year), introduce }).then(({ result }) => {
+    //     const archive = result;
+    //     archive && setArchiveList([archive, ...archiveList]);
+    //   });
+    // OK_Button_onClick && OK_Button_onClick(e);
+    // NO_Button_onClick && NO_Button_onClick(e);
   };
   return (
     <Container
@@ -101,32 +76,28 @@ export const ArchiveForm = ({
       input_width={input_width}
       input_height={input_height}>
       <Box>
-        <InputLabel
-          mode={mode === 'dark' ? 'white' : 'dark'} //
-          value={title}
-          // value={archiveInfo?.title}
-          label="ARCHIVE TITLE"
-          onChange={onChangeTitle}
-          placeholder="TITLE"
-        />
+        <Label mode={mode === 'dark' ? 'white' : 'dark'} label="PARENT CATEGORY" />
+        <Select name="parent_category" id="parent_category" onChange={selectOnChange}>
+          <option value={undefined}>null</option>
+          {categoryList &&
+            categoryList.map((category) => (
+              <option key={category.category_id} value={category.category_id}>
+                {category.name}
+              </option>
+            ))}
+        </Select>
       </Box>
       <Box>
         <InputLabel
           mode={mode === 'dark' ? 'white' : 'dark'} //
-          value={year}
-          // value={String(archiveInfo?.year)}
-          label="YEAR"
-          placeholder="ONLY YEAR(NUM) 2000 ~ NOW YEAR + 1 "
-          onChange={onChangeYear}
+          value={name}
+          // value={archiveInfo?.name}
+          label="CATEGORY NAME"
+          onChange={onChangeName}
+          placeholder="name"
         />
       </Box>
 
-      <Label mode={mode === 'dark' ? 'white' : 'dark'} label="INTRODUCE" label_weight={label_weight} />
-      <TextArea
-        mode={mode === 'dark' ? 'white' : 'dark'}
-        onChange={onChangeIntroduce}
-        placeholder="ARCHIVE INTORO, CAN NULL"
-      />
       <ButtonBox>
         {OK_Button && (
           <Button
@@ -171,4 +142,12 @@ const ButtonBox = styled.div`
   button {
     margin: 0 0.4rem;
   }
+`;
+const Select = styled.select`
+  border: 1px solid ${({ theme }) => theme.color.yellow.yellow};
+  color: ${({ theme }) => theme.color.yellow.yellow};
+  width: ${({ theme }) => theme.size.width.medium};
+  height: ${({ theme }) => theme.size.space.base};
+
+  background-color: transparent;
 `;

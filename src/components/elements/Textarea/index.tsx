@@ -8,7 +8,7 @@ interface Props {
 
   size?: keyof Size['width'];
   id?: string;
-
+  placeholder?: string;
   onClick?: ((e: React.MouseEvent<HTMLElement>) => void) | (() => void);
   onChange?: ((e: React.ChangeEvent<HTMLTextAreaElement>) => void) | (() => void);
 }

@@ -10,7 +10,9 @@ export default {
 const Template: ComponentStory<typeof ArchiveForm> = (args) => <ArchiveForm {...args} />;
 
 export const EX = Template.bind({});
-EX.args = {};
+EX.args = {
+  archive: {},
+};
 
 EX.parameters = {
   layout: 'fullscreen',

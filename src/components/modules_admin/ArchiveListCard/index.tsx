@@ -9,9 +9,9 @@ import { ModeType } from '../../../types/common/propsTypes';
 import { Archive } from '../../../types/model/archive';
 import { CreateArchiveDTO } from '../../../types/request/archive';
 import { Button } from '../../elements/Button';
-import { InputText } from '../../elements/InputText';
-import { ArchiveForm } from '../../foundations_admin/ArchiveForm';
+import { Label } from '../../elements/Label';
 import { ArchiveListItemAdmin } from '../../foundations_admin/ArchiveListItem';
+import { ArchiveForm } from '../ArchiveForm';
 
 interface Props {
   archiveList: Archive[];
@@ -26,12 +26,8 @@ interface Props {
 }
 export const AdminArchiveListCard = ({ archiveList, mode, createArchive, deleteArchive }: Props) => {
   const [archiveListDup, setArchiveListDup] = useState<Archive[]>([]);
-  const [newArchive, setNewArchive] = useState('');
   const [archiveId, setArchiveId] = useState('');
 
-  const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target) setNewArchive(e.target.value);
-  };
   useEffect(() => {
     setArchiveListDup(archiveList);
   }, [archiveList]);
@@ -89,16 +85,9 @@ export const AdminArchiveListCard = ({ archiveList, mode, createArchive, deleteA
     <Container>
       <ArchiveModal></ArchiveModal>
       <Modal />
+      <Label label="ARCHIVE" label_weight="bold" label_size="large" />
       <Box>
-        <InputText
-          mode={mode} //
-          input_width="medium"
-          input_height="base"
-          value={newArchive}
-          onChange={inputOnChange}
-          placeholder="New Archive"
-        />
-        <Button size="mini" label="+" onClick={archiveModalOpen} />
+        <Button size="xlarge" label="ADD ARCHIVE" onClick={archiveModalOpen} />
       </Box>
       <Item>ALL</Item>
       {archiveListDup &&

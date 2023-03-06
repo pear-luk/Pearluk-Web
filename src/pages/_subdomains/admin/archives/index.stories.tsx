@@ -11,7 +11,7 @@ export default {
 } as ComponentMeta<typeof Archive>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Archive> = (args) => <Archive />;
+const Template: ComponentStory<typeof Archive> = (args) => <Archive {...args} />;
 
 export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args

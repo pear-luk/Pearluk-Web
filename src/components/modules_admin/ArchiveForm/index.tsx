@@ -30,12 +30,7 @@ interface Props {
   NO_Button_color?: ButtonColorType;
   NO_Button_onClick?: (() => void) | ((e: React.MouseEvent) => void);
 
-  createArchive?: UseMutateAsyncFunction<
-    BaseResponseDTO<Archive>,
-    AxiosError<unknown, unknown>,
-    CreateArchiveDTO,
-    unknown
-  >;
+  createArchive?: UseMutateAsyncFunction<BaseResponseDTO<Archive>, AxiosError<unknown, any>, CreateArchiveDTO, unknown>;
 
   archiveList?: Archive[];
   setArchiveList?: Dispatch<SetStateAction<Archive[]>>;
