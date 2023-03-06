@@ -1,3 +1,5 @@
+import { Archive } from '../../../types/model/archive';
+import { CreateArchiveDTO } from './../../../types/request/archive';
 import { ArchiveListGetResponseDTO } from './../../../types/response/archive';
 import { API } from './../../util/API';
 // export const getArchiveList = () => API2<null, ArchiveListGetResponseDTO>('/archives', { method: 'get' });
@@ -5,4 +7,8 @@ import { API } from './../../util/API';
 // 1번 호출함
 export const getArchiveList = async () => {
   return (await API<ArchiveListGetResponseDTO>('/archives', { method: 'get' })).data;
+};
+
+export const createArchive = () => async (mutationData: CreateArchiveDTO) => {
+  return (await API<Archive>('/archives', { method: 'post', data: mutationData })).data;
 };

@@ -28,6 +28,7 @@ export const useModal = ({ mode, message, OK_Button_onClick, NO_Button, ...props
           <Modal
             mode={mode}
             message={message}
+            NO_Button={NO_Button}
             NO_Button_onClick={NO_Button ? close : undefined}
             OK_Button_onClick={NO_Button || OK_Button_onClick ? OK_Button_onClick : close}
             {...props}
