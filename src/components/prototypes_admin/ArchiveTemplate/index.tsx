@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useCreateArchive, useDeleteArchive } from '../../../hooks/mutation/archive';
-import { categoryListMock } from '../../../mock/category.mock';
+import { useCreateCategory } from '../../../hooks/mutation/category';
 import { Archive } from '../../../types/model/archive';
 import { Category } from '../../../types/model/category';
 import { Product } from '../../../types/model/product';
@@ -19,20 +19,20 @@ interface Props {
 export const AdminArchiveTemplate = ({ archiveList, categoryList, productList }: Props) => {
   const { mutateAsync: createArchive } = useCreateArchive();
   const { mutateAsync: deleteArchive } = useDeleteArchive();
-
+  const { mutateAsync: createCategory } = useCreateCategory();
   return (
     <AdminLayout mode="white">
       <Container>
         <LineBox>
           <AdminArchiveListCard
             mode="white"
-            // archiveList={archiveList}
+            archiveList={archiveList}
             createArchive={createArchive}
             deleteArchive={deleteArchive}
           />
         </LineBox>
         <LineBox>
-          <AdminCategoryListCard categoryList={categoryListMock} />
+          <AdminCategoryListCard mode="white" categoryList={categoryList} createCategory={createCategory} />
         </LineBox>
         <ContentBox>
           <Content>

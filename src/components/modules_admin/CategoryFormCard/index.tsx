@@ -1,9 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
+import { AxiosError } from 'axios';
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
 
 import { FontWeight, Size } from '../../../styles/theme';
+import { BaseResponseDTO } from '../../../types/common/baseResponse';
 import { ButtonColorType, ModeType } from '../../../types/common/propsTypes';
 import { Category } from '../../../types/model/category';
+import { CreateCategoryDTO } from '../../../types/request/category';
 import { Button } from '../../elements/Button';
 import { Label } from '../../elements/Label';
 import { InputLabel } from '../../foundations/InputLabel';
@@ -26,7 +30,9 @@ interface Props {
   NO_Button_onClick?: (() => void) | ((e: React.MouseEvent) => void);
 
   categoryList?: Category[];
-  // setArchiveList?: Dispatch<SetStateAction<Archive[]>>;
+  setCategoryList?: Dispatch<SetStateAction<Category[]>>;
+
+  createCategory?: UseMutateAsyncFunction<BaseResponseDTO<Category>, AxiosError<unknown>, CreateCategoryDTO, unknown>;
 }
 export const CategoryForm = ({
   mode,
@@ -41,11 +47,11 @@ export const CategoryForm = ({
   NO_Button = true,
   NO_Button_onClick,
   categoryList,
+  setCategoryList,
+  createCategory,
 }: Props) => {
   const [name, setName] = useState('');
-  const [year, setYear] = useState('');
-  const [introduce, setIntroduce] = useState('');
-  const [parentCategoryId, setParentCategoryId] = useState<string>();
+  const [parentCategoryId, setParentCategoryId] = useState<string>('null');
   const onChangeName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target) {
       setName(e.target.value);
@@ -58,6 +64,61 @@ export const CategoryForm = ({
     console.log(parentCategoryId);
   }, [parentCategoryId]);
   const okButtonHandler = (e: React.MouseEvent) => {
+    const newCategory: Omit<Category, 'category_id'> = {
+      name,
+      parent_category_id: parentCategoryId === 'null' ? undefined : parentCategoryId,
+    };
+    if (name.length === 0) {
+      alert('카테고리 이름을 입력해주세요');
+    }
+
+    createCategory &&
+      setCategoryList &&
+      categoryList &&
+      createCategory(newCategory)
+        .then(({ result }) => {
+          if (result?.parent_category_id) {
+            const { parent_category_id } = result;
+
+            const parentIndex = categoryList?.findIndex((category) => category.category_id === parent_category_id);
+            const editList = [
+              ...categoryList.slice(0, parentIndex),
+              {
+                ...categoryList[parentIndex],
+                child_categories: [...(categoryList[parentIndex]?.child_categories || []), result],
+              },
+              ...categoryList.slice(parentIndex + 1),
+            ];
+            setCategoryList(editList);
+
+            return;
+          }
+
+          result && setCategoryList([...categoryList, result]);
+        })
+        .catch(() => {
+          // 스토리북 테스트용 이후 지울예정 (mock데이터 부모 카테고리 아이디 문제.)
+          const parentIndex = categoryList?.findIndex((category) => category.category_id === parentCategoryId);
+
+          console.log(parentIndex);
+          if (parentIndex >= 0) {
+            const editList = [
+              ...categoryList.slice(0, parentIndex),
+              {
+                ...categoryList[parentIndex],
+                child_categories: [
+                  ...(categoryList[parentIndex]?.child_categories || []),
+                  { category_id: new Date().toDateString(), ...newCategory },
+                ],
+              },
+              ...categoryList.slice(parentIndex + 1),
+            ];
+
+            setCategoryList(editList);
+          } else {
+            setCategoryList([...categoryList, { category_id: new Date().getTime().toString(), ...newCategory }]);
+          }
+        });
     // createArchive &&
     //   setArchiveList &&
     //   archiveList &&
@@ -78,7 +139,7 @@ export const CategoryForm = ({
       <Box>
         <Label mode={mode === 'dark' ? 'white' : 'dark'} label="PARENT CATEGORY" />
         <Select name="parent_category" id="parent_category" onChange={selectOnChange}>
-          <option value={undefined}>null</option>
+          <option value={'null'}>null</option>
           {categoryList &&
             categoryList.map((category) => (
               <option key={category.category_id} value={category.category_id}>

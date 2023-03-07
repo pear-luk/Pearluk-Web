@@ -12,6 +12,6 @@ export const childCategoryMock = (): Category => ({
   parent_category_id: null,
 });
 
-export const categoryListMock: Category[] = Array(30)
+export const categoryListMock: Category[] = Array(4)
   .fill(0)
   .map(() => categoryMock());

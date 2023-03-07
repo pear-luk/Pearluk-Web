@@ -1,9 +1,13 @@
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
+import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
 import { useAdminModal } from '../../../hooks/util/useAdminModal';
 import { useModal } from '../../../hooks/util/useModal';
+import { BaseResponseDTO } from '../../../types/common/baseResponse';
 import { ModeType } from '../../../types/common/propsTypes';
 import { Category } from '../../../types/model/category';
+import { CreateCategoryDTO } from '../../../types/request/category';
 import { Button } from '../../elements/Button';
 import { Label } from '../../elements/Label';
 import { ParentCategoryListItem } from '../../foundations_admin/ParentCategoryListItem';
@@ -11,9 +15,12 @@ import { CategoryForm } from '../CategoryFormCard';
 
 interface Props {
   categoryList: Category[];
+
+  createCategory?: UseMutateAsyncFunction<BaseResponseDTO<Category>, AxiosError<unknown>, CreateCategoryDTO, unknown>;
+
   mode: ModeType;
 }
-export const AdminCategoryListCard = ({ categoryList, mode }: Props) => {
+export const AdminCategoryListCard = ({ categoryList, mode, createCategory }: Props) => {
   const [categoryListState, setCategoryListState] = useState<Category[]>([]);
   const [categoryId, setCategoryId] = useState('');
 
@@ -43,7 +50,15 @@ export const AdminCategoryListCard = ({ categoryList, mode }: Props) => {
   } = useAdminModal({
     mode: mode,
 
-    Content: <CategoryForm mode={mode} NO_Button_onClick={() => cateogryFormClose()} />,
+    Content: (
+      <CategoryForm
+        mode={mode}
+        NO_Button_onClick={() => cateogryFormClose()}
+        categoryList={categoryListState}
+        setCategoryList={setCategoryListState}
+        createCategory={createCategory}
+      />
+    ),
   });
   const {
     Modal: CategoryDeleteModal,
@@ -75,7 +90,7 @@ export const AdminCategoryListCard = ({ categoryList, mode }: Props) => {
           categoryListState.map((category) => {
             const { category_id } = category;
             return (
-              <Item key={'list' + category.category_id}>
+              <Item key={category.category_id}>
                 <ParentCategoryListItem
                   mode={mode}
                   category={category}
