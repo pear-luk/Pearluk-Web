@@ -7,7 +7,7 @@ import { useProjectList } from '../../../../hooks/queries/productQuery';
 function Products() {
   // mode, icon
   const { archiveList } = useArchiveList();
-  const { productList } = useProjectList({ page: 1, archive: 'all' });
+  const { productList } = useProjectList({ page: String(1), archive: 'all' });
   const { categoryList } = useCategoryList();
 
   useEffect(() => {

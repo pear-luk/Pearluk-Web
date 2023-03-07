@@ -13,7 +13,9 @@ const Template: ComponentStory<typeof QATemplate> = (args) => <QATemplate {...ar
 export const EX = Template.bind({});
 
 EX.args = {
-  questions: Array(100).fill(questionListItemMock()),
+  questions: Array(100)
+    .fill(0)
+    .map(() => questionListItemMock()),
   totalCount: 100,
 };
 EX.parameters = {

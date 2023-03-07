@@ -3,15 +3,15 @@ import { Answer, AnswerImg } from './../types/model/answer';
 import { Question, QuestionImg } from './../types/model/question';
 // Omit<Question, 'password' | 'contents'>
 export const questionListItemMock = (): Omit<Question, 'password' | 'contents' | 'imgs'> => ({
-  question_id: faker.lorem.word(26),
+  question_id: faker.random.words(10),
   title: faker.lorem.lines(2),
 
   secret_mode: faker.datatype.number({ min: 0, max: 1 }),
-  user_id: faker.lorem.word(26),
+  user_id: faker.random.words(10),
 
   // Join
   user: {
-    user_id: faker.lorem.word(26),
+    user_id: faker.random.words(10),
     nickname: faker.lorem.word(26),
   },
   created_at: faker.date.between('2020-01-01T00:00:00.000Z', '2030-01-01T00:00:00.000Z'),
@@ -32,15 +32,15 @@ export const questionItem = (): Omit<Question, 'password' | 'imgs'> => ({
 // category_id: faker.lorem.word(26),
 // imgs: imgFaker,
 export const questionDetailMock = (): Question => ({
-  question_id: faker.lorem.word(26),
+  question_id: faker.random.words(10),
   title: faker.lorem.lines(2),
   contents: faker.lorem.lines(6),
   secret_mode: faker.datatype.number({ min: 0, max: 1 }),
-  user_id: faker.lorem.word(26),
+  user_id: faker.random.words(10),
 
   // Join
   user: {
-    user_id: faker.lorem.word(26),
+    user_id: faker.random.words(10),
     nickname: faker.lorem.word(26),
   },
   created_at: faker.date.between('2020-01-01T00:00:00.000Z', '2030-01-01T00:00:00.000Z'),
@@ -55,18 +55,18 @@ export const questionDetailMock = (): Question => ({
 });
 
 export const qustionImgMock = (): QuestionImg => ({
-  question_img_id: faker.lorem.word(26),
-  question_id: faker.lorem.word(26),
+  question_img_id: faker.random.words(10),
+  question_id: faker.random.words(10),
   url: faker.image.cats(),
   sequence: faker.datatype.number({ min: 0, max: 10 }),
 });
 
 export const answerMock = (): Answer => ({
-  answer_id: faker.lorem.word(26),
+  answer_id: faker.random.words(10),
 
   contents: faker.lorem.lines(5),
   product_id: null,
-  question_id: faker.lorem.word(26),
+  question_id: faker.random.words(10),
 
   imgs: Array(faker.datatype.number({ min: 0, max: 10 }))
     .fill(0)
@@ -74,8 +74,8 @@ export const answerMock = (): Answer => ({
 });
 
 export const answerImgMock = (): AnswerImg => ({
-  answer_img_id: faker.lorem.word(26),
-  answer_id: faker.lorem.word(26),
+  answer_img_id: faker.random.words(10),
+  answer_id: faker.random.words(10),
   url: faker.image.animals(),
   sequence: faker.datatype.number({ min: 0, max: 10 }),
 });

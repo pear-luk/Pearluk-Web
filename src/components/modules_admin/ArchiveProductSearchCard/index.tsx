@@ -14,7 +14,7 @@ interface Props {
   categoryList: Category[];
   productList: Product[];
 }
-export const ArchiveProductSearchCard = ({ status = {}, categoryList, productList }: Props) => {
+export const ArchiveProductSearchCard = ({ categoryList, productList }: Props) => {
   const [parentCategory, setParentCategory] = useState<Category | 'all' | 'off'>();
   const [productName, setProductName] = useState('');
   const selectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -24,9 +24,6 @@ export const ArchiveProductSearchCard = ({ status = {}, categoryList, productLis
     if (e.target) setProductName(e.target.value);
   };
 
-
-
-  
   return (
     <Container>
       <Box>
@@ -190,15 +187,14 @@ export const ArchiveProductSearchCard = ({ status = {}, categoryList, productLis
 };
 
 const Container = styled.div`
+  position: relative;
   width: fit-content;
   padding: 3.2rem 2.4rem;
   border: 1px solid black;
+
   min-width: 50.4rem;
-
-  justify-content: space-around;
-  justify-items: center;
-
-  flex: 1 0 auto;
+  row-gap: 1.6rem;
+  height: fit-content;
 `;
 
 const Box = styled.div`
@@ -206,9 +202,9 @@ const Box = styled.div`
   justify-items: left;
   text-align: center;
   font-size: 1.6rem;
+  margin-bottom: 1.6rem;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.6rem;
 `;
 
 const BoxCheck = styled(Box)`
@@ -234,7 +230,7 @@ const Select = styled.select`
 
 const ProductBox = styled(Box)`
   overflow: scroll;
-  height: 50rem;
+  max-height: 50vh;
 `;
 
 const ButtonBox = styled(Box)`

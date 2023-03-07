@@ -3,8 +3,8 @@ import { CartProduct } from './../types/model/cart';
 
 export const cartProductMock = (): CartProduct => {
   return {
-    cart_product_id: faker.lorem.word({ length: 26 }),
-    product_id: faker.lorem.word({ length: 26 }),
+    cart_product_id: faker.random.words(10),
+    product_id: faker.random.words(10),
     count: faker.datatype.number({ min: 1, max: 20 }),
     product: {
       name: faker.lorem.words(10),

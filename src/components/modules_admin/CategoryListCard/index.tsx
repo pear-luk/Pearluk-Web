@@ -43,7 +43,7 @@ export const AdminCategoryListCard = ({ categoryList, mode }: Props) => {
   } = useAdminModal({
     mode: mode,
 
-    Content: <CategoryForm mode={mode} />,
+    Content: <CategoryForm mode={mode} NO_Button_onClick={() => cateogryFormClose()} />,
   });
   const {
     Modal: CategoryDeleteModal,
@@ -70,20 +70,21 @@ export const AdminCategoryListCard = ({ categoryList, mode }: Props) => {
       <Box>
         <Button size="xlarge" label="ADD CATEGORY" onClick={cateogryFormOpen} />
       </Box>
-
-      {categoryListState &&
-        categoryListState.map((category) => {
-          const { category_id } = category;
-          return (
-            <Item key={'list' + category.category_id}>
-              <ParentCategoryListItem
-                mode={mode}
-                category={category}
-                onClick={categoryDeleteButtonHandler(category_id)}
-              />
-            </Item>
-          );
-        })}
+      <ListBox>
+        {categoryListState &&
+          categoryListState.map((category) => {
+            const { category_id } = category;
+            return (
+              <Item key={'list' + category.category_id}>
+                <ParentCategoryListItem
+                  mode={mode}
+                  category={category}
+                  onClick={categoryDeleteButtonHandler(category_id)}
+                />
+              </Item>
+            );
+          })}
+      </ListBox>
     </Container>
   );
 };
@@ -91,9 +92,10 @@ export const AdminCategoryListCard = ({ categoryList, mode }: Props) => {
 const Container = styled.div`
   width: fit-content;
   padding: 1.6rem;
-  border: 1px solid black;
-  min-height: 50vh;
-  overflow: scroll;
+
+  max-height: 100vh;
+  min-height: 79rem;
+  /* overflow: scroll; */
 `;
 
 const Item = styled.div`
@@ -108,4 +110,9 @@ const Box = styled.div`
   button {
     flex: 1 0 auto;
   }
+`;
+const ListBox = styled.div`
+  max-height: 94vh;
+  min-height: 70rem;
+  overflow: scroll;
 `;

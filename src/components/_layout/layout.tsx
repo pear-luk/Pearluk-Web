@@ -44,7 +44,6 @@ export const LayOut = ({ children, mode, centerLogo = true, menu = true, content
 
 const Container = styled.div``;
 const ContentContainer = styled.main<{ mode: ModeType }>`
-  height: auto;
   width: 100%;
   min-height: calc(100vh);
   padding-top: 4.8rem;

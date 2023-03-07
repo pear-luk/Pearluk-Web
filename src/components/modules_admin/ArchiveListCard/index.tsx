@@ -16,10 +16,15 @@ import { ArchiveForm } from '../ArchiveForm';
 interface Props {
   archiveList: Archive[];
   mode: ModeType;
-  createArchive?: UseMutateAsyncFunction<BaseResponseDTO<Archive>, AxiosError<unknown, any>, CreateArchiveDTO, unknown>;
+  createArchive?: UseMutateAsyncFunction<
+    BaseResponseDTO<Archive>,
+    AxiosError<unknown, unknown>,
+    CreateArchiveDTO,
+    unknown
+  >;
   deleteArchive?: UseMutateAsyncFunction<
     BaseResponseDTO<Archive>,
-    AxiosError<unknown, any>,
+    AxiosError<unknown, unknown>,
     Pick<Archive, 'archive_id'>,
     unknown
   >;
@@ -85,20 +90,22 @@ export const AdminArchiveListCard = ({ archiveList, mode, createArchive, deleteA
     <Container>
       <ArchiveModal></ArchiveModal>
       <Modal />
-      <Label label="ARCHIVE" label_weight="bold" label_size="large" />
+      <Label mode={mode} label="ARCHIVE" label_weight="bold" label_size="large" />
       <Box>
         <Button size="xlarge" label="ADD ARCHIVE" onClick={archiveModalOpen} />
       </Box>
-      <Item>ALL</Item>
-      {archiveListDup &&
-        archiveListDup.map((archive) => {
-          return (
-            <Item key={archive.archive_id}>
-              <ArchiveListItemAdmin archive={archive} onClick={buttonHandler(archive.archive_id)} />
-            </Item>
-          );
-        })}
-      <Item>SALE</Item>
+      <ListBox>
+        <Item>ALL</Item>
+        {archiveListDup &&
+          archiveListDup.map((archive) => {
+            return (
+              <Item key={archive.archive_id}>
+                <ArchiveListItemAdmin archive={archive} onClick={buttonHandler(archive.archive_id)} />
+              </Item>
+            );
+          })}
+        <Item>SALE</Item>
+      </ListBox>
     </Container>
   );
 };
@@ -106,8 +113,12 @@ export const AdminArchiveListCard = ({ archiveList, mode, createArchive, deleteA
 const Container = styled.div`
   width: fit-content;
   padding: 1.6rem;
-  border: 1px solid black;
-  min-height: 100vh;
+  height: inherit;
+  right: 0;
+  top: 0;
+
+  max-height: 100vh;
+  min-height: 79rem;
 `;
 
 const Item = styled.div`
@@ -122,4 +133,9 @@ const Box = styled.div`
   button {
     flex: 1 0 auto;
   }
+`;
+const ListBox = styled.div`
+  overflow: scroll;
+  max-height: 94vh;
+  min-height: 70rem;
 `;
