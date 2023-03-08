@@ -71,7 +71,12 @@ export const AdminArchiveTemplate = ({ archiveList, categoryList, productList }:
               />
             </Box>
             <Box>
-              <ArchiveProductSearchCard status={{}} categoryList={categoryList} productList={productList} />
+              <ArchiveProductSearchCard
+                mode="white"
+                status={{}}
+                categoryList={categoryList}
+                productList={productList}
+              />
             </Box>
           </Content>
         </ContentBox>

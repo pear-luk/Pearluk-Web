@@ -137,7 +137,7 @@ export const CategoryForm = ({
       input_width={input_width}
       input_height={input_height}>
       <Box>
-        <Label mode={mode === 'dark' ? 'white' : 'dark'} label="PARENT CATEGORY" />
+        <Label mode={mode === 'dark' ? 'white' : 'dark'} label="PARENT CATEGORY" label_weight="bold" />
         <Select name="parent_category" id="parent_category" onChange={selectOnChange}>
           <option value={'null'}>null</option>
           {categoryList &&

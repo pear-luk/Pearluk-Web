@@ -107,6 +107,11 @@ export const ProductForm = ({
   };
   const introduceOnChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.target.value && setIntroduce(e.target.value);
+    if (textareaRef.current) {
+      if (!e.target.value) {
+        textareaRef.current.style.height = '0px';
+      }
+    }
   }, []);
 
   const changeImageSequenceButton = (index: number, type: '+' | '-') => () => {
@@ -135,8 +140,18 @@ export const ProductForm = ({
     console.log(categoryId);
   }, [categoryId]);
   useEffect(() => {
-    console.log(introduce);
+    console.log(introduce.length);
+    if (textareaRef.current) {
+      if (!introduce) {
+        textareaRef.current.style.height = '0px';
+        return;
+      }
+      textareaRef.current.style.height = '0px';
+      const scrollHeight = textareaRef.current.scrollHeight;
+      textareaRef.current.style.height = scrollHeight + 'px';
+    }
   }, [introduce]);
+
   useEffect(() => {
     setImageUrls(
       images.map((image) => {
@@ -145,6 +160,7 @@ export const ProductForm = ({
       }),
     );
   }, [images]);
+
   const okButtonHandler = (e: React.MouseEvent) => {};
 
   return (
@@ -153,12 +169,12 @@ export const ProductForm = ({
         <InputLabel
           mode={mode === 'dark' ? 'white' : 'dark'}
           input_width="large"
-          label="NAME"
+          label="PRODUCT NAME"
           onChange={onChangeName}
           value={'' || name}
         />
         <Box>
-          <Label mode={mode === 'dark' ? 'white' : 'dark'} label="ARCHIVE" />
+          <Label mode={mode === 'dark' ? 'white' : 'dark'} label="PRODUCT'S ARCHIVE" />
           <Select
             mode={mode === 'dark' ? 'white' : 'dark'}
             name="archive"
@@ -174,7 +190,7 @@ export const ProductForm = ({
           </Select>
         </Box>
         <Box>
-          <Label mode={mode === 'dark' ? 'white' : 'dark'} label="PARENT CATEGORY" />
+          <Label mode={mode === 'dark' ? 'white' : 'dark'} label="PRODUCT'S PARENT CATEGORY" label_weight="bold" />
           <Select
             mode={mode === 'dark' ? 'white' : 'dark'}
             name="parent_category"
@@ -190,7 +206,7 @@ export const ProductForm = ({
           </Select>
         </Box>
         <Box>
-          <Label mode={mode === 'dark' ? 'white' : 'dark'} label="CHILD CATEGORY" />
+          <Label mode={mode === 'dark' ? 'white' : 'dark'} label="PRODUCT'S CHILD CATEGORY" label_weight="bold" />
           <Select
             mode={mode === 'dark' ? 'white' : 'dark'}
             name="child_category"
@@ -212,6 +228,7 @@ export const ProductForm = ({
           mode={mode === 'dark' ? 'white' : 'dark'}
           input_width="large"
           label="QUANTITY"
+          label_weight="bold"
           onChange={onChangeQuantity}
           value={'' || quantity}
         />
@@ -219,13 +236,14 @@ export const ProductForm = ({
           mode={mode === 'dark' ? 'white' : 'dark'}
           input_width="large"
           label="PRICE"
+          label_weight="bold"
           onChange={onChangePrice}
           value={'' || price}
         />
 
         {images.length > 0 && (
           <>
-            <Label label="THUMBNAIL" mode={mode === 'dark' ? 'white' : 'dark'} label_weight="bold" />
+            <Label label="PRODUCT'S THUMBNAIL" mode={mode === 'dark' ? 'white' : 'dark'} label_weight="bold" />
             <ImageListBox>
               <ImageBox>
                 <Image
@@ -282,6 +300,7 @@ export const ProductForm = ({
         )}
 
         <ContentInputBox>
+          <Label label="INTRODUCE" mode={mode === 'dark' ? 'white' : 'dark'} label_weight="bold" />
           <TextArea
             mode={mode === 'dark' ? 'white' : 'dark'}
             size="large"
@@ -319,7 +338,7 @@ const Container = styled.div<Pick<Props, 'mode'>>`
   padding: 1.6rem 0;
   display: flex;
   flex-direction: column;
-  row-gap: 0.8rem;
+  row-gap: 1.6rem;
   justify-content: center;
   align-items: center;
 `;

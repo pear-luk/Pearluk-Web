@@ -38,6 +38,11 @@ export const QnAForm = ({ mode = 'white', size = 'medium', submit, product_id, s
   };
   const textAreaChangeHandler = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.target.value && setContents(e.target.value);
+    if (textareaRef.current) {
+      if (!e.target.value) {
+        textareaRef.current.style.height = '0px';
+      }
+    }
   }, []);
 
   const checkBoxClickHandler = useCallback(() => {
