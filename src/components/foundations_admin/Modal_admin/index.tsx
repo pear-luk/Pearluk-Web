@@ -43,7 +43,8 @@ const ModalCard = styled.div<{ mode: ModeType; font_size: keyof Size['font']; fo
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  max-height: 70vh;
+  overflow: scroll;
   font-weight: ${({ theme, font_weight }) => font_weight && theme.fontWeight[font_weight]};
   font-size: ${({ font_size, theme }) => font_size && theme.size.font[font_size]};
   padding-bottom: ${({ theme }) => theme.size.space.xlarge};

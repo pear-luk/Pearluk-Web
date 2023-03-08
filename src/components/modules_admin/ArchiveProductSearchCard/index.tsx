@@ -1,22 +1,37 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { useAdminModal } from '../../../hooks/util/useAdminModal';
+import { ModeType } from '../../../types/common/propsTypes';
 import { Category } from '../../../types/model/category';
 import { Product } from '../../../types/model/product';
 import { Button } from '../../elements/Button';
 import { CheckBox } from '../../elements/CheckBox';
 import { InputLabel } from '../../foundations/InputLabel';
+import { ProductForm } from '../ProductFormCard';
 import { ProductListCard_Admin } from '../ProductListCard';
 
 type Status = Record<string, { title: string; number: number }>;
 
 interface Props {
+  mode: ModeType;
   status: Status;
   categoryList: Category[];
   productList: Product[];
 }
-export const ArchiveProductSearchCard = ({ categoryList, productList }: Props) => {
+export const ArchiveProductSearchCard = ({ mode, categoryList, productList }: Props) => {
   const [parentCategory, setParentCategory] = useState<Category | 'all' | 'off'>();
   const [productName, setProductName] = useState('');
+
+  const {
+    Modal: ProductFormModal,
+    open: productFormOpen,
+    close: productFormClose,
+  } = useAdminModal({
+    mode: mode,
+
+    Content: <ProductForm mode={mode} NO_Button_onClick={() => productFormClose()} categoryList={categoryList} />,
+  });
+
   const selectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setParentCategory(categoryList.find((category) => category.category_id === e.target.value));
   };
@@ -26,6 +41,7 @@ export const ArchiveProductSearchCard = ({ categoryList, productList }: Props) =
 
   return (
     <Container>
+      <ProductFormModal />
       <Box>
         <p>검색</p>
         <div>
@@ -118,7 +134,7 @@ export const ArchiveProductSearchCard = ({ categoryList, productList }: Props) =
       </ButtonBox>
       <ButtonBox>
         <ButtonItem>
-          <Button label="ADD PRODUCT" size="huge" />
+          <Button label="ADD PRODUCT" size="huge" onClick={productFormOpen} />
         </ButtonItem>
       </ButtonBox>
       <ProductBox>
