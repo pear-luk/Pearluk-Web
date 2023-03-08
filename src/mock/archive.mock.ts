@@ -8,7 +8,7 @@ import { Archive } from './../types/model/archive';
 //   introduce: '22FW',
 // };
 export const archiveMock = (): Archive => ({
-  archive_id: faker.lorem.lines(1),
+  archive_id: faker.random.words(10),
   title: faker.lorem.words(6),
   year: faker.datatype.number({ max: 2026, min: 2000 }),
   introduce: faker.lorem.lines(3),

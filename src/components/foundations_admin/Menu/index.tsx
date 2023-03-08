@@ -101,13 +101,13 @@ const LogoBox = styled.div`
   top: 2.4rem;
   left: 2.4rem;
 `;
-const LoginBox = styled.div`
-  position: absolute;
+// const LoginBox = styled.div`
+//   position: absolute;
 
-  top: 4.8rem;
-  right: 3rem;
-  cursor: pointer;
-`;
+//   top: 4.8rem;
+//   right: 3rem;
+//   cursor: pointer;
+// `;
 
 const MenuBox = styled.div`
   position: absolute;

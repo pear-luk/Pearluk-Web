@@ -9,28 +9,45 @@ import { ModeType } from '../../../types/common/propsTypes';
 import { Archive } from '../../../types/model/archive';
 import { CreateArchiveDTO } from '../../../types/request/archive';
 import { Button } from '../../elements/Button';
-import { InputText } from '../../elements/InputText';
-import { ArchiveForm } from '../../foundations_admin/ArchiveForm';
+import { Label } from '../../elements/Label';
 import { ArchiveListItemAdmin } from '../../foundations_admin/ArchiveListItem';
+import { ArchiveForm } from '../ArchiveForm';
 
 interface Props {
   archiveList: Archive[];
   mode: ModeType;
-  createArchive?: UseMutateAsyncFunction<BaseResponseDTO<Archive>, AxiosError<unknown, any>, CreateArchiveDTO, unknown>;
+  createArchive?: UseMutateAsyncFunction<
+    BaseResponseDTO<Archive>,
+    AxiosError<unknown, unknown>,
+    CreateArchiveDTO,
+    unknown
+  >;
+  deleteArchive?: UseMutateAsyncFunction<
+    BaseResponseDTO<Archive>,
+    AxiosError<unknown, unknown>,
+    Pick<Archive, 'archive_id'>,
+    unknown
+  >;
 }
-export const AdminArchiveListCard = ({ archiveList, mode, createArchive }: Props) => {
+export const AdminArchiveListCard = ({ archiveList, mode, createArchive, deleteArchive }: Props) => {
   const [archiveListDup, setArchiveListDup] = useState<Archive[]>([]);
-  const [newArchive, setNewArchive] = useState('');
   const [archiveId, setArchiveId] = useState('');
 
-  const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target) setNewArchive(e.target.value);
-  };
   useEffect(() => {
     setArchiveListDup(archiveList);
   }, [archiveList]);
   const deleteOkButtonHandler = (archive_id: string) => () => {
-    setArchiveListDup(archiveListDup?.filter((archive) => archive.archive_id !== archive_id));
+    if (deleteArchive)
+      deleteArchive({ archive_id })
+        .then(() => {
+          setArchiveListDup(archiveListDup?.filter((archive) => archive.archive_id !== archive_id));
+        })
+        .catch((e) => {
+          alert(e.message);
+        });
+    else {
+      setArchiveListDup(archiveListDup?.filter((archive) => archive.archive_id !== archive_id));
+    }
     // 아카이브 제거 mutate
     // ...
     close();
@@ -73,27 +90,22 @@ export const AdminArchiveListCard = ({ archiveList, mode, createArchive }: Props
     <Container>
       <ArchiveModal></ArchiveModal>
       <Modal />
+      <Label mode={mode} label="ARCHIVE" label_weight="bold" label_size="large" />
       <Box>
-        <InputText
-          mode={mode} //
-          input_width="medium"
-          input_height="base"
-          value={newArchive}
-          onChange={inputOnChange}
-          placeholder="New Archive"
-        />
-        <Button size="mini" label="+" onClick={archiveModalOpen} />
+        <Button size="xlarge" label="ADD ARCHIVE" onClick={archiveModalOpen} />
       </Box>
-      <Item>ALL</Item>
-      {archiveListDup &&
-        archiveListDup.map((archive) => {
-          return (
-            <Item key={archive.archive_id}>
-              <ArchiveListItemAdmin archive={archive} onClick={buttonHandler(archive.archive_id)} />
-            </Item>
-          );
-        })}
-      <Item>SALE</Item>
+      <ListBox>
+        <Item>ALL</Item>
+        {archiveListDup &&
+          archiveListDup.map((archive) => {
+            return (
+              <Item key={archive.archive_id}>
+                <ArchiveListItemAdmin archive={archive} onClick={buttonHandler(archive.archive_id)} />
+              </Item>
+            );
+          })}
+        <Item>SALE</Item>
+      </ListBox>
     </Container>
   );
 };
@@ -101,8 +113,12 @@ export const AdminArchiveListCard = ({ archiveList, mode, createArchive }: Props
 const Container = styled.div`
   width: fit-content;
   padding: 1.6rem;
-  border: 1px solid black;
-  min-height: 100vh;
+  height: inherit;
+  right: 0;
+  top: 0;
+
+  max-height: 100vh;
+  min-height: 79rem;
 `;
 
 const Item = styled.div`
@@ -117,4 +133,9 @@ const Box = styled.div`
   button {
     flex: 1 0 auto;
   }
+`;
+const ListBox = styled.div`
+  overflow: scroll;
+  max-height: 94vh;
+  min-height: 70rem;
 `;

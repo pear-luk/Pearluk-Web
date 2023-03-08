@@ -24,7 +24,7 @@ export const ProductListCard_Admin = ({
   size = 'xlarge',
   productList,
   buttonHandler,
-  setProductList,
+  // setProductList,
   checkProductList,
   setCheckProductList,
 }: Props) => {
@@ -77,9 +77,9 @@ const Container = styled.div<Pick<Props, 'mode' | 'size'>>`
   color: ${({ theme, mode }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
   width: ${({ theme, size }) => size && theme.size.width[size]};
 `;
-const PriceBox = styled.div`
-  margin-top: 0.8rem;
-`;
+// const PriceBox = styled.div`
+//   margin-top: 0.8rem;
+// `;
 const ProductBox = styled.div<{ mode: ModeType }>`
   padding: 1.6rem 0;
   border-bottom: 1px solid

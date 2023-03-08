@@ -22,7 +22,7 @@ interface Props {
   label_weight?: keyof FontWeight;
 
   disabled?: boolean;
-
+  placeholder?: string;
   onChange?: (() => void) | ((e: React.ChangeEvent<HTMLInputElement>) => void);
 }
 // (typeof E_status)[keyof typeof E_status]
@@ -44,7 +44,7 @@ export const InputLabel = forwardRef(
 
       value,
       disabled,
-
+      placeholder,
       onChange,
     }: Props,
     ref?: React.Ref<HTMLInputElement>,
@@ -75,6 +75,7 @@ export const InputLabel = forwardRef(
           onChange={onChange}
           ref={ref}
           disabled={disabled}
+          placeholder={placeholder}
           value={value}
         />
         {label_type === 'right' && (

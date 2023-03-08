@@ -4,7 +4,7 @@ import { useArchiveList } from '../../../../hooks/queries/archiveQuery';
 import { useCategoryList } from '../../../../hooks/queries/categoryQuery';
 import { useProjectList } from '../../../../hooks/queries/productQuery';
 
-function Archive({ ...props }) {
+function Products() {
   // mode, icon
   const { archiveList } = useArchiveList();
   const { productList } = useProjectList({ page: String(1), archive: 'all' });
@@ -14,9 +14,7 @@ function Archive({ ...props }) {
     console.log(categoryList);
   }, [categoryList]);
 
-  return (
-    <AdminArchiveTemplate archiveList={archiveList} productList={productList} categoryList={categoryList} {...props} />
-  );
+  return <AdminArchiveTemplate archiveList={archiveList} productList={productList} categoryList={categoryList} />;
 }
 
-export default Archive;
+export default Products;

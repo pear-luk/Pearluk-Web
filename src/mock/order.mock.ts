@@ -9,8 +9,8 @@ import {
 } from './../types/model/order';
 
 export const orderProductMock: () => OrderProduct = () => ({
-  order_id: faker.lorem.word(26),
-  product_id: faker.lorem.word(26),
+  order_id: faker.random.words(10),
+  product_id: faker.random.words(10),
   count: faker.datatype.number({ min: 1, max: 20 }),
   price: faker.datatype.number({ min: 10000, max: 200000 }),
   product: {
@@ -23,13 +23,13 @@ export const orderProductMock: () => OrderProduct = () => ({
 export const orderProductListMock: OrderProduct[] = [orderProductMock(), orderProductMock(), orderProductMock()];
 
 export const orderCustomerInfoMock: OrderCustomerInfo = {
-  order_id: faker.lorem.word(26),
+  order_id: faker.random.words(10),
   name: faker.name.fullName(),
   phone_number: faker.phone.number(),
 };
 
 export const orderRecipientInfoMock: OrderRecipientInfo = {
-  order_id: faker.lorem.word(26),
+  order_id: faker.random.words(10),
   name: faker.name.fullName(),
   post_code: faker.address.zipCode(),
   phone_number: faker.phone.number(),
@@ -39,25 +39,25 @@ export const orderRecipientInfoMock: OrderRecipientInfo = {
 };
 
 export const orderShippingMock: Shipping = {
-  order_id: faker.lorem.word(26),
+  order_id: faker.random.words(10),
   courier_id: 1,
   courier_name: faker.lorem.word(4),
   waybill_number: faker.lorem.word(14),
   shipping_status: 0,
 };
 export const payMentInfoMock: PaymentInfo = {
-  order_id: faker.lorem.word(26),
+  order_id: faker.random.words(10),
   key: faker.lorem.word(26),
   method: '카드',
   payment_status: 'DONE',
 };
 
 export const orderMock: Order = {
-  order_id: faker.lorem.word(26),
+  order_id: faker.random.words(10),
 
   name: faker.lorem.word(26),
 
-  user_id: faker.lorem.word(26),
+  user_id: faker.random.words(10),
 
   total_price: faker.datatype.number({ min: 10000, max: 200000 }),
 

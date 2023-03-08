@@ -12,3 +12,8 @@ export const getArchiveList = async () => {
 export const createArchive = () => async (mutationData: CreateArchiveDTO) => {
   return (await API<Archive>('/archives', { method: 'post', data: mutationData })).data;
 };
+
+export const deleteArchive = () => async (mutationData: Pick<Archive, 'archive_id'>) => {
+  const { archive_id } = mutationData;
+  return (await API<Archive>(`/archives/${archive_id}`, { method: 'put' })).data;
+};
