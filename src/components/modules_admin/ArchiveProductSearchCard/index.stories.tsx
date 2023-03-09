@@ -1,5 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ArchiveProductSearchCard } from '.';
+import { archiveLsitMock } from '../../../mock/archive.mock';
 import { categoryListMock } from '../../../mock/category.mock';
 import { productListMock } from '../../../mock/product.mock';
 
@@ -43,8 +44,10 @@ EX.args = {
       number: 1000,
     },
   },
+  archiveList: archiveLsitMock,
   categoryList: categoryListMock,
   productList: productListMock,
+  storybook: true,
 };
 
 EX.parameters = {

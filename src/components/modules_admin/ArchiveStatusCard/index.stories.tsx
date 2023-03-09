@@ -41,6 +41,7 @@ EX.args = {
       number: 1000,
     },
   },
+  storybook: true,
 };
 
 EX.parameters = {

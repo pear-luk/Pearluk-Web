@@ -19,8 +19,10 @@ interface Props {
     unknown
   >;
   onClick?: () => void;
+
+  storybook?: boolean;
 }
-export const ParentCategoryListItem = ({ mode, category, onClick, deleteCategory }: Props) => {
+export const ParentCategoryListItem = ({ mode, category, onClick, deleteCategory, storybook = false }: Props) => {
   const [childs, setChilds] = useState<Category[]>([]);
   const [childCategoryId, setChildCategoryId] = useState('');
   useEffect(() => {
@@ -30,7 +32,19 @@ export const ParentCategoryListItem = ({ mode, category, onClick, deleteCategory
   const childDeleteOkButtonHandler =
     ({ category_id }: Pick<Category, 'category_id'>) =>
     () => {
-      if (deleteCategory)
+      if (storybook) {
+        console.log('deleteCategory');
+        setChilds &&
+          setChilds(
+            childs.filter((child) => {
+              return child.category_id !== category_id;
+            }),
+          );
+        childDeleteModalClose();
+        return;
+      }
+
+      deleteCategory &&
         deleteCategory({ category_id: childCategoryId })
           .then(() => {
             setChilds(
@@ -39,18 +53,9 @@ export const ParentCategoryListItem = ({ mode, category, onClick, deleteCategory
               }),
             );
           })
-          .catch((e) => {
-            alert(e);
+          .catch(() => {
+            return;
           });
-      else {
-        console.log('deleteCategory');
-        setChilds(
-          childs.filter((child) => {
-            return child.category_id !== category_id;
-          }),
-        );
-      }
-
       childDeleteModalClose();
     };
   const {

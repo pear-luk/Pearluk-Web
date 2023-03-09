@@ -2,6 +2,7 @@ import { AxiosError } from 'axios';
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
+import { ulid } from 'ulid';
 
 import { FontWeight, Size } from '../../../styles/theme';
 import { BaseResponseDTO } from '../../../types/common/baseResponse';
@@ -33,6 +34,8 @@ interface Props {
   setCategoryList?: Dispatch<SetStateAction<Category[]>>;
 
   createCategory?: UseMutateAsyncFunction<BaseResponseDTO<Category>, AxiosError<unknown>, CreateCategoryDTO, unknown>;
+
+  storybook?: boolean;
 }
 export const CategoryForm = ({
   mode,
@@ -49,6 +52,8 @@ export const CategoryForm = ({
   categoryList,
   setCategoryList,
   createCategory,
+
+  storybook = false,
 }: Props) => {
   const [name, setName] = useState('');
   const [parentCategoryId, setParentCategoryId] = useState<string>('null');
@@ -70,6 +75,28 @@ export const CategoryForm = ({
     };
     if (name.length === 0) {
       alert('카테고리 이름을 입력해주세요');
+      return;
+    }
+    if (storybook && categoryList && setCategoryList) {
+      const parentIndex = categoryList.findIndex((category) => category.category_id === parentCategoryId);
+      console.log(parentIndex);
+      if (parentIndex >= 0) {
+        const editList = [
+          ...categoryList.slice(0, parentIndex),
+          {
+            ...categoryList[parentIndex],
+            child_categories: [
+              ...(categoryList[parentIndex]?.child_categories || []),
+              { category_id: ulid(), ...newCategory },
+            ],
+          },
+          ...categoryList.slice(parentIndex + 1),
+        ];
+        setCategoryList(editList);
+      } else {
+        setCategoryList([...categoryList, { category_id: ulid(), ...newCategory }]);
+      }
+      return;
     }
 
     createCategory &&
@@ -97,27 +124,7 @@ export const CategoryForm = ({
           result && setCategoryList([...categoryList, result]);
         })
         .catch(() => {
-          // 스토리북 테스트용 이후 지울예정 (mock데이터 부모 카테고리 아이디 문제.)
-          const parentIndex = categoryList?.findIndex((category) => category.category_id === parentCategoryId);
-
-          console.log(parentIndex);
-          if (parentIndex >= 0) {
-            const editList = [
-              ...categoryList.slice(0, parentIndex),
-              {
-                ...categoryList[parentIndex],
-                child_categories: [
-                  ...(categoryList[parentIndex]?.child_categories || []),
-                  { category_id: new Date().toDateString(), ...newCategory },
-                ],
-              },
-              ...categoryList.slice(parentIndex + 1),
-            ];
-
-            setCategoryList(editList);
-          } else {
-            setCategoryList([...categoryList, { category_id: new Date().getTime().toString(), ...newCategory }]);
-          }
+          return;
         });
     // createArchive &&
     //   setArchiveList &&

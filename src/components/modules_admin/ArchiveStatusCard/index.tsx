@@ -4,6 +4,7 @@ type Status = Record<string, { title: string; number: number }>;
 
 interface Props {
   status: Status;
+  storybook?: boolean;
 }
 export const ArchiveStatusCard_Admin = ({ status = {} }: Props) => {
   return (

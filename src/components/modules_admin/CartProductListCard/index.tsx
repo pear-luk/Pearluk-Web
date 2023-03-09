@@ -18,6 +18,8 @@ interface Props {
   };
   checkProductList?: CartProductListGetResponseDTO;
   setCheckProductList?: React.Dispatch<React.SetStateAction<CartProductListGetResponseDTO>>;
+
+  storybook?: boolean;
 }
 
 export const CartProductListCard = ({

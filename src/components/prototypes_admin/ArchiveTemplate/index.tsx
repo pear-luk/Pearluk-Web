@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import { useCreateArchive, useDeleteArchive } from '../../../hooks/mutation/archive';
 import { useCreateCategory, useDeleteCategory } from '../../../hooks/mutation/category';
@@ -16,6 +15,8 @@ interface Props {
   archiveList: Archive[];
   categoryList: Category[];
   productList: Product[];
+
+  storybook?: boolean;
 }
 const statusMock = {
   all: {
@@ -48,15 +49,14 @@ const statusMock = {
   },
 };
 
-export const AdminArchiveTemplate = ({ archiveList, categoryList, productList }: Props) => {
-  const [productId, setProductId] = useState('');
-
+export const AdminArchiveTemplate = ({ archiveList, categoryList, productList, storybook = false }: Props) => {
   const { mutateAsync: createArchive } = useCreateArchive();
   const { mutateAsync: deleteArchive } = useDeleteArchive();
   const { mutateAsync: createCategory } = useCreateCategory();
   const { mutateAsync: createProduct } = useCreateProduct();
-  const { mutateAsync: uploadProductImgs } = useUploadProductImg(productId);
+  const { mutateAsync: uploadProductImgs } = useUploadProductImg();
   const { mutateAsync: deleteCategory } = useDeleteCategory();
+
   return (
     <AdminLayout mode="white">
       <Container>
@@ -66,6 +66,7 @@ export const AdminArchiveTemplate = ({ archiveList, categoryList, productList }:
             archiveList={archiveList}
             createArchive={createArchive}
             deleteArchive={deleteArchive}
+            storybook={storybook}
           />
         </LineBox>
         <LineBox>
@@ -74,12 +75,13 @@ export const AdminArchiveTemplate = ({ archiveList, categoryList, productList }:
             categoryList={categoryList}
             createCategory={createCategory}
             deleteCategory={deleteCategory}
+            storybook={storybook}
           />
         </LineBox>
         <ContentBox>
           <Content>
             <Box>
-              <ArchiveStatusCard_Admin status={statusMock} />
+              <ArchiveStatusCard_Admin status={statusMock} storybook={storybook} />
             </Box>
             <Box>
               <ArchiveProductSearchCard
@@ -88,9 +90,9 @@ export const AdminArchiveTemplate = ({ archiveList, categoryList, productList }:
                 archiveList={archiveList}
                 categoryList={categoryList}
                 productList={productList}
-                setProductId={setProductId}
                 createProduct={createProduct}
                 uploadProductImgs={uploadProductImgs}
+                storybook={storybook}
               />
             </Box>
           </Content>

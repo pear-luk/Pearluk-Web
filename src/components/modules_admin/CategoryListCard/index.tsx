@@ -14,6 +14,8 @@ import { ParentCategoryListItem } from '../../foundations_admin/ParentCategoryLi
 import { CategoryForm } from '../CategoryFormCard';
 
 interface Props {
+  mode: ModeType;
+
   categoryList: Category[];
 
   createCategory?: UseMutateAsyncFunction<BaseResponseDTO<Category>, AxiosError<unknown>, CreateCategoryDTO, unknown>;
@@ -23,9 +25,16 @@ interface Props {
     Pick<Category, 'category_id'>,
     unknown
   >;
-  mode: ModeType;
+
+  storybook?: boolean;
 }
-export const AdminCategoryListCard = ({ categoryList, mode, createCategory, deleteCategory }: Props) => {
+export const AdminCategoryListCard = ({
+  categoryList,
+  mode,
+  createCategory,
+  deleteCategory,
+  storybook = false,
+}: Props) => {
   const [categoryListState, setCategoryListState] = useState<Category[]>([]);
   const [categoryId, setCategoryId] = useState('');
 
@@ -33,20 +42,21 @@ export const AdminCategoryListCard = ({ categoryList, mode, createCategory, dele
     setCategoryListState(categoryList);
   }, [categoryList]);
   const deleteCategoryOkButtonHandler = (category_id: string) => () => {
-    if (deleteCategory)
+    if (storybook) {
+      setCategoryListState(categoryListState?.filter((category) => category.category_id !== category_id));
+      categoryDeleteModalClose();
+      return;
+    }
+
+    if (deleteCategory) {
       deleteCategory({ category_id })
         .then(() => {
           setCategoryListState(categoryListState?.filter((archive) => archive.category_id !== category_id));
         })
-        .catch((e) => {
-          alert(e);
-        });
-    else {
-      console.log('deleteCategory');
-      setCategoryListState(categoryListState?.filter((category) => category.category_id !== category_id));
-    }
+        .catch(() => null);
 
-    categoryDeleteModalClose();
+      categoryDeleteModalClose();
+    }
   };
 
   const {
@@ -63,6 +73,7 @@ export const AdminCategoryListCard = ({ categoryList, mode, createCategory, dele
         categoryList={categoryListState}
         setCategoryList={setCategoryListState}
         createCategory={createCategory}
+        storybook={storybook}
       />
     ),
   });
@@ -102,6 +113,7 @@ export const AdminCategoryListCard = ({ categoryList, mode, createCategory, dele
                   category={category}
                   deleteCategory={deleteCategory}
                   onClick={categoryDeleteButtonHandler(category_id)}
+                  storybook={storybook}
                 />
               </Item>
             );

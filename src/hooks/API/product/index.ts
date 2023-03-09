@@ -16,6 +16,7 @@ export const getProductList =
 export const createProduct = () => async (mutationData: ProductCreateRequestDTO) =>
   (await API<Product>(`/products`, { method: 'post', data: mutationData })).data;
 
-export const uploadProductImgs = (product_id: string) => async (mutationData: FormData) => {
+export const uploadProductImgs = () => async (data: { product_id: string; mutationData: FormData }) => {
+  const { product_id, mutationData } = data;
   return (await API<ProductImg[]>(`/upload/products/${product_id}`, { method: 'post', data: mutationData })).data;
 };

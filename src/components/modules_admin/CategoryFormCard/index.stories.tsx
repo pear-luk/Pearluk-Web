@@ -13,6 +13,7 @@ const Template: ComponentStory<typeof CategoryForm> = (args) => <CategoryForm {.
 export const EX = Template.bind({});
 EX.args = {
   categoryList: categoryListMock,
+  storybook: true,
 };
 
 EX.parameters = {

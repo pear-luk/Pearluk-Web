@@ -15,7 +15,9 @@ const Template: ComponentStory<typeof Archive> = (args) => <Archive {...args} />
 
 export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Primary.args = {};
+Primary.args = {
+  storybook: true,
+};
 
 Primary.parameters = {
   layout: 'fullscreen',

@@ -11,7 +11,7 @@ const Template: ComponentStory<typeof ArchiveForm> = (args) => <ArchiveForm {...
 
 export const EX = Template.bind({});
 EX.args = {
-  archive: {},
+  storybook: true,
 };
 
 EX.parameters = {

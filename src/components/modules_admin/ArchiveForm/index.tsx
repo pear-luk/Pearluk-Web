@@ -34,6 +34,8 @@ interface Props {
 
   archiveList?: Archive[];
   setArchiveList?: Dispatch<SetStateAction<Archive[]>>;
+
+  storybook?: boolean;
 }
 export const ArchiveForm = ({
   mode,
