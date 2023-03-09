@@ -28,8 +28,10 @@ interface Props {
     Pick<Archive, 'archive_id'>,
     unknown
   >;
+
+  storybook?: boolean;
 }
-export const AdminArchiveListCard = ({ archiveList, mode, createArchive, deleteArchive }: Props) => {
+export const AdminArchiveListCard = ({ archiveList, mode, createArchive, deleteArchive, storybook = false }: Props) => {
   const [archiveListDup, setArchiveListDup] = useState<Archive[]>([]);
   const [archiveId, setArchiveId] = useState('');
 
@@ -37,17 +39,18 @@ export const AdminArchiveListCard = ({ archiveList, mode, createArchive, deleteA
     setArchiveListDup(archiveList);
   }, [archiveList]);
   const deleteOkButtonHandler = (archive_id: string) => () => {
-    if (deleteArchive)
-      deleteArchive({ archive_id })
-        .then(() => {
-          setArchiveListDup(archiveListDup?.filter((archive) => archive.archive_id !== archive_id));
-        })
-        .catch((e) => {
-          alert(e.message);
-        });
-    else {
+    if (storybook) {
       setArchiveListDup(archiveListDup?.filter((archive) => archive.archive_id !== archive_id));
-    }
+    } else
+      deleteArchive &&
+        deleteArchive({ archive_id })
+          .then(() => {
+            setArchiveListDup(archiveListDup?.filter((archive) => archive.archive_id !== archive_id));
+          })
+          .catch(() => {
+            return;
+          });
+
     // 아카이브 제거 mutate
     // ...
     close();
@@ -71,6 +74,7 @@ export const AdminArchiveListCard = ({ archiveList, mode, createArchive, deleteA
         archiveList={archiveListDup}
         setArchiveList={setArchiveListDup}
         createArchive={createArchive}
+        storybook={storybook}
       />
     ),
   });

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
 import { useAdminModal } from '../../../hooks/util/useAdminModal';
@@ -25,8 +25,17 @@ interface Props {
   productList: Product[];
 
   createProduct?: UseMutateAsyncFunction<BaseResponseDTO<Product>, unknown, ProductCreateRequestDTO, unknown>;
-  uploadProductImgs?: UseMutateAsyncFunction<BaseResponseDTO<ProductImg[]>, unknown, FormData, unknown>;
-  setProductId?: Dispatch<SetStateAction<string>>;
+  uploadProductImgs?: UseMutateAsyncFunction<
+    BaseResponseDTO<ProductImg[]>,
+    unknown,
+    {
+      product_id: string;
+      mutationData: FormData;
+    },
+    unknown
+  >;
+
+  storybook?: boolean;
 }
 export const ArchiveProductSearchCard = ({
   mode,
@@ -35,11 +44,11 @@ export const ArchiveProductSearchCard = ({
   productList,
   createProduct,
   uploadProductImgs,
-  setProductId,
+  storybook,
 }: Props) => {
   const [parentCategory, setParentCategory] = useState<Category | 'all' | 'off'>();
   const [productName, setProductName] = useState('');
-
+  const [productListDup, setProductListDup] = useState<Product[]>([]);
   const {
     Modal: SuccessModal,
     close: closeSuccessModal,
@@ -83,12 +92,14 @@ export const ArchiveProductSearchCard = ({
         NO_Button_onClick={() => productFormClose()}
         archiveList={archiveList}
         categoryList={categoryList}
-        setProductId={setProductId}
         createProduct={createProduct}
         uploadProductImgs={uploadProductImgs}
         productFormClose={() => productFormClose()}
         openErrorModal={openErrorModal}
         openSuccessModal={openSuccessModal}
+        productList={productListDup}
+        setProductList={setProductListDup}
+        storybook={storybook}
       />
     ),
   });
@@ -99,7 +110,9 @@ export const ArchiveProductSearchCard = ({
   const productNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target) setProductName(e.target.value);
   };
-
+  useEffect(() => {
+    setProductListDup(productList);
+  }, [productList]);
   return (
     <Container>
       <ProductFormModal />
@@ -201,7 +214,7 @@ export const ArchiveProductSearchCard = ({
         </ButtonItem>
       </ButtonBox>
       <ProductBox>
-        <ProductListCard_Admin mode="white" productList={productList} />
+        <ProductListCard_Admin mode="white" productList={productListDup} />
       </ProductBox>
 
       <BoxCheck>

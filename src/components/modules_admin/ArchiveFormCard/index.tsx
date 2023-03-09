@@ -2,6 +2,7 @@ import { AxiosError } from 'axios';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
+import { ulid } from 'ulid';
 
 import { FontWeight, Size } from '../../../styles/theme';
 import { BaseResponseDTO } from '../../../types/common/baseResponse';
@@ -34,6 +35,8 @@ interface Props {
 
   archiveList?: Archive[];
   setArchiveList?: Dispatch<SetStateAction<Archive[]>>;
+
+  storybook?: boolean;
 }
 export const ArchiveForm = ({
   mode,
@@ -50,6 +53,7 @@ export const ArchiveForm = ({
   archiveList,
   setArchiveList,
   createArchive,
+  storybook = false,
 }: Props) => {
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
@@ -77,14 +81,19 @@ export const ArchiveForm = ({
     }
   }, []);
   const okButtonHandler = (e: React.MouseEvent) => {
-    createArchive &&
-      setArchiveList &&
+    if (storybook) {
       archiveList &&
-      createArchive({ title, year: Number(year), introduce }).then(({ result }) => {
-        const archive = result;
-        archive && setArchiveList([archive, ...archiveList]);
-      });
-
+        setArchiveList &&
+        setArchiveList([{ archive_id: ulid(), title, year: Number(year), introduce }, ...archiveList]);
+    } else {
+      createArchive &&
+        setArchiveList &&
+        archiveList &&
+        createArchive({ title, year: Number(year), introduce }).then(({ result }) => {
+          const archive = result;
+          archive && setArchiveList([archive, ...archiveList]);
+        });
+    }
     OK_Button_onClick && OK_Button_onClick(e);
     NO_Button_onClick && NO_Button_onClick(e);
   };

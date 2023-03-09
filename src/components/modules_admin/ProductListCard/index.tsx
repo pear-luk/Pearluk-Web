@@ -17,6 +17,7 @@ interface Props {
   };
   checkProductList?: CartProductListGetResponseDTO;
   setCheckProductList?: React.Dispatch<React.SetStateAction<CartProductListGetResponseDTO>>;
+  storybook?: boolean;
 }
 
 export const ProductListCard_Admin = ({
@@ -46,11 +47,6 @@ export const ProductListCard_Admin = ({
     }
   };
 
-  // useMemo(() => {
-  //   if (cartProductList.length > 0) {
-  //     setTotalPrice(cartProductList?.map((a) => Number(a?.product.price) * a?.count || 0)?.reduce((a, b) => a + b));
-  //   }
-  // }, [cartProductList]);
   return (
     <Container mode={mode} size={size}>
       {productList &&
@@ -77,9 +73,7 @@ const Container = styled.div<Pick<Props, 'mode' | 'size'>>`
   color: ${({ theme, mode }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
   width: ${({ theme, size }) => size && theme.size.width[size]};
 `;
-// const PriceBox = styled.div`
-//   margin-top: 0.8rem;
-// `;
+
 const ProductBox = styled.div<{ mode: ModeType }>`
   padding: 1.6rem 0;
   border-bottom: 1px solid

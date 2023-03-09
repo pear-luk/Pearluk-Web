@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
+import { ulid } from 'ulid';
 import { FontWeight, Size } from '../../../styles/theme';
 import { BaseResponseDTO } from '../../../types/common/baseResponse';
 import { ButtonColorType, ModeType } from '../../../types/common/propsTypes';
@@ -37,12 +38,23 @@ interface Props {
   archiveList?: Archive[];
 
   createProduct?: UseMutateAsyncFunction<BaseResponseDTO<Product>, unknown, ProductCreateRequestDTO, unknown>;
-  uploadProductImgs?: UseMutateAsyncFunction<BaseResponseDTO<ProductImg[]>, unknown, FormData, unknown>;
-  setProductId?: Dispatch<SetStateAction<string>>;
+  uploadProductImgs?: UseMutateAsyncFunction<
+    BaseResponseDTO<ProductImg[]>,
+    unknown,
+    {
+      product_id: string;
+      mutationData: FormData;
+    },
+    unknown
+  >;
+  productList?: Product[];
+  setProductList?: Dispatch<SetStateAction<Product[]>>;
 
   productFormClose?: () => void;
   openSuccessModal?: () => void;
   openErrorModal?: () => void;
+
+  storybook?: boolean;
 }
 export const ProductForm = ({
   mode,
@@ -59,10 +71,12 @@ export const ProductForm = ({
   categoryList,
   createProduct,
   uploadProductImgs,
-  setProductId,
   productFormClose,
   openSuccessModal,
   openErrorModal,
+  productList,
+  setProductList,
+  storybook = false,
 }: Props) => {
   const imageAreaRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -173,30 +187,53 @@ export const ProductForm = ({
       alert('아카이브를 선택해주세요');
       return;
     }
+    const newProduct: Omit<Product, 'product_id'> = {
+      name,
+      price: Number(price),
+      quantity: Number(quantity),
+      introduce,
+      product_status: 1,
+      category_id: categoryId,
+      archive_id: archiveId,
+    };
+
+    if (storybook && productList && setProductList) {
+      console.log('adsfasdfadfsdfs');
+      const productsImg: ProductImg[] = imageUrls.map((url, i) => ({
+        product_img_id: ulid(),
+        product_id: ulid(),
+        url,
+        sequence: i + 1,
+      }));
+
+      setProductList([
+        {
+          ...newProduct,
+          product_id: ulid(),
+          imgs: productsImg,
+        },
+        ...productList,
+      ]);
+      productFormClose && productFormClose();
+      openSuccessModal && openSuccessModal();
+      return;
+    }
+
     if (createProduct)
-      createProduct({
-        name,
-        price: Number(price),
-        quantity: Number(quantity),
-        introduce,
-        product_status: 1,
-        category_id: categoryId,
-        archive_id: archiveId,
-      })
+      createProduct(newProduct)
         .then(({ result }) => {
           if (result) {
             const { product_id } = result;
-            setProductId && setProductId(product_id);
+            return product_id;
           }
-          return;
         })
-        .then(() => {
-          if (uploadProductImgs && images.length > 0) {
+        .then(async (product_id?: string) => {
+          if (uploadProductImgs && images.length > 0 && product_id) {
             const formData = new FormData();
             images.forEach((img) => {
               formData.append('imgs', img);
             });
-            uploadProductImgs(formData);
+            await uploadProductImgs({ product_id, mutationData: formData });
           }
         })
         .then(() => {
@@ -204,9 +241,8 @@ export const ProductForm = ({
           productFormClose && productFormClose();
           openSuccessModal && openSuccessModal();
         })
-        .catch((e) => {
-          openErrorModal && openErrorModal();
-          productFormClose && productFormClose();
+        .catch(() => {
+          return;
         });
   };
 

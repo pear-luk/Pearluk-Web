@@ -15,6 +15,7 @@ export const EX = Template.bind({});
 EX.args = {
   categoryList: categoryListMock,
   archiveList: archiveLsitMock,
+  storybook: true,
 };
 
 EX.parameters = {

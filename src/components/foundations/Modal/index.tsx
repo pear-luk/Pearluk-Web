@@ -75,13 +75,15 @@ const TextBox = styled.div`
   text-align: center;
   white-space: pre-wrap;
   word-wrap: break-word;
-  word-break: break-all;
+  word-break: keep-all;
 `;
 
 const ModalCard = styled.div<{ mode: ModeType; font_size: keyof Size['font']; font_weight: keyof FontWeight }>`
-  width: 28rem;
-  height: 16rem;
+  min-width: 28rem;
+  max-width: 40rem;
+  min-height: 16rem;
 
+  padding: 1.6rem;
   background-color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
   color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.grey.black : theme.color.yellow.yellow)};
 
