@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { ulid } from 'ulid';
 import { Archive } from './../types/model/archive';
 
 // export const archiveMock: Archive = {
@@ -8,7 +9,7 @@ import { Archive } from './../types/model/archive';
 //   introduce: '22FW',
 // };
 export const archiveMock = (): Archive => ({
-  archive_id: faker.random.words(10),
+  archive_id: ulid(),
   title: faker.lorem.words(6),
   year: faker.datatype.number({ max: 2026, min: 2000 }),
   introduce: faker.lorem.lines(3),

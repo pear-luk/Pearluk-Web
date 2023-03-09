@@ -17,14 +17,14 @@ export const ProductItem = ({ mode, product, slide = false }: Props) => {
       <ImageBox>
         {slide ? (
           <Splide aria-label="My Favorite Images" options={{ arrows: false, perMove: 1, type: 'loop' }}>
-            {product && product.imgs?.length > 0 ? (
+            {product?.imgs && product.imgs.length > 0 ? (
               product.imgs.map((img, i) => {
                 return (
                   <SplideSlide key={i}>
                     <Image
-                      alt={`상품 이미지${i}`}
+                      alt={`${product.name} img ${i}`}
                       placeholder="blur"
-                      src={img}
+                      src={img.url}
                       blurDataURL="/logo/logo.svg"
                       width={342}
                       height={456}></Image>
@@ -36,7 +36,7 @@ export const ProductItem = ({ mode, product, slide = false }: Props) => {
                 <Image
                   alt="상품 대표 이미지"
                   placeholder="blur"
-                  src={'/logo/logo.svg'}
+                  src={product?.imgs && product.imgs.length > 0 ? product.imgs[0].url : '/logo/logo.svg'}
                   blurDataURL="/logo/logo.svg"
                   width={342}
                   height={456}
@@ -52,7 +52,7 @@ export const ProductItem = ({ mode, product, slide = false }: Props) => {
             <Image
               alt="상품 대표 이미지"
               placeholder="blur"
-              src={product && product.imgs ? product.imgs[0] : '/logo/logo.svg'}
+              src={product?.imgs && product.imgs.length > 0 ? product.imgs[0].url : '/logo/logo.svg'}
               blurDataURL="/logo/logo.svg"
               width={342}
               height={456}

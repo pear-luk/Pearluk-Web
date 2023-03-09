@@ -1,6 +1,6 @@
 import { authState } from '../../recoil/auth/state';
 import { AuthResponseDTO } from '../../types/response/auth';
-import { getAuth } from '../API/auth/getAuth';
+import { getAuth } from '../API/auth';
 import { useRecoilQuery } from '../util/useRecoilQuery';
 import { AUTH_KEY } from './key';
 

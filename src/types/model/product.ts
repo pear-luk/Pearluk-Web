@@ -10,7 +10,14 @@ export type Product = {
   product_status: number;
   archive_id: string;
   category_id: string;
-  imgs: string[];
+  imgs?: ProductImg[];
   category?: Category;
   archive?: Archive;
 } & CommonInfo;
+
+export type ProductImg = {
+  product_img_id: string;
+  product_id: string;
+  url: string;
+  sequence: number;
+};

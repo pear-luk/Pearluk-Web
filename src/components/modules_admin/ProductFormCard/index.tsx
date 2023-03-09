@@ -1,13 +1,16 @@
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/css';
 import Image from 'next/image';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
-
 import { FontWeight, Size } from '../../../styles/theme';
+import { BaseResponseDTO } from '../../../types/common/baseResponse';
 import { ButtonColorType, ModeType } from '../../../types/common/propsTypes';
 import { Archive } from '../../../types/model/archive';
 import { Category } from '../../../types/model/category';
+import { Product, ProductImg } from '../../../types/model/product';
+import { ProductCreateRequestDTO } from '../../../types/request/product';
 import { Button } from '../../elements/Button';
 import { Label } from '../../elements/Label';
 import { TextArea } from '../../elements/Textarea';
@@ -32,6 +35,14 @@ interface Props {
 
   categoryList?: Category[];
   archiveList?: Archive[];
+
+  createProduct?: UseMutateAsyncFunction<BaseResponseDTO<Product>, unknown, ProductCreateRequestDTO, unknown>;
+  uploadProductImgs?: UseMutateAsyncFunction<BaseResponseDTO<ProductImg[]>, unknown, FormData, unknown>;
+  setProductId?: Dispatch<SetStateAction<string>>;
+
+  productFormClose?: () => void;
+  openSuccessModal?: () => void;
+  openErrorModal?: () => void;
 }
 export const ProductForm = ({
   mode,
@@ -42,17 +53,19 @@ export const ProductForm = ({
   label_weight = 'bold',
 
   OK_Button = true,
-  OK_Button_onClick,
   NO_Button = true,
   NO_Button_onClick,
-  categoryList,
   archiveList,
-  setCategoryList,
-  createCategory,
+  categoryList,
+  createProduct,
+  uploadProductImgs,
+  setProductId,
+  productFormClose,
+  openSuccessModal,
+  openErrorModal,
 }: Props) => {
   const imageAreaRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [action, setAction] = useState<'ADD' | 'DELETE' | null>(null);
 
   const [name, setName] = useState('');
   const [images, setImages] = useState<File[]>([]);
@@ -136,6 +149,47 @@ export const ProductForm = ({
     setImages([...images.slice(0, index), ...images.slice(index + 1)]);
   };
 
+  const okButtonHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.isPropagationStopped();
+
+    if (createProduct)
+      createProduct({
+        name,
+        price: Number(price),
+        quantity: Number(quantity),
+        introduce,
+        product_status: 1,
+        category_id: categoryId,
+        archive_id: archiveId,
+      })
+        .then(({ result }) => {
+          if (result) {
+            const { product_id } = result;
+            setProductId && setProductId(product_id);
+          }
+          return;
+        })
+        .then(() => {
+          if (uploadProductImgs && images.length > 0) {
+            const formData = new FormData();
+            images.forEach((img) => {
+              formData.append('imgs', img);
+            });
+            uploadProductImgs(formData);
+          }
+        })
+        .then(() => {
+          setImages([]);
+          productFormClose && productFormClose();
+          openSuccessModal && openSuccessModal();
+        })
+        .catch((e) => {
+          openErrorModal && openErrorModal();
+          productFormClose && productFormClose();
+        });
+  };
+
   useEffect(() => {
     console.log(categoryId);
   }, [categoryId]);
@@ -160,8 +214,6 @@ export const ProductForm = ({
       }),
     );
   }, [images]);
-
-  const okButtonHandler = (e: React.MouseEvent) => {};
 
   return (
     <Wrap>
@@ -212,7 +264,7 @@ export const ProductForm = ({
             name="child_category"
             id="child_category"
             onChange={childCategorySelectOnChange}>
-            <option value={'선택'}>선택</option>
+            <option value={'null'}>null</option>
             {parentCategory &&
               parentCategory.child_categories &&
               parentCategory.child_categories.map((category) => {

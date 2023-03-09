@@ -1,7 +1,7 @@
 import { Archive } from '../../../types/model/archive';
-import { CreateArchiveDTO } from './../../../types/request/archive';
-import { ArchiveListGetResponseDTO } from './../../../types/response/archive';
-import { API } from './../../util/API';
+import { CreateArchiveDTO } from '../../../types/request/archive';
+import { ArchiveListGetResponseDTO } from '../../../types/response/archive';
+import { API } from '../../util/API';
 // export const getArchiveList = () => API2<null, ArchiveListGetResponseDTO>('/archives', { method: 'get' });
 
 // 1번 호출함

@@ -16,7 +16,6 @@ export const EX = Template.bind({});
 
 EX.args = {
   archiveList: archiveLsitMock,
-
   categoryList: categoryListMock,
   productList: productListMock,
 };

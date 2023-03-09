@@ -62,6 +62,7 @@ export const ProductListItem_Admin = ({
     NO_Button: true,
     OK_Button_onClick: cancleModalOkHandler,
   });
+
   return (
     <Container mode={mode} size={size}>
       <CancleModal />
@@ -69,7 +70,7 @@ export const ProductListItem_Admin = ({
       <ImgBox>
         <Image
           alt="상품 메인이미지"
-          src={product && product.imgs && product.imgs ? product.imgs[0] : '/logo/logo.svg'}
+          src={product && product.imgs && product.imgs.length > 0 ? product.imgs[0]?.url : '/logo/logo.svg'}
           fill
           style={{ objectFit: 'contain' }}
           sizes="auto 100%"></Image>

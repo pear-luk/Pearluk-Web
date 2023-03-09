@@ -1,10 +1,11 @@
 import { faker } from '@faker-js/faker';
+import { ulid } from 'ulid';
 import { CartProduct } from './../types/model/cart';
 
 export const cartProductMock = (): CartProduct => {
   return {
-    cart_product_id: faker.random.words(10),
-    product_id: faker.random.words(10),
+    cart_product_id: ulid(),
+    product_id: ulid(),
     count: faker.datatype.number({ min: 1, max: 20 }),
     product: {
       name: faker.lorem.words(10),

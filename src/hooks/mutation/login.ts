@@ -7,7 +7,7 @@ import { authState } from '../../recoil/auth/state';
 import { BaseResponseDTO } from '../../types/common/baseResponse';
 import { SocailLoginRequestDTO } from '../../types/request/login';
 import { AuthResponseDTO } from '../../types/response/auth';
-import { socialLogin } from '../API/login/socialLogin';
+import { socialLogin } from '../API/login';
 // export const useSocialLogin = () => {
 //   return useMutation<any, AxiosError, object>((info) => axios.post('/api/login/kakao', info));
 // };
