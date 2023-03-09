@@ -97,10 +97,17 @@ export const ProductForm = ({
     }
   }, []);
   const imageInpuOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    console.log(e.currentTarget.files);
     if (e.currentTarget.files) {
       const newImages = Array.from(e.currentTarget.files);
+
+      const newImagesUrl = newImages.slice(0, 10 - images.length + 1).map((image) => URL?.createObjectURL(image));
+
       const nowImages = [...images, ...newImages];
+
       setImages(nowImages.slice(0, 10));
+      setImageUrls([...imageUrls, ...newImagesUrl]);
     }
   };
   const parentCategorySelectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -149,6 +156,12 @@ export const ProductForm = ({
         ...images.slice(index, index + 1),
         ...images.slice(index + 2),
       ]);
+      setImageUrls([
+        ...imageUrls.slice(0, index),
+        ...imageUrls.slice(index + 1, index + 2),
+        ...imageUrls.slice(index, index + 1),
+        ...imageUrls.slice(index + 2),
+      ]);
     }
     if (type === '-' && index !== 0) {
       setImages([
@@ -157,12 +170,25 @@ export const ProductForm = ({
         ...images.slice(index - 1, index),
         ...images.slice(index + 1),
       ]);
+      setImageUrls([
+        ...imageUrls.slice(0, index - 1),
+        ...imageUrls.slice(index, index + 1),
+        ...imageUrls.slice(index - 1, index),
+        ...imageUrls.slice(index + 1),
+      ]);
     }
   };
   const deleteButton = (index: number) => () => {
+    URL.revokeObjectURL(imageUrls[index]);
     setImages([...images.slice(0, index), ...images.slice(index + 1)]);
+    setImageUrls([...imageUrls.slice(0, index), ...imageUrls.slice(index + 1)]);
   };
-
+  const noButtonHandler = () => {
+    imageUrls.forEach((url) => {
+      URL.revokeObjectURL(url);
+    });
+    NO_Button_onClick && NO_Button_onClick();
+  };
   const okButtonHandler = (e: React.MouseEvent) => {
     e.preventDefault();
     e.isPropagationStopped();
@@ -237,6 +263,10 @@ export const ProductForm = ({
           }
         })
         .then(() => {
+          imageUrls.forEach((url) => {
+            URL.revokeObjectURL(url);
+          });
+          setImageUrls([]);
           setImages([]);
           productFormClose && productFormClose();
           openSuccessModal && openSuccessModal();
@@ -262,14 +292,16 @@ export const ProductForm = ({
     }
   }, [introduce]);
 
-  useEffect(() => {
-    setImageUrls(
-      images.map((image) => {
-        const objectUrl = URL?.createObjectURL(image);
-        return objectUrl;
-      }),
-    );
-  }, [images]);
+  // 메모리 누수 있음 . <- 이걸로쓰면
+  // useEffect(() => {
+  //   setImageUrls(
+  //     images.map((image) => {
+  //       const objectUrl = URL?.createObjectURL(image);
+
+  //       return objectUrl;
+  //     }),
+  //   );
+  // }, [images]);
 
   return (
     <Wrap>
@@ -387,8 +419,9 @@ export const ProductForm = ({
                   </ImageBox>
 
                   <ImageButtonBox>
-                    <SequenceButtonBox>
+                    <SequenceButtonBox mode={mode === 'dark' ? 'white' : 'dark'}>
                       <Button label="<" size="large" onClick={changeImageSequenceButton(i, '-')} />
+                      {i + 1}
                       <Button label=">" size="large" onClick={changeImageSequenceButton(i, '+')} />
                     </SequenceButtonBox>
                     <Button label="delete" size="large" onClick={deleteButton(i)} />
@@ -428,7 +461,7 @@ export const ProductForm = ({
             <Button
               size="medium"
               color={mode === 'dark' ? 'grey' : 'dark_yellow'}
-              onClick={NO_Button_onClick}
+              onClick={noButtonHandler}
               label="NO"></Button>
           )}
         </ButtonBox>
@@ -534,9 +567,11 @@ const Select = styled.select<Pick<Props, 'mode'>>`
 const Box = styled.div`
   width: 34.2rem;
 `;
-const SequenceButtonBox = styled.div`
+const SequenceButtonBox = styled.div<Pick<Props, 'mode'>>`
   display: flex;
   justify-content: center;
+  align-items: center;
+  color: ${({ mode, theme }) => (mode === 'dark' ? theme.color.yellow.yellow : theme.color.grey.black)};
 `;
 const ButtonBox = styled.div`
   margin-top: ${({ theme }) => theme.size.space.base};

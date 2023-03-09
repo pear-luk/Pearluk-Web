@@ -3,8 +3,10 @@ import { AdminArchiveTemplate } from '../../../../components/prototypes_admin/Ar
 import { useArchiveList } from '../../../../hooks/queries/archiveQuery';
 import { useCategoryList } from '../../../../hooks/queries/categoryQuery';
 import { useProjectList } from '../../../../hooks/queries/productQuery';
-
-function Archive({ ...props }) {
+interface Props {
+  storybook?: boolean;
+}
+function Archive({ ...props }: Props) {
   // mode, icon
   const { archiveList } = useArchiveList();
   const { productList } = useProjectList({ page: String(1), archive: 'all' });
