@@ -31,7 +31,7 @@ const ModalWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 99999;
+  z-index: 99998;
 `;
 
 const ModalCard = styled.div<{ mode: ModeType; font_size: keyof Size['font']; font_weight: keyof FontWeight }>`

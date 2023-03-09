@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
 import { useAdminModal } from '../../../hooks/util/useAdminModal';
+import { useModal } from '../../../hooks/util/useModal';
+import { BaseResponseDTO } from '../../../types/common/baseResponse';
 import { ModeType } from '../../../types/common/propsTypes';
+import { Archive } from '../../../types/model/archive';
 import { Category } from '../../../types/model/category';
-import { Product } from '../../../types/model/product';
+import { Product, ProductImg } from '../../../types/model/product';
+import { ProductCreateRequestDTO } from '../../../types/request/product';
 import { Button } from '../../elements/Button';
 import { CheckBox } from '../../elements/CheckBox';
 import { InputLabel } from '../../foundations/InputLabel';
@@ -15,13 +20,56 @@ type Status = Record<string, { title: string; number: number }>;
 interface Props {
   mode: ModeType;
   status: Status;
+  archiveList: Archive[];
   categoryList: Category[];
   productList: Product[];
+
+  createProduct?: UseMutateAsyncFunction<BaseResponseDTO<Product>, unknown, ProductCreateRequestDTO, unknown>;
+  uploadProductImgs?: UseMutateAsyncFunction<BaseResponseDTO<ProductImg[]>, unknown, FormData, unknown>;
+  setProductId?: Dispatch<SetStateAction<string>>;
 }
-export const ArchiveProductSearchCard = ({ mode, categoryList, productList }: Props) => {
+export const ArchiveProductSearchCard = ({
+  mode,
+  archiveList,
+  categoryList,
+  productList,
+  createProduct,
+  uploadProductImgs,
+  setProductId,
+}: Props) => {
   const [parentCategory, setParentCategory] = useState<Category | 'all' | 'off'>();
   const [productName, setProductName] = useState('');
 
+  const {
+    Modal: SuccessModal,
+    close: closeSuccessModal,
+    open: openSuccessModal,
+  } = useModal({
+    OK_Button: true,
+    message: 'SUCCEX',
+    mode: mode === 'dark' ? 'white' : 'dark',
+    OK_Button_onClick: (e) => {
+      e.preventDefault();
+      e.isPropagationStopped();
+      closeSuccessModal();
+      productFormClose && productFormClose();
+    },
+  });
+  const {
+    Modal: ErrorModal,
+    close: closeErrorModal,
+    open: openErrorModal,
+  } = useModal({
+    OK_Button: true,
+    message: 'ERROR',
+    mode: mode === 'dark' ? 'white' : 'dark',
+    OK_Button_onClick: (e) => {
+      e.preventDefault();
+      e.isPropagationStopped();
+      closeSuccessModal();
+      closeErrorModal();
+    },
+  });
   const {
     Modal: ProductFormModal,
     open: productFormOpen,
@@ -29,7 +77,20 @@ export const ArchiveProductSearchCard = ({ mode, categoryList, productList }: Pr
   } = useAdminModal({
     mode: mode,
 
-    Content: <ProductForm mode={mode} NO_Button_onClick={() => productFormClose()} categoryList={categoryList} />,
+    Content: (
+      <ProductForm
+        mode={mode}
+        NO_Button_onClick={() => productFormClose()}
+        archiveList={archiveList}
+        categoryList={categoryList}
+        setProductId={setProductId}
+        createProduct={createProduct}
+        uploadProductImgs={uploadProductImgs}
+        productFormClose={() => productFormClose()}
+        openErrorModal={openErrorModal}
+        openSuccessModal={openSuccessModal}
+      />
+    ),
   });
 
   const selectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -42,6 +103,8 @@ export const ArchiveProductSearchCard = ({ mode, categoryList, productList }: Pr
   return (
     <Container>
       <ProductFormModal />
+      <ErrorModal />
+      <SuccessModal />
       <Box>
         <p>검색</p>
         <div>
@@ -246,7 +309,9 @@ const Select = styled.select`
 
 const ProductBox = styled(Box)`
   overflow: scroll;
+
   max-height: 50vh;
+  align-items: flex-start;
 `;
 
 const ButtonBox = styled(Box)`

@@ -20,6 +20,7 @@ function ProductDetail() {
 
   if (isProductLoading) return <LayOut mode={mode} />;
   if (isProductError) return <LayOut mode={mode} />;
+
   return <ProductTemplate mode={mode} product={product as Product} quetionList={questionList} />;
 }
 

@@ -1,6 +1,9 @@
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
+import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
 import { useModal } from '../../../hooks/util/useModal';
+import { BaseResponseDTO } from '../../../types/common/baseResponse';
 import { ModeType } from '../../../types/common/propsTypes';
 import { Category } from '../../../types/model/category';
 import { Button } from '../../elements/Button';
@@ -9,9 +12,15 @@ import { ChildCategoryListItemAdmin } from '../ChildCategoryListItem';
 interface Props {
   mode: ModeType;
   category: Category;
+  deleteCategory?: UseMutateAsyncFunction<
+    BaseResponseDTO<Category>,
+    AxiosError<unknown>,
+    Pick<Category, 'category_id'>,
+    unknown
+  >;
   onClick?: () => void;
 }
-export const ParentCategoryListItem = ({ mode, category, onClick }: Props) => {
+export const ParentCategoryListItem = ({ mode, category, onClick, deleteCategory }: Props) => {
   const [childs, setChilds] = useState<Category[]>([]);
   const [childCategoryId, setChildCategoryId] = useState('');
   useEffect(() => {
@@ -21,11 +30,27 @@ export const ParentCategoryListItem = ({ mode, category, onClick }: Props) => {
   const childDeleteOkButtonHandler =
     ({ category_id }: Pick<Category, 'category_id'>) =>
     () => {
-      setChilds(
-        childs.filter((child) => {
-          return child.category_id !== category_id;
-        }),
-      );
+      if (deleteCategory)
+        deleteCategory({ category_id: childCategoryId })
+          .then(() => {
+            setChilds(
+              childs.filter((child) => {
+                return child.category_id !== category_id;
+              }),
+            );
+          })
+          .catch((e) => {
+            alert(e);
+          });
+      else {
+        console.log('deleteCategory');
+        setChilds(
+          childs.filter((child) => {
+            return child.category_id !== category_id;
+          }),
+        );
+      }
+
       childDeleteModalClose();
     };
   const {

@@ -17,10 +17,15 @@ interface Props {
   categoryList: Category[];
 
   createCategory?: UseMutateAsyncFunction<BaseResponseDTO<Category>, AxiosError<unknown>, CreateCategoryDTO, unknown>;
-
+  deleteCategory?: UseMutateAsyncFunction<
+    BaseResponseDTO<Category>,
+    AxiosError<unknown>,
+    Pick<Category, 'category_id'>,
+    unknown
+  >;
   mode: ModeType;
 }
-export const AdminCategoryListCard = ({ categoryList, mode, createCategory }: Props) => {
+export const AdminCategoryListCard = ({ categoryList, mode, createCategory, deleteCategory }: Props) => {
   const [categoryListState, setCategoryListState] = useState<Category[]>([]);
   const [categoryId, setCategoryId] = useState('');
 
@@ -28,17 +33,18 @@ export const AdminCategoryListCard = ({ categoryList, mode, createCategory }: Pr
     setCategoryListState(categoryList);
   }, [categoryList]);
   const deleteCategoryOkButtonHandler = (category_id: string) => () => {
-    // if (deleteArchive)
-    // deleteArchive({ archive_id })
-    // .then(() => {
-    //   setCategoryListState(categoryListState?.filter((archive) => archive.archive_id !== archive_id));
-    // })
-    // .catch((e) => {
-    //   alert(e.message);
-    // });
-    // else {
-    setCategoryListState(categoryListState?.filter((category) => category.category_id !== category_id));
-    // }
+    if (deleteCategory)
+      deleteCategory({ category_id })
+        .then(() => {
+          setCategoryListState(categoryListState?.filter((archive) => archive.category_id !== category_id));
+        })
+        .catch((e) => {
+          alert(e);
+        });
+    else {
+      console.log('deleteCategory');
+      setCategoryListState(categoryListState?.filter((category) => category.category_id !== category_id));
+    }
 
     categoryDeleteModalClose();
   };
@@ -94,6 +100,7 @@ export const AdminCategoryListCard = ({ categoryList, mode, createCategory }: Pr
                 <ParentCategoryListItem
                   mode={mode}
                   category={category}
+                  deleteCategory={deleteCategory}
                   onClick={categoryDeleteButtonHandler(category_id)}
                 />
               </Item>

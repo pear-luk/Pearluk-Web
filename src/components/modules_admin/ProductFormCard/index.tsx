@@ -1,13 +1,16 @@
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/css';
 import Image from 'next/image';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
-
 import { FontWeight, Size } from '../../../styles/theme';
+import { BaseResponseDTO } from '../../../types/common/baseResponse';
 import { ButtonColorType, ModeType } from '../../../types/common/propsTypes';
 import { Archive } from '../../../types/model/archive';
 import { Category } from '../../../types/model/category';
+import { Product, ProductImg } from '../../../types/model/product';
+import { ProductCreateRequestDTO } from '../../../types/request/product';
 import { Button } from '../../elements/Button';
 import { Label } from '../../elements/Label';
 import { TextArea } from '../../elements/Textarea';
@@ -32,6 +35,14 @@ interface Props {
 
   categoryList?: Category[];
   archiveList?: Archive[];
+
+  createProduct?: UseMutateAsyncFunction<BaseResponseDTO<Product>, unknown, ProductCreateRequestDTO, unknown>;
+  uploadProductImgs?: UseMutateAsyncFunction<BaseResponseDTO<ProductImg[]>, unknown, FormData, unknown>;
+  setProductId?: Dispatch<SetStateAction<string>>;
+
+  productFormClose?: () => void;
+  openSuccessModal?: () => void;
+  openErrorModal?: () => void;
 }
 export const ProductForm = ({
   mode,
@@ -42,17 +53,19 @@ export const ProductForm = ({
   label_weight = 'bold',
 
   OK_Button = true,
-  OK_Button_onClick,
   NO_Button = true,
   NO_Button_onClick,
-  categoryList,
   archiveList,
-  setCategoryList,
-  createCategory,
+  categoryList,
+  createProduct,
+  uploadProductImgs,
+  setProductId,
+  productFormClose,
+  openSuccessModal,
+  openErrorModal,
 }: Props) => {
   const imageAreaRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [action, setAction] = useState<'ADD' | 'DELETE' | null>(null);
 
   const [name, setName] = useState('');
   const [images, setImages] = useState<File[]>([]);
@@ -107,6 +120,11 @@ export const ProductForm = ({
   };
   const introduceOnChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.target.value && setIntroduce(e.target.value);
+    if (textareaRef.current) {
+      if (!e.target.value) {
+        textareaRef.current.style.height = '0px';
+      }
+    }
   }, []);
 
   const changeImageSequenceButton = (index: number, type: '+' | '-') => () => {
@@ -131,12 +149,83 @@ export const ProductForm = ({
     setImages([...images.slice(0, index), ...images.slice(index + 1)]);
   };
 
+  const okButtonHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.isPropagationStopped();
+
+    if (name.length < 5) {
+      alert('상품 이름은 5글자 이상으로 입력해주세요');
+      return;
+    }
+    if (Number(price) < 1000) {
+      alert('상품 가격은 1000원 이상으로 입력해주세요');
+      return;
+    }
+    if (Number(quantity) < 1) {
+      alert('상품 개수는 1개 이상으로 입력해주세요');
+      return;
+    }
+    if (!categoryId) {
+      alert('카테고리를 선택해주세요');
+      return;
+    }
+    if (!archiveId) {
+      alert('아카이브를 선택해주세요');
+      return;
+    }
+    if (createProduct)
+      createProduct({
+        name,
+        price: Number(price),
+        quantity: Number(quantity),
+        introduce,
+        product_status: 1,
+        category_id: categoryId,
+        archive_id: archiveId,
+      })
+        .then(({ result }) => {
+          if (result) {
+            const { product_id } = result;
+            setProductId && setProductId(product_id);
+          }
+          return;
+        })
+        .then(() => {
+          if (uploadProductImgs && images.length > 0) {
+            const formData = new FormData();
+            images.forEach((img) => {
+              formData.append('imgs', img);
+            });
+            uploadProductImgs(formData);
+          }
+        })
+        .then(() => {
+          setImages([]);
+          productFormClose && productFormClose();
+          openSuccessModal && openSuccessModal();
+        })
+        .catch((e) => {
+          openErrorModal && openErrorModal();
+          productFormClose && productFormClose();
+        });
+  };
+
   useEffect(() => {
     console.log(categoryId);
   }, [categoryId]);
   useEffect(() => {
-    console.log(introduce);
+    console.log(introduce.length);
+    if (textareaRef.current) {
+      if (!introduce) {
+        textareaRef.current.style.height = '0px';
+        return;
+      }
+      textareaRef.current.style.height = '0px';
+      const scrollHeight = textareaRef.current.scrollHeight;
+      textareaRef.current.style.height = scrollHeight + 'px';
+    }
   }, [introduce]);
+
   useEffect(() => {
     setImageUrls(
       images.map((image) => {
@@ -145,7 +234,6 @@ export const ProductForm = ({
       }),
     );
   }, [images]);
-  const okButtonHandler = (e: React.MouseEvent) => {};
 
   return (
     <Wrap>
@@ -153,12 +241,12 @@ export const ProductForm = ({
         <InputLabel
           mode={mode === 'dark' ? 'white' : 'dark'}
           input_width="large"
-          label="NAME"
+          label="PRODUCT NAME"
           onChange={onChangeName}
           value={'' || name}
         />
         <Box>
-          <Label mode={mode === 'dark' ? 'white' : 'dark'} label="ARCHIVE" />
+          <Label mode={mode === 'dark' ? 'white' : 'dark'} label="PRODUCT'S ARCHIVE" />
           <Select
             mode={mode === 'dark' ? 'white' : 'dark'}
             name="archive"
@@ -174,7 +262,7 @@ export const ProductForm = ({
           </Select>
         </Box>
         <Box>
-          <Label mode={mode === 'dark' ? 'white' : 'dark'} label="PARENT CATEGORY" />
+          <Label mode={mode === 'dark' ? 'white' : 'dark'} label="PRODUCT'S PARENT CATEGORY" label_weight="bold" />
           <Select
             mode={mode === 'dark' ? 'white' : 'dark'}
             name="parent_category"
@@ -190,13 +278,13 @@ export const ProductForm = ({
           </Select>
         </Box>
         <Box>
-          <Label mode={mode === 'dark' ? 'white' : 'dark'} label="CHILD CATEGORY" />
+          <Label mode={mode === 'dark' ? 'white' : 'dark'} label="PRODUCT'S CHILD CATEGORY" label_weight="bold" />
           <Select
             mode={mode === 'dark' ? 'white' : 'dark'}
             name="child_category"
             id="child_category"
             onChange={childCategorySelectOnChange}>
-            <option value={'선택'}>선택</option>
+            <option value={'null'}>null</option>
             {parentCategory &&
               parentCategory.child_categories &&
               parentCategory.child_categories.map((category) => {
@@ -212,6 +300,7 @@ export const ProductForm = ({
           mode={mode === 'dark' ? 'white' : 'dark'}
           input_width="large"
           label="QUANTITY"
+          label_weight="bold"
           onChange={onChangeQuantity}
           value={'' || quantity}
         />
@@ -219,13 +308,14 @@ export const ProductForm = ({
           mode={mode === 'dark' ? 'white' : 'dark'}
           input_width="large"
           label="PRICE"
+          label_weight="bold"
           onChange={onChangePrice}
           value={'' || price}
         />
 
         {images.length > 0 && (
           <>
-            <Label label="THUMBNAIL" mode={mode === 'dark' ? 'white' : 'dark'} label_weight="bold" />
+            <Label label="PRODUCT'S THUMBNAIL" mode={mode === 'dark' ? 'white' : 'dark'} label_weight="bold" />
             <ImageListBox>
               <ImageBox>
                 <Image
@@ -282,6 +372,7 @@ export const ProductForm = ({
         )}
 
         <ContentInputBox>
+          <Label label="INTRODUCE" mode={mode === 'dark' ? 'white' : 'dark'} label_weight="bold" />
           <TextArea
             mode={mode === 'dark' ? 'white' : 'dark'}
             size="large"
@@ -319,7 +410,7 @@ const Container = styled.div<Pick<Props, 'mode'>>`
   padding: 1.6rem 0;
   display: flex;
   flex-direction: column;
-  row-gap: 0.8rem;
+  row-gap: 1.6rem;
   justify-content: center;
   align-items: center;
 `;

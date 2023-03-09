@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useCreateArchive, useDeleteArchive } from '../../../hooks/mutation/archive';
-import { useCreateCategory } from '../../../hooks/mutation/category';
+import { useCreateCategory, useDeleteCategory } from '../../../hooks/mutation/category';
+import { useCreateProduct, useUploadProductImg } from '../../../hooks/mutation/product';
 import { Archive } from '../../../types/model/archive';
 import { Category } from '../../../types/model/category';
 import { Product } from '../../../types/model/product';
@@ -15,11 +17,46 @@ interface Props {
   categoryList: Category[];
   productList: Product[];
 }
+const statusMock = {
+  all: {
+    title: '전체',
+    number: 1000,
+  },
+  wait: {
+    title: '판매대기',
+    number: 1000,
+  },
+  for_sale: {
+    title: '판매중',
+    number: 1000,
+  },
+  on_sale: {
+    title: '할인중',
+    number: 1000,
+  },
+  sold_out: {
+    title: '품절',
+    number: 1000,
+  },
+  stop: {
+    title: '판매중지',
+    number: 1000,
+  },
+  off: {
+    title: '판매종료',
+    number: 1000,
+  },
+};
 
 export const AdminArchiveTemplate = ({ archiveList, categoryList, productList }: Props) => {
+  const [productId, setProductId] = useState('');
+
   const { mutateAsync: createArchive } = useCreateArchive();
   const { mutateAsync: deleteArchive } = useDeleteArchive();
   const { mutateAsync: createCategory } = useCreateCategory();
+  const { mutateAsync: createProduct } = useCreateProduct();
+  const { mutateAsync: uploadProductImgs } = useUploadProductImg(productId);
+  const { mutateAsync: deleteCategory } = useDeleteCategory();
   return (
     <AdminLayout mode="white">
       <Container>
@@ -32,46 +69,29 @@ export const AdminArchiveTemplate = ({ archiveList, categoryList, productList }:
           />
         </LineBox>
         <LineBox>
-          <AdminCategoryListCard mode="white" categoryList={categoryList} createCategory={createCategory} />
+          <AdminCategoryListCard
+            mode="white"
+            categoryList={categoryList}
+            createCategory={createCategory}
+            deleteCategory={deleteCategory}
+          />
         </LineBox>
         <ContentBox>
           <Content>
             <Box>
-              <ArchiveStatusCard_Admin
-                status={{
-                  all: {
-                    title: '전체',
-                    number: 1000,
-                  },
-                  wait: {
-                    title: '판매대기',
-                    number: 1000,
-                  },
-                  for_sale: {
-                    title: '판매중',
-                    number: 1000,
-                  },
-                  on_sale: {
-                    title: '할인중',
-                    number: 1000,
-                  },
-                  sold_out: {
-                    title: '품절',
-                    number: 1000,
-                  },
-                  stop: {
-                    title: '판매중지',
-                    number: 1000,
-                  },
-                  off: {
-                    title: '판매종료',
-                    number: 1000,
-                  },
-                }}
-              />
+              <ArchiveStatusCard_Admin status={statusMock} />
             </Box>
             <Box>
-              <ArchiveProductSearchCard status={{}} categoryList={categoryList} productList={productList} />
+              <ArchiveProductSearchCard
+                mode="white"
+                status={statusMock}
+                archiveList={archiveList}
+                categoryList={categoryList}
+                productList={productList}
+                setProductId={setProductId}
+                createProduct={createProduct}
+                uploadProductImgs={uploadProductImgs}
+              />
             </Box>
           </Content>
         </ContentBox>

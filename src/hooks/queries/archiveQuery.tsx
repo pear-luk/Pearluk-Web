@@ -1,6 +1,6 @@
 import { archiveListState } from '../../recoil/archive/state';
 import { Archive } from '../../types/model/archive';
-import { getArchiveList } from '../API/archive/getArchiveList';
+import { getArchiveList } from '../API/archive';
 import { useRecoilQuery } from '../util/useRecoilQuery';
 import { ARCHIVE_LIST_KEY } from './key';
 

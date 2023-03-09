@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import { BaseResponseDTO } from '../../types/common/baseResponse';
 import { Product } from '../../types/model/product';
 import { ProductListGetResponseDTO } from '../../types/response/product';
-import { getProductList } from '../API/product/getProductList';
+import { getProductList } from '../API/product/';
 import { API } from '../util/API';
 import { PRODUCT_LIST_KEY, PROUCT_DETAIL_KEY } from './key';
 
