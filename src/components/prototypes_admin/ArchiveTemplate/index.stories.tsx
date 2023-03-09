@@ -18,6 +18,7 @@ EX.args = {
   archiveList: archiveLsitMock,
   categoryList: categoryListMock,
   productList: productListMock,
+  storybook: true,
 };
 EX.parameters = {
   layout: 'fullscreen',

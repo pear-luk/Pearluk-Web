@@ -44,7 +44,7 @@ export const ArchiveProductSearchCard = ({
   productList,
   createProduct,
   uploadProductImgs,
-  storybook,
+  storybook = false,
 }: Props) => {
   const [parentCategory, setParentCategory] = useState<Category | 'all' | 'off'>();
   const [productName, setProductName] = useState('');
