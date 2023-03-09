@@ -153,6 +153,26 @@ export const ProductForm = ({
     e.preventDefault();
     e.isPropagationStopped();
 
+    if (name.length < 5) {
+      alert('상품 이름은 5글자 이상으로 입력해주세요');
+      return;
+    }
+    if (Number(price) < 1000) {
+      alert('상품 가격은 1000원 이상으로 입력해주세요');
+      return;
+    }
+    if (Number(quantity) < 1) {
+      alert('상품 개수는 1개 이상으로 입력해주세요');
+      return;
+    }
+    if (!categoryId) {
+      alert('카테고리를 선택해주세요');
+      return;
+    }
+    if (!archiveId) {
+      alert('아카이브를 선택해주세요');
+      return;
+    }
     if (createProduct)
       createProduct({
         name,

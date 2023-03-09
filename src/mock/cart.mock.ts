@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { ulid } from 'ulid';
 import { CartProduct } from './../types/model/cart';
+import { productImgFaker } from './product.mock';
 
 export const cartProductMock = (): CartProduct => {
   return {
@@ -10,7 +11,7 @@ export const cartProductMock = (): CartProduct => {
     product: {
       name: faker.lorem.words(10),
       price: faker.datatype.number({ min: 1000, max: 9999999 }),
-      imgs: [`/imgs/test${faker.datatype.number({ min: 1, max: 10 })}.png`],
+      imgs: productImgFaker,
     },
   };
 };

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useCreateArchive, useDeleteArchive } from '../../../hooks/mutation/archive';
-import { useCreateCategory } from '../../../hooks/mutation/category';
+import { useCreateCategory, useDeleteCategory } from '../../../hooks/mutation/category';
 import { useCreateProduct, useUploadProductImg } from '../../../hooks/mutation/product';
 import { Archive } from '../../../types/model/archive';
 import { Category } from '../../../types/model/category';
@@ -56,6 +56,7 @@ export const AdminArchiveTemplate = ({ archiveList, categoryList, productList }:
   const { mutateAsync: createCategory } = useCreateCategory();
   const { mutateAsync: createProduct } = useCreateProduct();
   const { mutateAsync: uploadProductImgs } = useUploadProductImg(productId);
+  const { mutateAsync: deleteCategory } = useDeleteCategory();
   return (
     <AdminLayout mode="white">
       <Container>
@@ -68,7 +69,12 @@ export const AdminArchiveTemplate = ({ archiveList, categoryList, productList }:
           />
         </LineBox>
         <LineBox>
-          <AdminCategoryListCard mode="white" categoryList={categoryList} createCategory={createCategory} />
+          <AdminCategoryListCard
+            mode="white"
+            categoryList={categoryList}
+            createCategory={createCategory}
+            deleteCategory={deleteCategory}
+          />
         </LineBox>
         <ContentBox>
           <Content>
