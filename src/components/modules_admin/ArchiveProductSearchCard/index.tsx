@@ -46,9 +46,12 @@ export const ArchiveProductSearchCard = ({
   uploadProductImgs,
   storybook = false,
 }: Props) => {
-  const [parentCategory, setParentCategory] = useState<Category | 'all' | 'off'>();
+  const [archiveId, setArchiveId] = useState<string>('all');
+  const [parentCategory, setParentCategory] = useState<Category | 'all' | 'off' | undefined>('all');
+  const [childCategory, setChildCategory] = useState<Category | 'all' | 'off' | undefined>('all');
   const [productName, setProductName] = useState('');
   const [productListDup, setProductListDup] = useState<Product[]>([]);
+
   const {
     Modal: SuccessModal,
     close: closeSuccessModal,
@@ -64,6 +67,7 @@ export const ArchiveProductSearchCard = ({
       productFormClose && productFormClose();
     },
   });
+
   const {
     Modal: ErrorModal,
     close: closeErrorModal,
@@ -103,16 +107,66 @@ export const ArchiveProductSearchCard = ({
       />
     ),
   });
-
-  const selectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setParentCategory(categoryList.find((category) => category.category_id === e.target.value));
+  const archiveSelectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setArchiveId(e.target.value);
+  };
+  const parentCategorySelectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value === 'all') {
+      setParentCategory('all');
+    }
+    if (categoryList && e.target.value !== 'all') {
+      setParentCategory(categoryList.find((category) => category.category_id === e.target.value));
+    }
+  };
+  const childCategorySelectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value === 'all') {
+      setChildCategory('all');
+    }
+    if (
+      typeof parentCategory === 'object' &&
+      parentCategory.child_categories &&
+      categoryList &&
+      e.target.value !== 'all'
+    ) {
+      setChildCategory(parentCategory.child_categories.find((category) => category.category_id === e.target.value));
+    }
   };
   const productNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target) setProductName(e.target.value);
   };
+
   useEffect(() => {
-    setProductListDup(productList);
-  }, [productList]);
+    setProductListDup &&
+      setProductListDup(
+        productList
+          .filter((product) => {
+            if (!productName) return true;
+            return product.name.includes(productName);
+          })
+          .filter((product) => {
+            if (archiveId === 'all') return true;
+            return product.archive?.archive_id === archiveId;
+          })
+          .filter((product) => {
+            if (parentCategory === 'all') {
+              console.log(parentCategory);
+              return true;
+            }
+            if (typeof parentCategory === 'object') {
+              return product.category?.parent_category_id === parentCategory.category_id;
+            }
+          })
+          .filter((product) => {
+            if (childCategory === 'all') {
+              console.log(childCategory);
+              return true;
+            }
+            if (typeof childCategory === 'object') return product.category?.category_id === childCategory.category_id;
+          }),
+      );
+    console.log(productList);
+  }, [productName, productList, archiveId, parentCategory, childCategory]);
+
   return (
     <Container>
       <ProductFormModal />
@@ -171,8 +225,20 @@ export const ArchiveProductSearchCard = ({
         </div>
       </BoxCheck>
       <Box>
+        아카이브
+        <Select name="archive" id="archive" onChange={archiveSelectOnChange}>
+          <option value={'all'}>all</option>
+          {archiveList &&
+            archiveList.map((archive) => (
+              <option key={archive.archive_id} value={archive.archive_id}>
+                {archive.title}
+              </option>
+            ))}
+        </Select>
+      </Box>
+      <Box>
         대 카테고리
-        <Select name="parent_category" id="parent_category" onChange={selectOnChange}>
+        <Select name="parent_category" id="parent_category" onChange={parentCategorySelectOnChange}>
           <option value={'all'}>all</option>
           {categoryList &&
             categoryList.map((category) => (
@@ -180,13 +246,12 @@ export const ArchiveProductSearchCard = ({
                 {category.name}
               </option>
             ))}
-          <option value={'sale'}>sale</option>
         </Select>
       </Box>
       <Box>
         소 카테고리
-        <Select name="child_category" id="child_category">
-          <option value={'선택'}>선택</option>
+        <Select name="child_category" id="child_category" onChange={childCategorySelectOnChange}>
+          <option value={'all'}>all</option>
           {parentCategory &&
             parentCategory !== 'all' &&
             parentCategory !== 'off' &&
@@ -322,7 +387,7 @@ const Select = styled.select`
 
 const ProductBox = styled(Box)`
   overflow: scroll;
-
+  min-height: 50vh;
   max-height: 50vh;
   align-items: flex-start;
 `;
