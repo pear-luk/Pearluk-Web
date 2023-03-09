@@ -39,8 +39,8 @@ export const ParentCategoryListItem = ({ mode, category, onClick, deleteCategory
               }),
             );
           })
-          .catch((e) => {
-            alert(e);
+          .catch((e: AxiosError<BaseResponseDTO>) => {
+            if (e.response?.data) alert(e.response?.data.message);
           });
       else {
         console.log('deleteCategory');

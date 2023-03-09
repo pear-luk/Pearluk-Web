@@ -38,8 +38,8 @@ export const AdminCategoryListCard = ({ categoryList, mode, createCategory, dele
         .then(() => {
           setCategoryListState(categoryListState?.filter((archive) => archive.category_id !== category_id));
         })
-        .catch((e) => {
-          alert(e);
+        .catch((e: AxiosError) => {
+          alert(e.response?.data.message);
         });
     else {
       console.log('deleteCategory');
