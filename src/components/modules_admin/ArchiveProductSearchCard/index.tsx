@@ -117,7 +117,9 @@ export const ArchiveProductSearchCard = ({
     if (query.childCategory) {
       console.log(query.childCategory);
 
-      setChildCategoryId(query.childCategory as string);
+      if (!query.parentCategory || query.parentCategory === 'all') {
+        setChildCategoryId('all');
+      } else setChildCategoryId(query.childCategory as string);
     }
   }, [query.archive, query.parentCategory, query.childCategory, categoryList]);
   const {
@@ -189,6 +191,8 @@ export const ArchiveProductSearchCard = ({
     if (e.target.value === 'all') {
       setParentCategory('all');
       setParentCategoryId('all');
+      setChildCategory('all');
+      setChildCategoryId('all');
       push({
         pathname: '/archives',
         query: {
