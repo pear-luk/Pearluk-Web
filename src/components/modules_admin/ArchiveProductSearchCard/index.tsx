@@ -2,21 +2,62 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
+import { ulid } from 'ulid';
 import { useAdminModal } from '../../../hooks/util/useAdminModal';
 import { useModal } from '../../../hooks/util/useModal';
 import { BaseResponseDTO } from '../../../types/common/baseResponse';
-import { ModeType } from '../../../types/common/propsTypes';
+import { ModeType, PageNationButtonItemType } from '../../../types/common/propsTypes';
 import { Archive } from '../../../types/model/archive';
 import { Category } from '../../../types/model/category';
 import { Product, ProductImg } from '../../../types/model/product';
 import { ProductCreateRequestDTO } from '../../../types/request/product';
 import { Button } from '../../elements/Button';
-import { CheckBox } from '../../elements/CheckBox';
 import { InputLabel } from '../../foundations/InputLabel';
+import { PageNationBotton } from '../../foundations/PageNationButton';
 import { ProductCheckedCard } from '../ProductCheckedCard';
 import { ProductForm } from '../ProductFormCard';
 import { ProductListCard_Admin } from '../ProductListCard';
-
+{
+  /* <BoxCheck>
+<p>판매상태</p>
+<div>
+  판매대기
+  <CheckItem>
+    <CheckBox mode="white" />
+  </CheckItem>
+</div>
+<div>
+  판매대기
+  <CheckItem>
+    <CheckBox mode="white" /> s
+  </CheckItem>
+</div>
+<div>
+  판매대기
+  <CheckItem>
+    <CheckBox mode="white" />
+  </CheckItem>
+</div>
+<div>
+  판매대기
+  <CheckItem>
+    <CheckBox mode="white" />
+  </CheckItem>
+</div>
+<div>
+  판매대기
+  <CheckItem>
+    <CheckBox mode="white" />
+  </CheckItem>
+</div>
+<div>
+  판매대기
+  <CheckItem>
+    <CheckBox mode="white" />
+  </CheckItem>
+</div>
+</BoxCheck> */
+}
 type Status = Record<string, { title: string; number: number }>;
 
 interface Props {
@@ -35,6 +76,8 @@ interface Props {
     },
     unknown
   >;
+  productTotalCount?: number;
+  page?: string | string[] | undefined;
 
   storybook?: boolean;
 }
@@ -46,14 +89,37 @@ export const ArchiveProductSearchCard = ({
   createProduct,
   uploadProductImgs,
   storybook = false,
+  productTotalCount,
+  page,
 }: Props) => {
-  const router = useRouter();
+  const { push, isReady, query } = useRouter();
   const [archiveId, setArchiveId] = useState<string>('all');
+  const [parentCategoryId, setParentCategoryId] = useState<string>('all');
+  const [childCategoryId, setChildCategoryId] = useState<string>('all');
   const [parentCategory, setParentCategory] = useState<Category | 'all' | 'off' | undefined>('all');
   const [childCategory, setChildCategory] = useState<Category | 'all' | 'off' | undefined>('all');
   const [productName, setProductName] = useState('');
-  const [productListDup, setProductListDup] = useState<Product[]>([]);
+
   const [checkedProductList, setCheckedProductList] = useState<Product[]>([]);
+  const [pageList, setPageList] = useState<PageNationButtonItemType[]>([]);
+
+  useEffect(() => {
+    if (query.archive) {
+      console.log(query.archive);
+
+      setArchiveId(query.archive as string);
+    }
+    if (query.parentCategory) {
+      console.log(query.parentCategory);
+      setParentCategory(categoryList.find((category) => query.parentCategory === category.category_id));
+      setParentCategoryId(query.parentCategory as string);
+    }
+    if (query.childCategory) {
+      console.log(query.childCategory);
+
+      setChildCategoryId(query.childCategory as string);
+    }
+  }, [query.archive, query.parentCategory, query.childCategory, categoryList]);
   const {
     Modal: SuccessModal,
     close: closeSuccessModal,
@@ -103,32 +169,61 @@ export const ArchiveProductSearchCard = ({
         productFormClose={() => productFormClose()}
         openErrorModal={openErrorModal}
         openSuccessModal={openSuccessModal}
-        productList={productListDup}
-        setProductList={setProductListDup}
+        productList={productList}
         storybook={storybook}
       />
     ),
   });
   const archiveSelectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setArchiveId(e.target.value);
-    router.push({
+    push({
       pathname: '/archives',
       query: {
         archive: e.target.value,
+        parentCategory: parentCategoryId,
+        childCategory: childCategoryId,
       },
     });
   };
   const parentCategorySelectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === 'all') {
       setParentCategory('all');
+      setParentCategoryId('all');
+      push({
+        pathname: '/archives',
+        query: {
+          archive: archiveId,
+          parentCategory: 'all',
+          childCategory: childCategoryId,
+        },
+      });
     }
     if (categoryList && e.target.value !== 'all') {
       setParentCategory(categoryList.find((category) => category.category_id === e.target.value));
+      setParentCategoryId(e.target.value);
+      isReady &&
+        push({
+          pathname: '/archives',
+          query: {
+            archive: archiveId,
+            parentCategory: e.target.value,
+            childCategory: childCategoryId,
+          },
+        });
     }
   };
   const childCategorySelectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === 'all') {
       setChildCategory('all');
+      setChildCategoryId('all');
+      push({
+        pathname: '/archives',
+        query: {
+          archive: archiveId,
+          parentCategory: parentCategoryId,
+          childCategory: e.target.value,
+        },
+      });
     }
     if (
       typeof parentCategory === 'object' &&
@@ -137,6 +232,15 @@ export const ArchiveProductSearchCard = ({
       e.target.value !== 'all'
     ) {
       setChildCategory(parentCategory.child_categories.find((category) => category.category_id === e.target.value));
+      setChildCategoryId(e.target.value);
+      push({
+        pathname: '/archives',
+        query: {
+          archive: archiveId,
+          parentCategory: parentCategoryId,
+          childCategory: e.target.value,
+        },
+      });
     }
   };
   const productNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,38 +248,42 @@ export const ArchiveProductSearchCard = ({
   };
   const resetButtonHandler = () => {
     setProductName('');
+    push({
+      pathname: '/archives',
+      query: {
+        archive: 'all',
+        parentCategory: 'all',
+        childCategory: 'all',
+      },
+    });
     setArchiveId('all');
     setParentCategory('all');
     setChildCategory('all');
   };
   useEffect(() => {
-    setProductListDup &&
-      setProductListDup(
-        productList
-          .filter((product) => {
-            if (!productName) return true;
-            return product.name.includes(productName);
-          })
-          .filter((product) => {
-            if (archiveId === 'all') return true;
-            return product.archive?.archive_id === archiveId;
-          })
-          .filter((product) => {
-            if (parentCategory === 'all') {
-              return true;
-            }
-            if (typeof parentCategory === 'object') {
-              return product.category?.parent_category_id === parentCategory.category_id;
-            }
-          })
-          .filter((product) => {
-            if (childCategory === 'all') {
-              return true;
-            }
-            if (typeof childCategory === 'object') return product.category?.category_id === childCategory.category_id;
-          }),
+    if (productTotalCount)
+      setPageList(
+        Array(Math.ceil(productTotalCount / 10))
+          .fill(0)
+          .map((_, i) => ({ id: String(i + 1), title: String(i + 1) })),
       );
-  }, [productName, productList, archiveId, parentCategory, childCategory]);
+  }, [productTotalCount]);
+
+  // useEffect(() => {
+  //   console.log({
+  //     archive: archiveId,
+  //     parentCategory: parentCategoryId,
+  //     childCategory: childCategoryId,
+  //   });
+  //   push({
+  //     pathname: '/archives',
+  //     query: {
+  //       archive: archiveId,
+  //       parentCategory: parentCategoryId,
+  //       childCategory: childCategoryId,
+  //     },
+  //   });
+  // }, [archiveId, parentCategoryId, childCategoryId]);
 
   return (
     <Container>
@@ -195,52 +303,10 @@ export const ArchiveProductSearchCard = ({
           />
         </div>
       </Box>
-      <BoxCheck>
-        <p>판매상태</p>
-        <div>
-          판매대기
-          <CheckItem>
-            <CheckBox mode="white" />
-          </CheckItem>
-        </div>
-        <div>
-          판매대기
-          <CheckItem>
-            <CheckBox mode="white" /> s
-          </CheckItem>
-        </div>
-        <div>
-          판매대기
-          <CheckItem>
-            <CheckBox mode="white" />
-          </CheckItem>
-        </div>
-        <div>
-          판매대기
-          <CheckItem>
-            <CheckBox mode="white" />
-          </CheckItem>
-        </div>
-        <div>
-          판매대기
-          <CheckItem>
-            <CheckBox mode="white" />
-          </CheckItem>
-        </div>
-        <div>
-          판매대기
-          <CheckItem>
-            <CheckBox mode="white" />
-          </CheckItem>
-        </div>
-      </BoxCheck>
+
       <Box>
         아카이브
-        <Select
-          name="archive"
-          id="archive"
-          onChange={archiveSelectOnChange}
-          value={archiveId === 'all' ? 'all' : undefined}>
+        <Select key={ulid()} name="archive" id="archive" onChange={archiveSelectOnChange} defaultValue={archiveId}>
           <option value={'all'}>all</option>
           {archiveList &&
             archiveList.map((archive) => (
@@ -253,10 +319,11 @@ export const ArchiveProductSearchCard = ({
       <Box>
         대 카테고리
         <Select
+          key={ulid()}
           name="parent_category"
           id="parent_category"
           onChange={parentCategorySelectOnChange}
-          value={parentCategory === 'all' ? 'all' : undefined}>
+          defaultValue={parentCategoryId}>
           <option value={'all'}>all</option>
           {categoryList &&
             categoryList.map((category) => (
@@ -269,10 +336,11 @@ export const ArchiveProductSearchCard = ({
       <Box>
         소 카테고리
         <Select
+          key={ulid()}
           name="child_category"
           id="child_category"
           onChange={childCategorySelectOnChange}
-          value={childCategory === 'all' ? 'all' : undefined}>
+          defaultValue={childCategoryId}>
           <option value={'all'}>all</option>
           {parentCategory &&
             parentCategory !== 'all' &&
@@ -303,7 +371,7 @@ export const ArchiveProductSearchCard = ({
       <ProductBox>
         <ProductListCard_Admin
           mode="white"
-          productList={productListDup}
+          productList={productList}
           checkedProductList={checkedProductList}
           setCheckedProductList={setCheckedProductList}
         />{' '}
@@ -319,7 +387,13 @@ export const ArchiveProductSearchCard = ({
           </CheckedBox>
         )}
       </ProductBox>
-
+      <PageNationBotton
+        size="xlarge"
+        mode={mode}
+        items={pageList}
+        url={`/archives?archive=${archiveId}&parentCategory=${parentCategoryId}&childCategory=${childCategoryId}&page=`}
+        now_id={page}
+      />
       <ButtonBox>
         <ButtonItem>
           <Button label="SAVE" size="huge" />

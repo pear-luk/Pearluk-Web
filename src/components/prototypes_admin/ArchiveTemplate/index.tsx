@@ -11,13 +11,6 @@ import { ArchiveStatusCard_Admin } from '../../modules_admin/ArchiveStatusCard';
 import { AdminCategoryListCard } from '../../modules_admin/CategoryListCard';
 import { AdminLayout } from '../../_layout/AdminLayout';
 
-interface Props {
-  archiveList: Archive[];
-  categoryList: Category[];
-  productList: Product[];
-
-  storybook?: boolean;
-}
 const statusMock = {
   all: {
     title: '전체',
@@ -48,8 +41,23 @@ const statusMock = {
     number: 1000,
   },
 };
+interface Props {
+  archiveList: Archive[];
+  categoryList: Category[];
+  productList: Product[];
 
-export const AdminArchiveTemplate = ({ archiveList, categoryList, productList, storybook = false }: Props) => {
+  storybook?: boolean;
+  productTotalCount?: number;
+  page?: string | string[] | undefined;
+}
+export const AdminArchiveTemplate = ({
+  archiveList,
+  categoryList,
+  productList,
+  storybook = false,
+  productTotalCount,
+  page,
+}: Props) => {
   const { mutateAsync: createArchive } = useCreateArchive();
   const { mutateAsync: deleteArchive } = useDeleteArchive();
   const { mutateAsync: createCategory } = useCreateCategory();
@@ -93,6 +101,8 @@ export const AdminArchiveTemplate = ({ archiveList, categoryList, productList, s
                 createProduct={createProduct}
                 uploadProductImgs={uploadProductImgs}
                 storybook={storybook}
+                productTotalCount={productTotalCount}
+                page={page}
               />
             </Box>
           </Content>

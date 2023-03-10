@@ -12,7 +12,7 @@ function Archive({ ...props }: Props) {
   const router = useRouter();
   const { archive, page, parentCategory, childCategory } = router.query;
   const { archiveList } = useArchiveList();
-  const { productList } = useProjectList({ page, archive, parentCategory, childCategory });
+  const { productList, totalCount } = useProjectList({ page, archive, parentCategory, childCategory });
   const { categoryList } = useCategoryList();
 
   useEffect(() => {
@@ -20,7 +20,14 @@ function Archive({ ...props }: Props) {
   }, [categoryList]);
 
   return (
-    <AdminArchiveTemplate archiveList={archiveList} productList={productList} categoryList={categoryList} {...props} />
+    <AdminArchiveTemplate
+      archiveList={archiveList}
+      productList={productList}
+      categoryList={categoryList}
+      productTotalCount={totalCount}
+      page={page}
+      {...props}
+    />
   );
 }
 
