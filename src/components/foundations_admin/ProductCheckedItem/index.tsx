@@ -1,11 +1,9 @@
 import Image from 'next/image';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useModal } from '../../../hooks/util/useModal';
 import { Size } from '../../../styles/theme';
 import { ModeType } from '../../../types/common/propsTypes';
 import { Product } from '../../../types/model/product';
-import { Button } from '../../elements/Button';
 import { CheckBox } from '../../elements/CheckBox';
 
 interface Props {
@@ -18,52 +16,29 @@ interface Props {
   onCancle?: () => void;
   checked?: boolean;
   checkedProductList?: Product[];
+  setCheckedProductList?: Dispatch<SetStateAction<Product[]>>;
   checkBox_onChange?: (() => void) | ((e: ChangeEvent<Element>) => void);
 }
-export const ProductListItem_Admin = ({
+export const ProductCheckedItem = ({
   mode = 'white',
 
   product,
   size = 'xlarge',
 
   mutate,
-  onCancle,
   checkBox_onChange,
   checkedProductList,
 }: Props) => {
-  const [quantity, setQuantity] = useState(product.quantity);
   const [check, setCheck] = useState(false);
-  const minusButtonHandler = () => {
-    mutate && mutate(quantity - 1);
-    setQuantity(quantity - 1);
-  };
-  const plusButtonHandler = () => {
-    mutate && mutate(quantity + 1);
-    setQuantity(quantity + 1);
-  };
+
   useEffect(() => {
     checkedProductList &&
       setCheck(Boolean(checkedProductList.find((checkProduct) => checkProduct.product_id === product.product_id)));
+    console.log;
   }, [checkedProductList, product.product_id]);
-  const cancleModalOkHandler = () => {
-    closeCancleModal();
-    onCancle && onCancle();
-  };
-  const {
-    Modal: CancleModal,
-    open: openCancleModal,
-    close: closeCancleModal,
-  } = useModal({
-    message: 'REAL DELETE?',
-    mode,
-    OK_Button: true,
-    NO_Button: true,
-    OK_Button_onClick: cancleModalOkHandler,
-  });
 
   return (
     <Container mode={mode} size={size}>
-      <CancleModal />
       <CheckBox mode={mode} onChange={checkBox_onChange} checked={check ? true : false} />
       <ImgBox>
         <Image
@@ -76,37 +51,22 @@ export const ProductListItem_Admin = ({
       <InfoBox>
         <TopBox>
           <ProductName>{product.name}</ProductName>
+
           <div>
-            <P>archive / child category</P>
+            <P>archive /child category</P>
             <P>
               {product.archive?.title} / {product.category?.name}
             </P>
           </div>
-          <Button label="↑" size="mini" />
         </TopBox>
         <BottomBox>
           <InfoLeft>
-            <QuantityBox>
-              {quantity === 0 ? (
-                <Button size={'mini'} color={mode === 'white' ? 'grey' : 'dark_yellow'} label="-" />
-              ) : (
-                <Button
-                  size={'mini'}
-                  color={mode === 'white' ? 'black' : 'yellow'}
-                  onClick={minusButtonHandler}
-                  label="-"
-                />
-              )}
-              {quantity}
-              <Button size="mini" color={mode === 'white' ? 'black' : 'yellow'} onClick={plusButtonHandler} label="+" />
-            </QuantityBox>
+            <QuantityBox>재고: {product.quantity} 개 </QuantityBox>
           </InfoLeft>
           <InfoRight>
             <P></P>
             <P>{Number(product.price).toLocaleString()} KRW</P>
           </InfoRight>
-          <Button label="EDIT" />
-          <Button label="↓" size="mini" />
         </BottomBox>
       </InfoBox>
     </Container>
@@ -140,10 +100,6 @@ const TopBox = styled.div`
   justify-content: space-between;
 `;
 
-const CancleButton = styled.div<{ button_size?: keyof Size['font'] }>`
-  cursor: pointer;
-`;
-
 const InfoBox = styled.div`
   height: 5.6rem;
   width: 100%;
@@ -155,7 +111,6 @@ const InfoBox = styled.div`
 `;
 
 const ProductName = styled.p`
-  max-width: 16.7rem;
   font-size: 1.2rem;
   font-weight: 700;
   word-break: break-all;
@@ -179,7 +134,6 @@ const InfoLeft = styled.div`
   }
 `;
 const QuantityBox = styled.div`
-  width: 7.2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;

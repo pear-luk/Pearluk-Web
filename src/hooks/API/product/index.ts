@@ -9,9 +9,24 @@ export const getProduct =
     (await API<Product>(`/products/${product_id}`, { method: 'get' })).data;
 
 export const getProductList =
-  ({ page, archive }: { page: string | string[] | undefined; archive: string | string[] | undefined }) =>
+  ({
+    page,
+    archive,
+    parentCategory,
+    childCategory,
+  }: {
+    page: string | string[] | undefined;
+    archive?: string | string[] | undefined;
+    parentCategory?: string | string[] | undefined;
+    childCategory?: string | string[] | undefined;
+  }) =>
   async () =>
-    (await API<ProductListGetResponseDTO>(`/products?archive=${archive}&page=${page}`, { method: 'get' })).data;
+    (
+      await API<ProductListGetResponseDTO>(
+        `/products?archive=${archive}&page=${page}&parentCategory=${parentCategory}&childCategory=${childCategory}`,
+        { method: 'get' },
+      )
+    ).data;
 
 export const createProduct = () => async (mutationData: ProductCreateRequestDTO) =>
   (await API<Product>(`/products`, { method: 'post', data: mutationData })).data;

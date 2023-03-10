@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
@@ -12,6 +13,7 @@ import { ProductCreateRequestDTO } from '../../../types/request/product';
 import { Button } from '../../elements/Button';
 import { CheckBox } from '../../elements/CheckBox';
 import { InputLabel } from '../../foundations/InputLabel';
+import { ProductCheckedCard } from '../ProductCheckedCard';
 import { ProductForm } from '../ProductFormCard';
 import { ProductListCard_Admin } from '../ProductListCard';
 
@@ -23,7 +25,6 @@ interface Props {
   archiveList: Archive[];
   categoryList: Category[];
   productList: Product[];
-
   createProduct?: UseMutateAsyncFunction<BaseResponseDTO<Product>, unknown, ProductCreateRequestDTO, unknown>;
   uploadProductImgs?: UseMutateAsyncFunction<
     BaseResponseDTO<ProductImg[]>,
@@ -46,12 +47,13 @@ export const ArchiveProductSearchCard = ({
   uploadProductImgs,
   storybook = false,
 }: Props) => {
+  const router = useRouter();
   const [archiveId, setArchiveId] = useState<string>('all');
   const [parentCategory, setParentCategory] = useState<Category | 'all' | 'off' | undefined>('all');
   const [childCategory, setChildCategory] = useState<Category | 'all' | 'off' | undefined>('all');
   const [productName, setProductName] = useState('');
   const [productListDup, setProductListDup] = useState<Product[]>([]);
-
+  const [checkedProductList, setCheckedProductList] = useState<Product[]>([]);
   const {
     Modal: SuccessModal,
     close: closeSuccessModal,
@@ -109,6 +111,12 @@ export const ArchiveProductSearchCard = ({
   });
   const archiveSelectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setArchiveId(e.target.value);
+    router.push({
+      pathname: '/archives',
+      query: {
+        archive: e.target.value,
+      },
+    });
   };
   const parentCategorySelectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === 'all') {
@@ -134,7 +142,12 @@ export const ArchiveProductSearchCard = ({
   const productNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target) setProductName(e.target.value);
   };
-
+  const resetButtonHandler = () => {
+    setProductName('');
+    setArchiveId('all');
+    setParentCategory('all');
+    setChildCategory('all');
+  };
   useEffect(() => {
     setProductListDup &&
       setProductListDup(
@@ -149,7 +162,6 @@ export const ArchiveProductSearchCard = ({
           })
           .filter((product) => {
             if (parentCategory === 'all') {
-              console.log(parentCategory);
               return true;
             }
             if (typeof parentCategory === 'object') {
@@ -158,13 +170,11 @@ export const ArchiveProductSearchCard = ({
           })
           .filter((product) => {
             if (childCategory === 'all') {
-              console.log(childCategory);
               return true;
             }
             if (typeof childCategory === 'object') return product.category?.category_id === childCategory.category_id;
           }),
       );
-    console.log(productList);
   }, [productName, productList, archiveId, parentCategory, childCategory]);
 
   return (
@@ -226,7 +236,11 @@ export const ArchiveProductSearchCard = ({
       </BoxCheck>
       <Box>
         아카이브
-        <Select name="archive" id="archive" onChange={archiveSelectOnChange}>
+        <Select
+          name="archive"
+          id="archive"
+          onChange={archiveSelectOnChange}
+          value={archiveId === 'all' ? 'all' : undefined}>
           <option value={'all'}>all</option>
           {archiveList &&
             archiveList.map((archive) => (
@@ -238,7 +252,11 @@ export const ArchiveProductSearchCard = ({
       </Box>
       <Box>
         대 카테고리
-        <Select name="parent_category" id="parent_category" onChange={parentCategorySelectOnChange}>
+        <Select
+          name="parent_category"
+          id="parent_category"
+          onChange={parentCategorySelectOnChange}
+          value={parentCategory === 'all' ? 'all' : undefined}>
           <option value={'all'}>all</option>
           {categoryList &&
             categoryList.map((category) => (
@@ -250,7 +268,11 @@ export const ArchiveProductSearchCard = ({
       </Box>
       <Box>
         소 카테고리
-        <Select name="child_category" id="child_category" onChange={childCategorySelectOnChange}>
+        <Select
+          name="child_category"
+          id="child_category"
+          onChange={childCategorySelectOnChange}
+          value={childCategory === 'all' ? 'all' : undefined}>
           <option value={'all'}>all</option>
           {parentCategory &&
             parentCategory !== 'all' &&
@@ -270,7 +292,7 @@ export const ArchiveProductSearchCard = ({
           <Button label="search" size="huge" />
         </ButtonItem>
         <ButtonItem>
-          <Button label="reset" size="huge" />
+          <Button label="reset" size="huge" onClick={resetButtonHandler} />
         </ButtonItem>
       </ButtonBox>
       <ButtonBox>
@@ -279,61 +301,25 @@ export const ArchiveProductSearchCard = ({
         </ButtonItem>
       </ButtonBox>
       <ProductBox>
-        <ProductListCard_Admin mode="white" productList={productListDup} />
+        <ProductListCard_Admin
+          mode="white"
+          productList={productListDup}
+          checkedProductList={checkedProductList}
+          setCheckedProductList={setCheckedProductList}
+        />{' '}
+        {checkedProductList.length > 0 && (
+          <CheckedBox>
+            <ProductCheckedCard
+              mode={mode === 'dark' ? 'white' : 'dark'} //
+              archiveList={archiveList}
+              categoryList={categoryList}
+              checkedProductList={checkedProductList}
+              setCheckedProductList={setCheckedProductList}
+            />
+          </CheckedBox>
+        )}
       </ProductBox>
 
-      <BoxCheck>
-        <p>판매상태</p>
-        <div>
-          판매대기
-          <CheckItem>
-            <CheckBox mode="white" />
-          </CheckItem>
-        </div>
-        <div>
-          판매대기
-          <CheckItem>
-            <CheckBox mode="white" />
-          </CheckItem>
-        </div>
-        <div>
-          판매대기
-          <CheckItem>
-            <CheckBox mode="white" />
-          </CheckItem>
-        </div>
-        <div>
-          판매대기
-          <CheckItem>
-            <CheckBox mode="white" />
-          </CheckItem>
-        </div>
-        <div>
-          판매대기
-          <CheckItem>
-            <CheckBox mode="white" />
-          </CheckItem>
-        </div>
-        <div>
-          판매대기
-          <CheckItem>
-            <CheckBox mode="white" />
-          </CheckItem>
-        </div>
-      </BoxCheck>
-      <Box>
-        카테고리
-        <Select name="category" id="adf">
-          <option value={'all'}>all</option>
-          {categoryList &&
-            categoryList.map((category) => (
-              <option key={category.category_id} value={category.category_id}>
-                {category.name}
-              </option>
-            ))}
-          <option value={'sale'}>sale</option>
-        </Select>
-      </Box>
       <ButtonBox>
         <ButtonItem>
           <Button label="SAVE" size="huge" />
@@ -398,4 +384,13 @@ const ButtonBox = styled(Box)`
 const ButtonItem = styled.div`
   margin: 0.4rem;
   width: 100%;
+`;
+
+const CheckedBox = styled.div`
+  background-color: black;
+
+  position: absolute;
+  padding: 1.6rem;
+  left: -100%;
+  bottom: 0;
 `;

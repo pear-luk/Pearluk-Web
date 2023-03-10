@@ -11,16 +11,20 @@ import { PRODUCT_LIST_KEY, PROUCT_DETAIL_KEY } from './key';
 export const useProjectList = ({
   page,
   archive,
+  parentCategory,
+  childCategory,
 }: {
   page: string | string[] | undefined;
   archive?: string | string[] | undefined;
+  parentCategory?: string | string[] | undefined;
+  childCategory?: string | string[] | undefined;
 }) => {
   const [productList, setProductList] = useState<Product[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
   // const [page, setPage] = useState();
   const { data, isLoading, isError, refetch } = useQuery<BaseResponseDTO<ProductListGetResponseDTO>, AxiosError>(
-    PRODUCT_LIST_KEY({ page, archive }),
-    getProductList({ page, archive }),
+    PRODUCT_LIST_KEY({ page, archive, parentCategory, childCategory }),
+    getProductList({ page, archive, parentCategory, childCategory }),
     // API('/auth', { method: 'get' }),
     {
       retry: false,
