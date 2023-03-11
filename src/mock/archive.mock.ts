@@ -10,7 +10,7 @@ import { Archive } from './../types/model/archive';
 // };
 export const archiveMock = (): Archive => ({
   archive_id: ulid(),
-  title: faker.lorem.words(6),
+  title: faker.lorem.words(2),
   year: faker.datatype.number({ max: 2026, min: 2000 }),
   introduce: faker.lorem.lines(3),
 });

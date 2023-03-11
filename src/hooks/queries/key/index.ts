@@ -5,10 +5,16 @@ export const PRODUCT_ALL_LIST_KEY = ['products'];
 export const PRODUCT_LIST_KEY = ({
   page,
   archive,
+  search,
+  parentCategory,
+  childCategory,
 }: {
-  page?: string | string[] | undefined;
+  page: string | string[] | undefined;
   archive?: string | string[] | undefined;
-}) => ['products', { page, archive }];
+  search?: string | string[] | undefined;
+  parentCategory?: string | string[] | undefined;
+  childCategory?: string | string[] | undefined;
+}) => ['products', { page, archive, search, parentCategory, childCategory }];
 
 export const PROUCT_DETAIL_KEY = ({ product_id }: { product_id: string }) => ['products', product_id];
 

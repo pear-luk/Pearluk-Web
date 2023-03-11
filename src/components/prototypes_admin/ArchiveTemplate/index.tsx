@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useCreateArchive, useDeleteArchive } from '../../../hooks/mutation/archive';
 import { useCreateCategory, useDeleteCategory } from '../../../hooks/mutation/category';
-import { useCreateProduct, useUploadProductImg } from '../../../hooks/mutation/product';
+import { useCreateProduct, useUpdateManyProduct, useUploadProductImg } from '../../../hooks/mutation/product';
 import { Archive } from '../../../types/model/archive';
 import { Category } from '../../../types/model/category';
 import { Product } from '../../../types/model/product';
@@ -11,13 +11,6 @@ import { ArchiveStatusCard_Admin } from '../../modules_admin/ArchiveStatusCard';
 import { AdminCategoryListCard } from '../../modules_admin/CategoryListCard';
 import { AdminLayout } from '../../_layout/AdminLayout';
 
-interface Props {
-  archiveList: Archive[];
-  categoryList: Category[];
-  productList: Product[];
-
-  storybook?: boolean;
-}
 const statusMock = {
   all: {
     title: '전체',
@@ -48,14 +41,30 @@ const statusMock = {
     number: 1000,
   },
 };
+interface Props {
+  archiveList: Archive[];
+  categoryList: Category[];
+  productList: Product[];
 
-export const AdminArchiveTemplate = ({ archiveList, categoryList, productList, storybook = false }: Props) => {
+  storybook?: boolean;
+  productTotalCount?: number;
+  page?: string | string[] | undefined;
+}
+export const AdminArchiveTemplate = ({
+  archiveList,
+  categoryList,
+  productList,
+  storybook = false,
+  productTotalCount,
+  page,
+}: Props) => {
   const { mutateAsync: createArchive } = useCreateArchive();
   const { mutateAsync: deleteArchive } = useDeleteArchive();
   const { mutateAsync: createCategory } = useCreateCategory();
   const { mutateAsync: createProduct } = useCreateProduct();
   const { mutateAsync: uploadProductImgs } = useUploadProductImg();
   const { mutateAsync: deleteCategory } = useDeleteCategory();
+  const { mutateAsync: updateManyProduct } = useUpdateManyProduct();
 
   return (
     <AdminLayout mode="white">
@@ -92,7 +101,10 @@ export const AdminArchiveTemplate = ({ archiveList, categoryList, productList, s
                 productList={productList}
                 createProduct={createProduct}
                 uploadProductImgs={uploadProductImgs}
+                updateManyProduct={updateManyProduct}
                 storybook={storybook}
+                productTotalCount={productTotalCount}
+                page={page}
               />
             </Box>
           </Content>

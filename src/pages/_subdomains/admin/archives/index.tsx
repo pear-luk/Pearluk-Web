@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { AdminArchiveTemplate } from '../../../../components/prototypes_admin/ArchiveTemplate';
 import { useArchiveList } from '../../../../hooks/queries/archiveQuery';
@@ -8,8 +9,10 @@ interface Props {
 }
 function Archive({ ...props }: Props) {
   // mode, icon
+  const router = useRouter();
+  const { archive, page, search, parentCategory, childCategory } = router.query;
   const { archiveList } = useArchiveList();
-  const { productList } = useProjectList({ page: String(1), archive: 'all' });
+  const { productList, totalCount } = useProjectList({ page, archive, search, parentCategory, childCategory });
   const { categoryList } = useCategoryList();
 
   useEffect(() => {
@@ -17,7 +20,14 @@ function Archive({ ...props }: Props) {
   }, [categoryList]);
 
   return (
-    <AdminArchiveTemplate archiveList={archiveList} productList={productList} categoryList={categoryList} {...props} />
+    <AdminArchiveTemplate
+      archiveList={archiveList}
+      productList={productList}
+      categoryList={categoryList}
+      productTotalCount={totalCount}
+      page={page}
+      {...props}
+    />
   );
 }
 

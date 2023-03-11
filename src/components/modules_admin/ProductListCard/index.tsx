@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Size } from '../../../styles/theme';
 import { ModeType } from '../../../types/common/propsTypes';
 import { Product } from '../../../types/model/product';
-import { CartProductListGetResponseDTO } from '../../../types/response/cart';
 import { ProductListItem_Admin } from '../../foundations_admin/ProductListItem';
 
 interface Props {
@@ -15,8 +14,8 @@ interface Props {
     updateCartProduct: (updateCount: number) => void;
     deleteCartProduct: () => void;
   };
-  checkProductList?: CartProductListGetResponseDTO;
-  setCheckProductList?: React.Dispatch<React.SetStateAction<CartProductListGetResponseDTO>>;
+  checkedProductList?: Product[];
+  setCheckedProductList?: React.Dispatch<React.SetStateAction<Product[]>>;
   storybook?: boolean;
 }
 
@@ -26,24 +25,25 @@ export const ProductListCard_Admin = ({
   productList,
   buttonHandler,
   // setProductList,
-  checkProductList,
-  setCheckProductList,
+  checkedProductList,
+  setCheckedProductList,
 }: Props) => {
   const deleteButtonHandler = (cart_product_id: string) => () => {
     // setProductList && setProductList(productList.filter((product) => product.product_id !== cart_product_id));
     // buttonHandler && buttonHandler({ cart_product_id }).deleteCartProduct();
   };
-  const itemChechBoxHandler = (product: Product) => () => {
+  const checkProductHandler = (product: Product) => () => {
     const checked =
-      checkProductList &&
-      checkProductList.find((checkedProduct) => checkedProduct.cart_product_id === product.cart_product_id);
+      checkedProductList &&
+      checkedProductList.find((checkedProduct) => checkedProduct.product_id === product.product_id);
+
     if (checked) {
-      setCheckProductList &&
-        setCheckProductList(
-          checkProductList.filter((checkedProduct) => checkedProduct.cart_product_id !== product.cart_product_id),
+      setCheckedProductList &&
+        setCheckedProductList(
+          checkedProductList.filter((checkedProduct) => checkedProduct.product_id !== product.product_id),
         );
     } else {
-      setCheckProductList && checkProductList && setCheckProductList([...checkProductList, product]);
+      setCheckedProductList && checkedProductList && setCheckedProductList([...checkedProductList, product]);
     }
   };
 
@@ -53,15 +53,13 @@ export const ProductListCard_Admin = ({
         productList.map((product) => {
           const { product_id } = product;
           return (
-            <ProductBox mode={mode} key={product.product_id}>
+            <ProductBox mode={mode} key={product_id}>
               <ProductListItem_Admin
                 mode={mode}
                 size={size}
                 product={product}
-                onCancle={deleteButtonHandler(product_id)}
-                mutate={buttonHandler && buttonHandler({ product_id }).updateCartProduct}
-                checkProductList={checkProductList}
-                checkBox_onChange={itemChechBoxHandler(product)}
+                checkedProductList={checkedProductList}
+                checkBox_onChange={checkProductHandler(product)}
               />
             </ProductBox>
           );
