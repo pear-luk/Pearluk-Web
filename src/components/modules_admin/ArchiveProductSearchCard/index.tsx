@@ -10,7 +10,7 @@ import { ModeType, PageNationButtonItemType } from '../../../types/common/propsT
 import { Archive } from '../../../types/model/archive';
 import { Category } from '../../../types/model/category';
 import { Product, ProductImg } from '../../../types/model/product';
-import { ProductCreateRequestDTO } from '../../../types/request/product';
+import { ProductCreateRequestDTO, ProductUpdateManyRequestDTO } from '../../../types/request/product';
 import { Button } from '../../elements/Button';
 import { InputLabel } from '../../foundations/InputLabel';
 import { PageNationBotton } from '../../foundations/PageNationButton';
@@ -76,6 +76,8 @@ interface Props {
     },
     unknown
   >;
+  updateManyProduct?: UseMutateAsyncFunction<BaseResponseDTO<Product[]>, unknown, ProductUpdateManyRequestDTO, unknown>;
+
   productTotalCount?: number;
   page?: string | string[] | undefined;
 
@@ -88,22 +90,27 @@ export const ArchiveProductSearchCard = ({
   productList,
   createProduct,
   uploadProductImgs,
+  updateManyProduct,
   storybook = false,
   productTotalCount,
   page,
 }: Props) => {
   const { push, isReady, query } = useRouter();
+  const [productName, setProductName] = useState('');
+
   const [archiveId, setArchiveId] = useState<string>('all');
   const [parentCategoryId, setParentCategoryId] = useState<string>('all');
   const [childCategoryId, setChildCategoryId] = useState<string>('all');
   const [parentCategory, setParentCategory] = useState<Category | 'all' | 'off' | undefined>('all');
   const [childCategory, setChildCategory] = useState<Category | 'all' | 'off' | undefined>('all');
-  const [productName, setProductName] = useState('');
 
   const [checkedProductList, setCheckedProductList] = useState<Product[]>([]);
   const [pageList, setPageList] = useState<PageNationButtonItemType[]>([]);
 
   useEffect(() => {
+    if (query.search) {
+      setProductName(query.search);
+    }
     if (query.archive) {
       console.log(query.archive);
 
@@ -121,7 +128,7 @@ export const ArchiveProductSearchCard = ({
         setChildCategoryId('all');
       } else setChildCategoryId(query.childCategory as string);
     }
-  }, [query.archive, query.parentCategory, query.childCategory, categoryList]);
+  }, [query.archive, query.parentCategory, query.childCategory, query.search, categoryList]);
   const {
     Modal: SuccessModal,
     close: closeSuccessModal,
@@ -176,11 +183,15 @@ export const ArchiveProductSearchCard = ({
       />
     ),
   });
+  const productNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target) setProductName(e.target.value);
+  };
   const archiveSelectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setArchiveId(e.target.value);
     push({
       pathname: '/archives',
       query: {
+        search: productName,
         archive: e.target.value,
         parentCategory: parentCategoryId,
         childCategory: childCategoryId,
@@ -196,6 +207,7 @@ export const ArchiveProductSearchCard = ({
       push({
         pathname: '/archives',
         query: {
+          search: productName,
           archive: archiveId,
           parentCategory: 'all',
           childCategory: childCategoryId,
@@ -209,6 +221,7 @@ export const ArchiveProductSearchCard = ({
         push({
           pathname: '/archives',
           query: {
+            search: productName,
             archive: archiveId,
             parentCategory: e.target.value,
             childCategory: childCategoryId,
@@ -223,6 +236,7 @@ export const ArchiveProductSearchCard = ({
       push({
         pathname: '/archives',
         query: {
+          search: productName,
           archive: archiveId,
           parentCategory: parentCategoryId,
           childCategory: e.target.value,
@@ -240,6 +254,7 @@ export const ArchiveProductSearchCard = ({
       push({
         pathname: '/archives',
         query: {
+          search: productName,
           archive: archiveId,
           parentCategory: parentCategoryId,
           childCategory: e.target.value,
@@ -247,8 +262,16 @@ export const ArchiveProductSearchCard = ({
       });
     }
   };
-  const productNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target) setProductName(e.target.value);
+  const searchButtonHandler = () => {
+    push({
+      pathname: '/archives',
+      query: {
+        search: productName,
+        archive: archiveId,
+        parentCategory: parentCategoryId,
+        childCategory: childCategoryId,
+      },
+    });
   };
   const resetButtonHandler = () => {
     setProductName('');
@@ -361,7 +384,7 @@ export const ArchiveProductSearchCard = ({
       </Box>
       <ButtonBox>
         <ButtonItem>
-          <Button label="search" size="huge" />
+          <Button label="search" size="huge" onClick={searchButtonHandler} />
         </ButtonItem>
         <ButtonItem>
           <Button label="reset" size="huge" onClick={resetButtonHandler} />
@@ -385,23 +408,22 @@ export const ArchiveProductSearchCard = ({
               mode={mode === 'dark' ? 'white' : 'dark'} //
               archiveList={archiveList}
               categoryList={categoryList}
+              openSuccessModal={openSuccessModal}
               checkedProductList={checkedProductList}
               setCheckedProductList={setCheckedProductList}
+              updateManyProduct={updateManyProduct}
             />
           </CheckedBox>
         )}
       </ProductBox>
-      <PageNationBotton
-        size="xlarge"
-        mode={mode}
-        items={pageList}
-        url={`/archives?archive=${archiveId}&parentCategory=${parentCategoryId}&childCategory=${childCategoryId}&page=`}
-        now_id={page}
-      />
       <ButtonBox>
-        <ButtonItem>
-          <Button label="SAVE" size="huge" />
-        </ButtonItem>
+        <PageNationBotton
+          size="xlarge"
+          mode={mode}
+          items={pageList}
+          url={`/archives?search=${productName}&archive=${archiveId}&parentCategory=${parentCategoryId}&childCategory=${childCategoryId}&page=`}
+          now_id={page as string}
+        />
       </ButtonBox>
     </Container>
   );

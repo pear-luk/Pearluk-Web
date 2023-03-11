@@ -1,10 +1,15 @@
+import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useState } from 'react';
+import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
+import { useModal } from '../../../hooks/util/useModal';
 import { Size } from '../../../styles/theme';
+import { BaseResponseDTO } from '../../../types/common/baseResponse';
 import { ModeType } from '../../../types/common/propsTypes';
 import { Archive } from '../../../types/model/archive';
 import { Category } from '../../../types/model/category';
 import { Product } from '../../../types/model/product';
+import { ProductUpdateManyRequestDTO } from '../../../types/request/product';
 import { Button } from '../../elements/Button';
 import { ProductCheckedItem } from '../../foundations_admin/ProductCheckedItem';
 
@@ -21,6 +26,9 @@ interface Props {
 
   checkedProductList?: Product[];
   setCheckedProductList?: React.Dispatch<React.SetStateAction<Product[]>>;
+  updateManyProduct?: UseMutateAsyncFunction<BaseResponseDTO<Product[]>, unknown, ProductUpdateManyRequestDTO, unknown>;
+
+  openSuccessModal?: () => void;
   storybook?: boolean;
 }
 
@@ -32,15 +40,15 @@ export const ProductCheckedCard = ({
   categoryList,
   checkedProductList,
   setCheckedProductList,
+  openSuccessModal,
+  updateManyProduct,
 }: Props) => {
+  const router = useRouter();
   const [archiveId, setArchiveId] = useState<string>('null');
 
   const [parentCategory, setParentCategory] = useState<Category | 'null' | undefined>('null');
   const [childCategory, setChildCategory] = useState<Category | 'null' | undefined>('null');
-  const deleteButtonHandler = (product_id: string) => () => {
-    // setProductList && setProductList(productList.filter((product) => product.product_id !== product_id));
-    // buttonHandler && buttonHandler({ product_id }).deleteCartProduct();
-  };
+
   const itemChechBoxHandler = (product: Product) => () => {
     const checked =
       checkedProductList &&
@@ -57,6 +65,49 @@ export const ProductCheckedCard = ({
   const resetButtonHandler = () => {
     setCheckedProductList && setCheckedProductList([]);
   };
+
+  const saveButtonHandler = () => {
+    openUpdateModal();
+  };
+  const updateModalOkButtonHandler = () => {
+    if (archiveId === 'null' && (childCategory === 'null' || childCategory === undefined)) {
+      alert('선택해주세요');
+      closeUpdateModal();
+      return;
+    }
+
+    updateManyProduct &&
+      checkedProductList &&
+      updateManyProduct({
+        products: checkedProductList.map(({ product_id }) => ({ product_id })),
+        archive_id: archiveId === 'null' ? undefined : archiveId,
+        category_id: childCategory === 'null' || childCategory === undefined ? undefined : childCategory.category_id,
+      })
+        .then(() => {
+          setCheckedProductList && setCheckedProductList([]);
+          openSuccessModal && openSuccessModal();
+          router.reload();
+          closeUpdateModal();
+        })
+        .catch(() => {
+          closeUpdateModal();
+          return;
+        });
+  };
+
+  const {
+    Modal: UpdateModal,
+    open: openUpdateModal,
+    close: closeUpdateModal,
+  } = useModal({
+    message: 'REAL UPDATE?',
+    mode,
+    OK_Button: true,
+    NO_Button: true,
+    OK_Button_onClick: () => {
+      updateModalOkButtonHandler();
+    },
+  });
   const archiveSelectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setArchiveId(e.target.value);
   };
@@ -83,6 +134,7 @@ export const ProductCheckedCard = ({
   };
   return (
     <Container mode={mode} size={size}>
+      <UpdateModal />
       <CheckedBox>
         {checkedProductList &&
           checkedProductList.map((product) => {
@@ -93,7 +145,6 @@ export const ProductCheckedCard = ({
                   mode={mode}
                   size={size}
                   product={product}
-                  onCancle={deleteButtonHandler(product_id)}
                   mutate={buttonHandler && buttonHandler({ product_id }).updateCartProduct}
                   checkedProductList={checkedProductList}
                   setCheckedProductList={setCheckedProductList}
@@ -148,7 +199,7 @@ export const ProductCheckedCard = ({
           <Button size="huge" label="reset" onClick={resetButtonHandler} color={mode === 'dark' ? 'yellow' : 'black'} />
         </ButtonItem>
         <ButtonItem>
-          <Button size="huge" label="save" onClick={resetButtonHandler} color={mode === 'dark' ? 'yellow' : 'black'} />
+          <Button size="huge" label="save" onClick={saveButtonHandler} color={mode === 'dark' ? 'yellow' : 'black'} />
         </ButtonItem>
       </ButtonBox>
     </Container>

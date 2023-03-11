@@ -10,9 +10,9 @@ interface Props {
 function Archive({ ...props }: Props) {
   // mode, icon
   const router = useRouter();
-  const { archive, page, parentCategory, childCategory } = router.query;
+  const { archive, page, search, parentCategory, childCategory } = router.query;
   const { archiveList } = useArchiveList();
-  const { productList, totalCount } = useProjectList({ page, archive, parentCategory, childCategory });
+  const { productList, totalCount } = useProjectList({ page, archive, search, parentCategory, childCategory });
   const { categoryList } = useCategoryList();
 
   useEffect(() => {
