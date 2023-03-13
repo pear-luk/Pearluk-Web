@@ -77,7 +77,15 @@ interface Props {
     unknown
   >;
   updateManyProduct?: UseMutateAsyncFunction<BaseResponseDTO<Product[]>, unknown, ProductUpdateManyRequestDTO, unknown>;
-
+  updateProduct?: UseMutateAsyncFunction<
+    BaseResponseDTO<Product>,
+    unknown,
+    {
+      product_id: string;
+      mutationData: Partial<Product>;
+    },
+    unknown
+  >;
   productTotalCount?: number;
   page?: string | string[] | undefined;
 
@@ -91,8 +99,11 @@ export const ArchiveProductSearchCard = ({
   createProduct,
   uploadProductImgs,
   updateManyProduct,
+  updateProduct,
+
   storybook = false,
   productTotalCount,
+
   page,
 }: Props) => {
   const { push, isReady, query } = useRouter();
@@ -398,9 +409,13 @@ export const ArchiveProductSearchCard = ({
       <ProductBox>
         <ProductListCard_Admin
           mode="white"
+          archiveList={archiveList}
+          categoryList={categoryList}
           productList={productList}
           checkedProductList={checkedProductList}
           setCheckedProductList={setCheckedProductList}
+          updateProduct={updateProduct}
+          uploadProductImgs={uploadProductImgs}
         />{' '}
         {checkedProductList.length > 0 && (
           <CheckedBox>

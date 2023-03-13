@@ -1,7 +1,12 @@
 import styled from 'styled-components';
 import { useCreateArchive, useDeleteArchive } from '../../../hooks/mutation/archive';
 import { useCreateCategory, useDeleteCategory } from '../../../hooks/mutation/category';
-import { useCreateProduct, useUpdateManyProduct, useUploadProductImg } from '../../../hooks/mutation/product';
+import {
+  useCreateProduct,
+  useUpdateManyProduct,
+  useUpdateProduct,
+  useUploadProductImg,
+} from '../../../hooks/mutation/product';
 import { Archive } from '../../../types/model/archive';
 import { Category } from '../../../types/model/category';
 import { Product } from '../../../types/model/product';
@@ -65,7 +70,7 @@ export const AdminArchiveTemplate = ({
   const { mutateAsync: uploadProductImgs } = useUploadProductImg();
   const { mutateAsync: deleteCategory } = useDeleteCategory();
   const { mutateAsync: updateManyProduct } = useUpdateManyProduct();
-
+  const { mutateAsync: updateProduct } = useUpdateProduct();
   return (
     <AdminLayout mode="white">
       <Container>
@@ -104,6 +109,7 @@ export const AdminArchiveTemplate = ({
                 updateManyProduct={updateManyProduct}
                 storybook={storybook}
                 productTotalCount={productTotalCount}
+                updateProduct={updateProduct}
                 page={page}
               />
             </Box>

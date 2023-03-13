@@ -1,9 +1,12 @@
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/css';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
+import { ulid } from 'ulid';
+
 import { FontWeight, Size } from '../../../styles/theme';
 import { BaseResponseDTO } from '../../../types/common/baseResponse';
 import { ButtonColorType, ModeType } from '../../../types/common/propsTypes';
@@ -56,6 +59,16 @@ interface Props {
     },
     unknown
   >;
+  updateProduct?: UseMutateAsyncFunction<
+    BaseResponseDTO<Product>,
+    unknown,
+    {
+      product_id: string;
+      mutationData: Partial<Product>;
+    },
+    unknown
+  >;
+
   productList?: Product[];
   setProductList?: Dispatch<SetStateAction<Product[]>>;
 
@@ -87,14 +100,16 @@ export const ProductEditCard = ({
   archiveList,
   categoryList,
   // createProduct,
-  // uploadProductImgs,
+  uploadProductImgs,
   productFormClose,
   openSuccessModal,
+  updateProduct,
   // openErrorModal,
   productList,
   setProductList,
   storybook = false,
 }: Props) => {
+  const router = useRouter();
   const imageAreaRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -109,7 +124,9 @@ export const ProductEditCard = ({
   const [quantity, setQuantity] = useState(String(product.quantity));
   const [introduce, setIntroduce] = useState(product.introduce);
   const [archiveId, setArchiveId] = useState(product.archive_id);
-  const [parentCategory, setParentCategory] = useState<Category>();
+  const [parentCategory, setParentCategory] = useState<Category | undefined>(
+    categoryList && categoryList.find((category) => category.category_id === product.category?.parent_category_id),
+  );
   const [categoryId, setCategoryId] = useState<string>(product.category_id);
 
   const onChangeName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -386,39 +403,49 @@ export const ProductEditCard = ({
       openSuccessModal && openSuccessModal();
       return;
     }
+    const formData = new FormData();
+    newImages.forEach((img) => formData.append('imgs', img.image as File));
+    newImages.forEach((img) => formData.append('sequence', String(img.sequence)));
+    const { product_id } = product;
+    uploadProductImgs &&
+      uploadProductImgs({ product_id, mutationData: formData }).catch(() => {
+        return;
+      });
+    updateProduct &&
+      updateProduct({
+        product_id,
+        mutationData: {
+          name,
+          price: Number(price),
+          quantity: Number(quantity),
+          introduce,
+          product_status: 1,
+          category_id: categoryId,
+          archive_id: archiveId,
+          imgs: [
+            ...images.map((img) => {
+              (img.image as ProductImg).sequence = img.sequence;
+              return img.image as ProductImg;
+            }),
+            ...deletedImages.map((img) => {
+              (img.image as ProductImg).status = 'DELETED';
+              return img.image as ProductImg;
+            }),
+          ],
+        },
+      }).catch(() => {
+        return;
+      });
 
-    // if (createProduct)
-    // createProduct(newProduct)
-    //   .then(({ result }) => {
-    //     if (result) {
-    //       const { product_id } = result;
-    //       return product_id;
-    //     }
-    //   })
-    //   .then(async (product_id?: string) => {
-    //     if (uploadProductImgs && images.length > 0 && product_id) {
-    //       const formData = new FormData();
-    //       images.forEach((img) => {
-    //         formData.append('imgs', img);
-    //       });
-    //       await uploadProductImgs({ product_id, mutationData: formData });
-    //     }
-    //   })
-    //   .then(() => {
-    //     setImages([]);
-    //     productFormClose && productFormClose();
-    //     openSuccessModal && openSuccessModal();
-    //   })
-    //   .catch(() => {
-    //     return;
-    // });
+    router.reload();
+    NO_Button_onClick && NO_Button_onClick();
   };
   useEffect(() => {
-    console.log(deletedImages);
-  }, [deletedImages]);
-  // useEffect(() => {
-  //   console.log('images', images);
-  // }, [images]);
+    console.log(categoryId);
+  }, [categoryId]);
+  useEffect(() => {
+    console.log('archiveId', archiveId);
+  }, [archiveId]);
   //이미지 초기화
   useEffect(() => {
     if (product.imgs) {
@@ -436,8 +463,26 @@ export const ProductEditCard = ({
         })),
       );
     }
-  }, [product]);
-
+    setName(product.name);
+    setPrice(String(product.price));
+    setQuantity(String(product.quantity));
+    if (product.archive) {
+      setArchiveId(product.archive.archive_id);
+    }
+    if (product.category) {
+      setCategoryId(product.category.category_id);
+      setParentCategory(
+        categoryList && categoryList.find((category) => category.category_id === product.category?.parent_category_id),
+      );
+    }
+    if (product.introduce) {
+      setIntroduce(product.introduce);
+    }
+  }, [product, categoryList]);
+  useEffect(() => {
+    categoryList &&
+      setParentCategory(categoryList.find((category) => category.category_id === product.category?.parent_category_id));
+  }, [categoryList, product.category?.parent_category_id]);
   useEffect(() => {
     console.log(introduce.length);
     if (textareaRef.current) {
@@ -467,7 +512,9 @@ export const ProductEditCard = ({
             mode={mode === 'dark' ? 'white' : 'dark'}
             name="archive"
             id="archivey"
-            onChange={archiveSelectOnChange}>
+            key={ulid()}
+            onChange={archiveSelectOnChange}
+            defaultValue={archiveId}>
             <option value={'null'}>null</option>
             {archiveList &&
               archiveList.map((archive) => (
@@ -480,10 +527,12 @@ export const ProductEditCard = ({
         <Box>
           <Label mode={mode === 'dark' ? 'white' : 'dark'} label="PRODUCT'S PARENT CATEGORY" label_weight="bold" />
           <Select
+            key={ulid()}
             mode={mode === 'dark' ? 'white' : 'dark'}
             name="parent_category"
             id="parent_category"
-            onChange={parentCategorySelectOnChange}>
+            onChange={parentCategorySelectOnChange}
+            defaultValue={product?.category && product?.category.parent_category_id}>
             <option value={'null'}>null</option>
             {categoryList &&
               categoryList.map((category) => (
@@ -497,9 +546,11 @@ export const ProductEditCard = ({
           <Label mode={mode === 'dark' ? 'white' : 'dark'} label="PRODUCT'S CHILD CATEGORY" label_weight="bold" />
           <Select
             mode={mode === 'dark' ? 'white' : 'dark'}
+            key={ulid()}
             name="child_category"
             id="child_category"
-            onChange={childCategorySelectOnChange}>
+            onChange={childCategorySelectOnChange}
+            defaultValue={categoryId}>
             <option value={'null'}>null</option>
             {parentCategory &&
               parentCategory.child_categories &&
@@ -627,7 +678,8 @@ export const ProductEditCard = ({
             size="large"
             ref={textareaRef}
             id="question_contents"
-            onChange={introduceOnChange}></TextArea>
+            onChange={introduceOnChange}
+            value={introduce}></TextArea>
         </ContentInputBox>
         <ButtonBox>
           {OK_Button && (

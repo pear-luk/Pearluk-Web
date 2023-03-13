@@ -40,3 +40,9 @@ export const uploadProductImgs = () => async (data: { product_id: string; mutati
 
 export const updateManyProduct = () => async (mutationData: ProductUpdateManyRequestDTO) =>
   (await API<Product[]>(`/products`, { method: 'patch', data: mutationData })).data;
+
+export const updateProduct = () => async (data: { product_id: string; mutationData: Partial<Product> }) => {
+  const { product_id, mutationData } = data;
+
+  return (await API<Product>(`/products/${product_id}`, { method: 'patch', data: mutationData })).data;
+};

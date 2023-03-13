@@ -5,7 +5,7 @@ import { ModeType } from '../../../types/common/propsTypes';
 
 interface Props {
   mode: ModeType;
-
+  value?: string;
   size?: keyof Size['width'];
   id?: string;
   placeholder?: string;

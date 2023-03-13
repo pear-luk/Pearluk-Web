@@ -1,13 +1,21 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
+import { useAdminModal } from '../../../hooks/util/useAdminModal';
 import { Size } from '../../../styles/theme';
+import { BaseResponseDTO } from '../../../types/common/baseResponse';
 import { ModeType } from '../../../types/common/propsTypes';
-import { Product } from '../../../types/model/product';
+import { Archive } from '../../../types/model/archive';
+import { Category } from '../../../types/model/category';
+import { Product, ProductImg } from '../../../types/model/product';
 import { ProductListItem_Admin } from '../../foundations_admin/ProductListItem';
+import { ProductEditCard } from '../ProductEditCard';
 
 interface Props {
   mode: ModeType;
   size?: keyof Size['width'];
+  archiveList: Archive[];
+  categoryList: Category[];
   productList: Product[];
   setProductList?: Dispatch<SetStateAction<Product[]>>;
   buttonHandler?: ({ product_id }: Pick<Product, 'product_id'>) => {
@@ -16,19 +24,47 @@ interface Props {
   };
   checkedProductList?: Product[];
   setCheckedProductList?: React.Dispatch<React.SetStateAction<Product[]>>;
+  uploadProductImgs?: UseMutateAsyncFunction<
+    BaseResponseDTO<ProductImg[]>,
+    unknown,
+    {
+      product_id: string;
+      mutationData: FormData;
+    },
+    unknown
+  >;
+  updateProduct?: UseMutateAsyncFunction<
+    BaseResponseDTO<Product>,
+    unknown,
+    {
+      product_id: string;
+      mutationData: Partial<Product>;
+    },
+    unknown
+  >;
+
   storybook?: boolean;
 }
 
 export const ProductListCard_Admin = ({
   mode,
   size = 'xlarge',
+  archiveList,
+  categoryList,
   productList,
   buttonHandler,
   // setProductList,
+  uploadProductImgs,
+  updateProduct,
   checkedProductList,
   setCheckedProductList,
 }: Props) => {
-  const deleteButtonHandler = (cart_product_id: string) => () => {
+  const [selectProduct, setSelectProduct] = useState<Product>();
+
+  const editButton = (product: Product) => () => {
+    setSelectProduct(product);
+
+    openProductEditForm();
     // setProductList && setProductList(productList.filter((product) => product.product_id !== cart_product_id));
     // buttonHandler && buttonHandler({ cart_product_id }).deleteCartProduct();
   };
@@ -47,8 +83,34 @@ export const ProductListCard_Admin = ({
     }
   };
 
+  const {
+    Modal: ProductEditModal,
+    open: openProductEditForm,
+    close: closeProductEditForm,
+  } = useAdminModal({
+    mode: mode,
+
+    Content: (
+      <ProductEditCard
+        mode={mode}
+        NO_Button_onClick={() => closeProductEditForm()}
+        product={selectProduct as Product}
+        archiveList={archiveList}
+        categoryList={categoryList}
+        uploadProductImgs={uploadProductImgs}
+        updateProduct={updateProduct}
+        // productEditClose={() => productEditClose()}
+        // openErrorModal={openErrorModal}
+        // openSuccessModal={openSuccessModal}
+        // productList={productList}
+        // storybook={storybook}
+      />
+    ),
+  });
+
   return (
     <Container mode={mode} size={size}>
+      <ProductEditModal />
       {productList &&
         productList.map((product) => {
           const { product_id } = product;
@@ -60,6 +122,7 @@ export const ProductListCard_Admin = ({
                 product={product}
                 checkedProductList={checkedProductList}
                 checkBox_onChange={checkProductHandler(product)}
+                editButtonHandler={editButton(product)}
               />
             </ProductBox>
           );

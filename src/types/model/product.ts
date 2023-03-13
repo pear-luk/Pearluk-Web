@@ -20,4 +20,4 @@ export type ProductImg = {
   product_id: string;
   url: string;
   sequence: number;
-};
+} & CommonInfo;

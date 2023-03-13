@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useModal } from '../../../hooks/util/useModal';
 import { Size } from '../../../styles/theme';
@@ -19,6 +19,7 @@ interface Props {
   checked?: boolean;
   checkedProductList?: Product[];
   checkBox_onChange?: (() => void) | ((e: ChangeEvent<Element>) => void);
+  editButtonHandler?: (() => void) | ((e: React.MouseEvent) => void);
 }
 export const ProductListItem_Admin = ({
   mode = 'white',
@@ -30,6 +31,7 @@ export const ProductListItem_Admin = ({
   onCancle,
   checkBox_onChange,
   checkedProductList,
+  editButtonHandler,
 }: Props) => {
   const [quantity, setQuantity] = useState(product.quantity);
   const [check, setCheck] = useState(false);
@@ -82,7 +84,7 @@ export const ProductListItem_Admin = ({
               {product.archive?.title} / {product.category?.name}
             </P>
           </div>
-          <Button label="↑" size="mini" />
+          {/* <Button label="↑" size="mini" /> */}
         </TopBox>
         <BottomBox>
           <InfoLeft>
@@ -105,8 +107,8 @@ export const ProductListItem_Admin = ({
             <P></P>
             <P>{Number(product.price).toLocaleString()} KRW</P>
           </InfoRight>
-          <Button label="EDIT" />
-          <Button label="↓" size="mini" />
+          <Button label="EDIT" onClick={editButtonHandler} />
+          {/* <Button label="↓" size="mini" /> */}
         </BottomBox>
       </InfoBox>
     </Container>
