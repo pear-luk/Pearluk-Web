@@ -59,11 +59,6 @@ interface Props {
 export const ProductForm = ({
   mode,
 
-  input_width = 'medium',
-  input_height = 'base',
-  label_size = 'medium',
-  label_weight = 'bold',
-
   OK_Button = true,
   NO_Button = true,
   NO_Button_onClick,

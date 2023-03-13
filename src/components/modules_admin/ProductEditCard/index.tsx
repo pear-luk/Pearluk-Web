@@ -16,16 +16,14 @@ import { Label } from '../../elements/Label';
 import { TextArea } from '../../elements/Textarea';
 import { InputLabel } from '../../foundations/InputLabel';
 
-
 /**
  * FILE 과 ProductImg가 섞여있음
- * 
- * 보여주는 순서를 바꿀수 있어야함 (URL이 한곳에 있어야함.) 
- * 
- * 
- * 
+ *
+ * 보여주는 순서를 바꿀수 있어야함 (URL이 한곳에 있어야함.)
+ *
+ *
+ *
  */
-
 
 interface Props {
   mode: ModeType;
@@ -67,6 +65,17 @@ interface Props {
 
   storybook?: boolean;
 }
+
+interface ImageList {
+  image: File | ProductImg;
+  sequence: number;
+}
+
+interface ImageUrl {
+  url: string;
+  type: 'File' | 'ProductImg';
+  index: number;
+}
 export const ProductEditCard = ({
   mode,
 
@@ -90,8 +99,12 @@ export const ProductEditCard = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [name, setName] = useState(product.name);
-  const [images, setImages] = useState<ProductImg[]>(product.imgs || []);
+  const [images, setImages] = useState<ImageList[]>([]);
+  const [newImages, setNewImages] = useState<ImageList[]>([]);
 
+  const [imageUrls, setIamgeUrls] = useState<ImageUrl[]>([]);
+
+  const [deletedImages, setDeletedImages] = useState<ImageList[]>([]);
   const [price, setPrice] = useState(String(product.price));
   const [quantity, setQuantity] = useState(String(product.quantity));
   const [introduce, setIntroduce] = useState(product.introduce);
@@ -107,16 +120,27 @@ export const ProductEditCard = ({
   const imageInpuOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     console.log(e.currentTarget.files);
+
     if (e.currentTarget.files) {
-      const newImages = Array.from(e.currentTarget.files);
+      const files = Array.from(e.currentTarget.files).slice(0, 10 - imageUrls.length + 1);
 
-      const newImagesUrl = newImages.slice(0, 10 - images.length + 1).map((image) => URL?.createObjectURL(image));
+      const newImagesUrlList: ImageUrl[] = files.map((image, i) => ({
+        url: URL.createObjectURL(image),
+        type: 'File',
+        index: newImages.length + i, // newImage어디에 존재해야하는지 알기위해.
+      }));
 
-      const nowImages = [...images, ...newImages];
-
-      // setImages(nowImages.slice(0, 10));
+      setNewImages([
+        ...newImages,
+        ...files.map((image, i) => ({
+          image,
+          sequence: imageUrls.length + i,
+        })),
+      ]);
+      setIamgeUrls([...imageUrls, ...newImagesUrlList]);
     }
   };
+
   const parentCategorySelectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     categoryList && setParentCategory(categoryList.find((category) => category.category_id === e.target.value));
   };
@@ -146,6 +170,7 @@ export const ProductEditCard = ({
       setPrice(e.target.value);
     }
   };
+
   const introduceOnChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.target.value && setIntroduce(e.target.value);
     if (textareaRef.current) {
@@ -154,28 +179,169 @@ export const ProductEditCard = ({
       }
     }
   }, []);
-
+  //작동은 하니 추후 리펙토링
   const changeImageSequenceButton = (index: number, type: '+' | '-') => () => {
-    if (type === '+' && index !== images.length - 1) {
-      setImages([
-        ...images.slice(0, index),
-        ...images.slice(index + 1, index + 2),
-        ...images.slice(index, index + 1),
-        ...images.slice(index + 2),
+    if (type === '+' && index !== imageUrls.length - 1) {
+      setIamgeUrls([
+        ...imageUrls.slice(0, index),
+        imageUrls[index + 1],
+        imageUrls[index],
+        ...imageUrls.slice(index + 2),
       ]);
+      if (imageUrls[index].type === 'File') {
+        const fileIndex = imageUrls[index].index;
+        setNewImages(
+          newImages.map((image, i) => {
+            if (fileIndex === i) {
+              image.sequence += 1;
+            }
+            return image;
+          }),
+        );
+      } else {
+        const imageIndex = imageUrls[index].index;
+        setImages(
+          images.map((image, i) => {
+            if (imageIndex === i) {
+              image.sequence += 1;
+            }
+            return image;
+          }),
+        );
+      }
+      if (imageUrls[index + 1].type === 'File') {
+        const fileIndex = imageUrls[index + 1].index;
+        setNewImages(
+          newImages.map((image, i) => {
+            if (fileIndex === i) {
+              image.sequence -= 1;
+            }
+            return image;
+          }),
+        );
+      } else {
+        const imageIndex = imageUrls[index + 1].index;
+        setImages(
+          images.map((image, i) => {
+            if (imageIndex === i) {
+              image.sequence -= 1;
+            }
+            return image;
+          }),
+        );
+      }
     }
     if (type === '-' && index !== 0) {
-      setImages([
-        ...images.slice(0, index - 1),
-        ...images.slice(index, index + 1),
-        ...images.slice(index - 1, index),
-        ...images.slice(index + 1),
+      setIamgeUrls([
+        ...imageUrls.slice(0, index - 1),
+        imageUrls[index],
+        imageUrls[index - 1],
+        ...imageUrls.slice(index + 1),
       ]);
+
+      if (imageUrls[index - 1].type === 'File') {
+        const fileIndex = imageUrls[index - 1].index;
+        setNewImages(
+          newImages.map((image, i) => {
+            if (fileIndex === i) {
+              image.sequence += 1;
+            }
+            return image;
+          }),
+        );
+      } else {
+        const imageIndex = imageUrls[index - 1].index;
+        setImages(
+          images.map((image, i) => {
+            if (imageIndex === i) {
+              image.sequence += 1;
+            }
+            return image;
+          }),
+        );
+      }
+      if (imageUrls[index].type === 'File') {
+        const fileIndex = imageUrls[index].index;
+        setNewImages(
+          newImages.map((image, i) => {
+            if (fileIndex === i) {
+              image.sequence -= 1;
+            }
+            return image;
+          }),
+        );
+      } else {
+        const imageIndex = imageUrls[index].index;
+        setImages(
+          images.map((image, i) => {
+            if (imageIndex === i) {
+              image.sequence -= 1;
+            }
+            return image;
+          }),
+        );
+      }
     }
   };
-  const deleteButton = (index: number) => () => {
-    setImages([...images.slice(0, index), ...images.slice(index + 1)]);
+
+  // index => 모든 이미지 값의 순서. === sequnce
+  //작동은 하니 추후 리펙토링
+  const deleteButton = useCallback(
+    (index: number) => () => {
+      if (imageUrls[index].type === 'ProductImg') {
+        setDeletedImages([...deletedImages, images[imageUrls[index].index]]);
+      }
+      setNewImages(
+        newImages
+          .map((image) => {
+            if (image.sequence > index) {
+              image.sequence -= 1;
+            }
+            return image;
+          })
+          .filter((_, i) => {
+            if (imageUrls[index].type === 'File') return imageUrls[index].index !== i;
+
+            return true;
+          }),
+      );
+      setImages(
+        images
+          .map((image) => {
+            if (image.sequence > index) {
+              image.sequence -= 1;
+            }
+
+            return image;
+          })
+          .filter((_, i) => {
+            if (imageUrls[index].type === 'ProductImg') return imageUrls[index].index !== i;
+
+            return true;
+          }),
+      );
+      setIamgeUrls(
+        imageUrls
+          .map((imageUrl) => {
+            if (imageUrl.index > index) {
+              imageUrl.index -= 1;
+            }
+            return imageUrl;
+          })
+          .filter((_, i) => i !== index),
+      );
+    },
+
+    [imageUrls, images, newImages, deletedImages],
+  );
+
+  const recoverButton = (index: number) => () => {
+    const target = deletedImages[index];
+    setDeletedImages(deletedImages.filter((_, i) => i !== index));
+    setImages([...images, { ...target, sequence: imageUrls.length + 1 }]);
+    setIamgeUrls([...imageUrls, { url: (target.image as ProductImg).url, type: 'ProductImg', index: images.length }]);
   };
+
   const noButtonHandler = (e: React.MouseEvent) => {
     NO_Button_onClick && NO_Button_onClick(e);
   };
@@ -247,10 +413,31 @@ export const ProductEditCard = ({
     //     return;
     // });
   };
-
   useEffect(() => {
-    console.log(categoryId);
-  }, [categoryId]);
+    console.log(deletedImages);
+  }, [deletedImages]);
+  // useEffect(() => {
+  //   console.log('images', images);
+  // }, [images]);
+  //이미지 초기화
+  useEffect(() => {
+    if (product.imgs) {
+      setImages(
+        product.imgs.map((image) => ({
+          image,
+          sequence: image.sequence,
+        })),
+      );
+      setIamgeUrls(
+        product.imgs.map((image, i) => ({
+          url: image.url,
+          index: i,
+          type: 'ProductImg',
+        })),
+      );
+    }
+  }, [product]);
+
   useEffect(() => {
     console.log(introduce.length);
     if (textareaRef.current) {
@@ -341,15 +528,14 @@ export const ProductEditCard = ({
           onChange={onChangePrice}
           value={'' || price}
         />
-
-        {product.imgs && product.imgs?.length > 0 && (
+        {imageUrls.length > 0 && (
           <>
             <Label label="PRODUCT'S THUMBNAIL" mode={mode === 'dark' ? 'white' : 'dark'} label_weight="bold" />
             <ImageListBox>
               <ImageBox>
                 <Image
                   alt="이미지"
-                  src={product.imgs[0].url}
+                  src={imageUrls[0].url}
                   fill
                   style={{ objectFit: 'contain', objectPosition: 'center' }}
                 />
@@ -365,42 +551,73 @@ export const ProductEditCard = ({
             options={{
               arrows: false,
               perMove: 1,
-              perPage: images.length > 5 ? 5 : images.length > 0 ? images.length : 1,
+              perPage: imageUrls.length > 5 ? 5 : imageUrls.length > 0 ? imageUrls.length : 1,
             }}>
-            {product.imgs &&
-              product.imgs?.length &&
-              product.imgs.map((image, i) => {
-                return (
-                  <SplideSlide key={'image' + i}>
-                    <ImageBox>
-                      <Image
-                        alt="이미지"
-                        src={image.url}
-                        fill
-                        style={{ objectFit: 'contain', objectPosition: 'center' }}
-                      />
-                    </ImageBox>
+            {imageUrls.map((imageUrl, i) => {
+              return (
+                <SplideSlide key={'image' + i}>
+                  <ImageBox>
+                    <Image
+                      alt="이미지"
+                      src={imageUrl.url}
+                      fill
+                      style={{ objectFit: 'contain', objectPosition: 'center' }}
+                    />
+                  </ImageBox>
 
-                    <ImageButtonBox>
-                      <SequenceButtonBox mode={mode === 'dark' ? 'white' : 'dark'}>
-                        <Button label="<" size="large" onClick={changeImageSequenceButton(i, '-')} />
-                        {i + 1}
-                        <Button label=">" size="large" onClick={changeImageSequenceButton(i, '+')} />
-                      </SequenceButtonBox>
-                      <Button label="delete" size="large" onClick={deleteButton(i)} />
-                    </ImageButtonBox>
-                  </SplideSlide>
-                );
-              })}
+                  <ImageButtonBox>
+                    <SequenceButtonBox mode={mode === 'dark' ? 'white' : 'dark'}>
+                      <Button label="<" size="large" onClick={changeImageSequenceButton(i, '-')} />
+                      {i + 1}
+                      <Button label=">" size="large" onClick={changeImageSequenceButton(i, '+')} />
+                    </SequenceButtonBox>
+                    <Button label="delete" size="large" onClick={deleteButton(i)} />
+                  </ImageButtonBox>
+                </SplideSlide>
+              );
+            })}
           </Splide>
         </ImageListBox>
-        {images.length < 10 ? (
+        {imageUrls.length < 10 ? (
           <ImageLable mode={mode}>
             IMAGE ADD
             <Input multiple={true} type={'file'} onChange={imageInpuOnChange}></Input>
           </ImageLable>
         ) : (
           <></>
+        )}
+        {deletedImages.length > 0 && (
+          <>
+            <Label label="DELETE" mode={mode === 'dark' ? 'white' : 'dark'} label_weight="bold" />
+            <ImageListBox ref={imageAreaRef}>
+              <Splide
+                aria-label="new product imgs"
+                options={{
+                  arrows: false,
+                  perMove: 1,
+                  perPage: deletedImages.length > 5 ? 5 : deletedImages.length > 0 ? deletedImages.length : 1,
+                }}>
+                {deletedImages.map((image, i) => {
+                  return (
+                    <SplideSlide key={'delete image' + i}>
+                      <ImageBox>
+                        <Image
+                          alt="이미지"
+                          src={(image.image as ProductImg).url}
+                          fill
+                          style={{ objectFit: 'contain', objectPosition: 'center' }}
+                        />
+                      </ImageBox>
+
+                      <ImageButtonBox>
+                        <Button label="recover" size="large" onClick={recoverButton(i)} />
+                      </ImageButtonBox>
+                    </SplideSlide>
+                  );
+                })}
+              </Splide>
+            </ImageListBox>
+          </>
         )}
 
         <ContentInputBox>

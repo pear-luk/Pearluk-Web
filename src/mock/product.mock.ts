@@ -3,14 +3,16 @@ import { ulid } from 'ulid';
 import { Product, ProductImg } from './../types/model/product';
 import { archiveMock } from './archive.mock';
 import { categoryMock } from './category.mock';
-export const productImgFaker: ProductImg[] = Array(10)
-  .fill(0)
-  .map((_, i) => ({
-    product_img_id: ulid(),
-    product_id: ulid(),
-    url: faker.image.animals(),
-    sequence: i,
-  }));
+export const productImgFaker: () => ProductImg[] = () =>
+  Array(faker.datatype.number({ min: 5, max: 5 }))
+    .fill(0)
+    .map((_, i) => ({
+      product_img_id: ulid(),
+      product_id: ulid(),
+      url: `/imgs/test${i + 1}.png`,
+      sequence: i,
+    }));
+
 export const productMock = (): Product => {
   return {
     product_id: ulid(),
@@ -21,7 +23,7 @@ export const productMock = (): Product => {
     product_status: faker.datatype.number({ min: 0, max: 3 }),
     archive_id: ulid(),
     category_id: ulid(),
-    imgs: productImgFaker,
+    imgs: productImgFaker(),
     archive: archiveMock(),
     category: categoryMock(),
   };
