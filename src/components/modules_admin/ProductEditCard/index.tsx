@@ -1,10 +1,9 @@
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/css';
 import Image from 'next/image';
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { UseMutateAsyncFunction } from 'react-query';
 import styled from 'styled-components';
-import { ulid } from 'ulid';
 import { FontWeight, Size } from '../../../styles/theme';
 import { BaseResponseDTO } from '../../../types/common/baseResponse';
 import { ButtonColorType, ModeType } from '../../../types/common/propsTypes';
@@ -16,6 +15,15 @@ import { Button } from '../../elements/Button';
 import { Label } from '../../elements/Label';
 import { TextArea } from '../../elements/Textarea';
 import { InputLabel } from '../../foundations/InputLabel';
+
+/**
+ * FILE 과 ProductImg가 섞여있음
+ *
+ * 보여주는 순서를 바꿀수 있어야함 (URL이 한곳에 있어야함.)
+ *
+ *
+ *
+ */
 
 interface Props {
   mode: ModeType;
@@ -34,6 +42,7 @@ interface Props {
   NO_Button_color?: ButtonColorType;
   NO_Button_onClick?: (() => void) | ((e: React.MouseEvent) => void);
 
+  product: Product;
   categoryList?: Category[];
   archiveList?: Archive[];
 
@@ -56,19 +65,32 @@ interface Props {
 
   storybook?: boolean;
 }
-export const ProductForm = ({
+
+interface ImageList {
+  image: File | ProductImg;
+  sequence: number;
+}
+
+interface ImageUrl {
+  url: string;
+  type: 'File' | 'ProductImg';
+  index: number;
+}
+export const ProductEditCard = ({
   mode,
 
   OK_Button = true,
   NO_Button = true,
   NO_Button_onClick,
+
+  product,
   archiveList,
   categoryList,
-  createProduct,
-  uploadProductImgs,
+  // createProduct,
+  // uploadProductImgs,
   productFormClose,
   openSuccessModal,
-  openErrorModal,
+  // openErrorModal,
   productList,
   setProductList,
   storybook = false,
@@ -76,15 +98,19 @@ export const ProductForm = ({
   const imageAreaRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const [name, setName] = useState('');
-  const [images, setImages] = useState<File[]>([]);
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
-  const [price, setPrice] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [introduce, setIntroduce] = useState('');
-  const [archiveId, setArchiveId] = useState('null');
+  const [name, setName] = useState(product.name);
+  const [images, setImages] = useState<ImageList[]>([]);
+  const [newImages, setNewImages] = useState<ImageList[]>([]);
+
+  const [imageUrls, setIamgeUrls] = useState<ImageUrl[]>([]);
+
+  const [deletedImages, setDeletedImages] = useState<ImageList[]>([]);
+  const [price, setPrice] = useState(String(product.price));
+  const [quantity, setQuantity] = useState(String(product.quantity));
+  const [introduce, setIntroduce] = useState(product.introduce);
+  const [archiveId, setArchiveId] = useState(product.archive_id);
   const [parentCategory, setParentCategory] = useState<Category>();
-  const [categoryId, setCategoryId] = useState<string>('null');
+  const [categoryId, setCategoryId] = useState<string>(product.category_id);
 
   const onChangeName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target) {
@@ -94,17 +120,27 @@ export const ProductForm = ({
   const imageInpuOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     console.log(e.currentTarget.files);
+
     if (e.currentTarget.files) {
-      const newImages = Array.from(e.currentTarget.files);
+      const files = Array.from(e.currentTarget.files).slice(0, 10 - imageUrls.length + 1);
 
-      const newImagesUrl = newImages.slice(0, 10 - images.length + 1).map((image) => URL?.createObjectURL(image));
+      const newImagesUrlList: ImageUrl[] = files.map((image, i) => ({
+        url: URL.createObjectURL(image),
+        type: 'File',
+        index: newImages.length + i, // newImage어디에 존재해야하는지 알기위해.
+      }));
 
-      const nowImages = [...images, ...newImages];
-
-      setImages(nowImages.slice(0, 10));
-      setImageUrls([...imageUrls, ...newImagesUrl]);
+      setNewImages([
+        ...newImages,
+        ...files.map((image, i) => ({
+          image,
+          sequence: imageUrls.length + i,
+        })),
+      ]);
+      setIamgeUrls([...imageUrls, ...newImagesUrlList]);
     }
   };
+
   const parentCategorySelectOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     categoryList && setParentCategory(categoryList.find((category) => category.category_id === e.target.value));
   };
@@ -134,6 +170,7 @@ export const ProductForm = ({
       setPrice(e.target.value);
     }
   };
+
   const introduceOnChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.target.value && setIntroduce(e.target.value);
     if (textareaRef.current) {
@@ -142,47 +179,171 @@ export const ProductForm = ({
       }
     }
   }, []);
-
+  //작동은 하니 추후 리펙토링
   const changeImageSequenceButton = (index: number, type: '+' | '-') => () => {
-    if (type === '+' && index !== images.length - 1) {
-      setImages([
-        ...images.slice(0, index),
-        ...images.slice(index + 1, index + 2),
-        ...images.slice(index, index + 1),
-        ...images.slice(index + 2),
-      ]);
-      setImageUrls([
+    if (type === '+' && index !== imageUrls.length - 1) {
+      setIamgeUrls([
         ...imageUrls.slice(0, index),
-        ...imageUrls.slice(index + 1, index + 2),
-        ...imageUrls.slice(index, index + 1),
+        imageUrls[index + 1],
+        imageUrls[index],
         ...imageUrls.slice(index + 2),
       ]);
+      if (imageUrls[index].type === 'File') {
+        const fileIndex = imageUrls[index].index;
+        setNewImages(
+          newImages.map((image, i) => {
+            if (fileIndex === i) {
+              image.sequence += 1;
+            }
+            return image;
+          }),
+        );
+      } else {
+        const imageIndex = imageUrls[index].index;
+        setImages(
+          images.map((image, i) => {
+            if (imageIndex === i) {
+              image.sequence += 1;
+            }
+            return image;
+          }),
+        );
+      }
+      if (imageUrls[index + 1].type === 'File') {
+        const fileIndex = imageUrls[index + 1].index;
+        setNewImages(
+          newImages.map((image, i) => {
+            if (fileIndex === i) {
+              image.sequence -= 1;
+            }
+            return image;
+          }),
+        );
+      } else {
+        const imageIndex = imageUrls[index + 1].index;
+        setImages(
+          images.map((image, i) => {
+            if (imageIndex === i) {
+              image.sequence -= 1;
+            }
+            return image;
+          }),
+        );
+      }
     }
     if (type === '-' && index !== 0) {
-      setImages([
-        ...images.slice(0, index - 1),
-        ...images.slice(index, index + 1),
-        ...images.slice(index - 1, index),
-        ...images.slice(index + 1),
-      ]);
-      setImageUrls([
+      setIamgeUrls([
         ...imageUrls.slice(0, index - 1),
-        ...imageUrls.slice(index, index + 1),
-        ...imageUrls.slice(index - 1, index),
+        imageUrls[index],
+        imageUrls[index - 1],
         ...imageUrls.slice(index + 1),
       ]);
+
+      if (imageUrls[index - 1].type === 'File') {
+        const fileIndex = imageUrls[index - 1].index;
+        setNewImages(
+          newImages.map((image, i) => {
+            if (fileIndex === i) {
+              image.sequence += 1;
+            }
+            return image;
+          }),
+        );
+      } else {
+        const imageIndex = imageUrls[index - 1].index;
+        setImages(
+          images.map((image, i) => {
+            if (imageIndex === i) {
+              image.sequence += 1;
+            }
+            return image;
+          }),
+        );
+      }
+      if (imageUrls[index].type === 'File') {
+        const fileIndex = imageUrls[index].index;
+        setNewImages(
+          newImages.map((image, i) => {
+            if (fileIndex === i) {
+              image.sequence -= 1;
+            }
+            return image;
+          }),
+        );
+      } else {
+        const imageIndex = imageUrls[index].index;
+        setImages(
+          images.map((image, i) => {
+            if (imageIndex === i) {
+              image.sequence -= 1;
+            }
+            return image;
+          }),
+        );
+      }
     }
   };
-  const deleteButton = (index: number) => () => {
-    URL.revokeObjectURL(imageUrls[index]);
-    setImages([...images.slice(0, index), ...images.slice(index + 1)]);
-    setImageUrls([...imageUrls.slice(0, index), ...imageUrls.slice(index + 1)]);
+
+  // index => 모든 이미지 값의 순서. === sequnce
+  //작동은 하니 추후 리펙토링
+  const deleteButton = useCallback(
+    (index: number) => () => {
+      if (imageUrls[index].type === 'ProductImg') {
+        setDeletedImages([...deletedImages, images[imageUrls[index].index]]);
+      }
+      setNewImages(
+        newImages
+          .map((image) => {
+            if (image.sequence > index) {
+              image.sequence -= 1;
+            }
+            return image;
+          })
+          .filter((_, i) => {
+            if (imageUrls[index].type === 'File') return imageUrls[index].index !== i;
+
+            return true;
+          }),
+      );
+      setImages(
+        images
+          .map((image) => {
+            if (image.sequence > index) {
+              image.sequence -= 1;
+            }
+
+            return image;
+          })
+          .filter((_, i) => {
+            if (imageUrls[index].type === 'ProductImg') return imageUrls[index].index !== i;
+
+            return true;
+          }),
+      );
+      setIamgeUrls(
+        imageUrls
+          .map((imageUrl) => {
+            if (imageUrl.index > index) {
+              imageUrl.index -= 1;
+            }
+            return imageUrl;
+          })
+          .filter((_, i) => i !== index),
+      );
+    },
+
+    [imageUrls, images, newImages, deletedImages],
+  );
+
+  const recoverButton = (index: number) => () => {
+    const target = deletedImages[index];
+    setDeletedImages(deletedImages.filter((_, i) => i !== index));
+    setImages([...images, { ...target, sequence: imageUrls.length + 1 }]);
+    setIamgeUrls([...imageUrls, { url: (target.image as ProductImg).url, type: 'ProductImg', index: images.length }]);
   };
-  const noButtonHandler = () => {
-    imageUrls.forEach((url) => {
-      URL.revokeObjectURL(url);
-    });
-    NO_Button_onClick && NO_Button_onClick();
+
+  const noButtonHandler = (e: React.MouseEvent) => {
+    NO_Button_onClick && NO_Button_onClick(e);
   };
   const okButtonHandler = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -220,60 +381,63 @@ export const ProductForm = ({
 
     if (storybook && productList && setProductList) {
       console.log('adsfasdfadfsdfs');
-      const productsImg: ProductImg[] = imageUrls.map((url, i) => ({
-        product_img_id: ulid(),
-        product_id: ulid(),
-        url,
-        sequence: i + 1,
-      }));
 
-      setProductList([
-        {
-          ...newProduct,
-          product_id: ulid(),
-          imgs: productsImg,
-        },
-        ...productList,
-      ]);
       productFormClose && productFormClose();
       openSuccessModal && openSuccessModal();
       return;
     }
 
-    if (createProduct)
-      createProduct(newProduct)
-        .then(({ result }) => {
-          if (result) {
-            const { product_id } = result;
-            return product_id;
-          }
-        })
-        .then(async (product_id?: string) => {
-          if (uploadProductImgs && images.length > 0 && product_id) {
-            const formData = new FormData();
-            images.forEach((img) => {
-              formData.append('imgs', img);
-            });
-            await uploadProductImgs({ product_id, mutationData: formData });
-          }
-        })
-        .then(() => {
-          imageUrls.forEach((url) => {
-            URL.revokeObjectURL(url);
-          });
-          setImageUrls([]);
-          setImages([]);
-          productFormClose && productFormClose();
-          openSuccessModal && openSuccessModal();
-        })
-        .catch(() => {
-          return;
-        });
+    // if (createProduct)
+    // createProduct(newProduct)
+    //   .then(({ result }) => {
+    //     if (result) {
+    //       const { product_id } = result;
+    //       return product_id;
+    //     }
+    //   })
+    //   .then(async (product_id?: string) => {
+    //     if (uploadProductImgs && images.length > 0 && product_id) {
+    //       const formData = new FormData();
+    //       images.forEach((img) => {
+    //         formData.append('imgs', img);
+    //       });
+    //       await uploadProductImgs({ product_id, mutationData: formData });
+    //     }
+    //   })
+    //   .then(() => {
+    //     setImages([]);
+    //     productFormClose && productFormClose();
+    //     openSuccessModal && openSuccessModal();
+    //   })
+    //   .catch(() => {
+    //     return;
+    // });
   };
-
   useEffect(() => {
-    console.log(categoryId);
-  }, [categoryId]);
+    console.log(deletedImages);
+  }, [deletedImages]);
+  // useEffect(() => {
+  //   console.log('images', images);
+  // }, [images]);
+  //이미지 초기화
+  useEffect(() => {
+    if (product.imgs) {
+      setImages(
+        product.imgs.map((image) => ({
+          image,
+          sequence: image.sequence,
+        })),
+      );
+      setIamgeUrls(
+        product.imgs.map((image, i) => ({
+          url: image.url,
+          index: i,
+          type: 'ProductImg',
+        })),
+      );
+    }
+  }, [product]);
+
   useEffect(() => {
     console.log(introduce.length);
     if (textareaRef.current) {
@@ -286,17 +450,6 @@ export const ProductForm = ({
       textareaRef.current.style.height = scrollHeight + 'px';
     }
   }, [introduce]);
-
-  // 메모리 누수 있음 . <- 이걸로쓰면
-  // useEffect(() => {
-  //   setImageUrls(
-  //     images.map((image) => {
-  //       const objectUrl = URL?.createObjectURL(image);
-
-  //       return objectUrl;
-  //     }),
-  //   );
-  // }, [images]);
 
   return (
     <Wrap>
@@ -375,15 +528,14 @@ export const ProductForm = ({
           onChange={onChangePrice}
           value={'' || price}
         />
-
-        {images.length > 0 && (
+        {imageUrls.length > 0 && (
           <>
             <Label label="PRODUCT'S THUMBNAIL" mode={mode === 'dark' ? 'white' : 'dark'} label_weight="bold" />
             <ImageListBox>
               <ImageBox>
                 <Image
                   alt="이미지"
-                  src={imageUrls[0]}
+                  src={imageUrls[0].url}
                   fill
                   style={{ objectFit: 'contain', objectPosition: 'center' }}
                 />
@@ -399,15 +551,15 @@ export const ProductForm = ({
             options={{
               arrows: false,
               perMove: 1,
-              perPage: images.length > 5 ? 5 : images.length > 0 ? images.length : 1,
+              perPage: imageUrls.length > 5 ? 5 : imageUrls.length > 0 ? imageUrls.length : 1,
             }}>
-            {images.map((_, i) => {
+            {imageUrls.map((imageUrl, i) => {
               return (
                 <SplideSlide key={'image' + i}>
                   <ImageBox>
                     <Image
                       alt="이미지"
-                      src={imageUrls[i]}
+                      src={imageUrl.url}
                       fill
                       style={{ objectFit: 'contain', objectPosition: 'center' }}
                     />
@@ -426,13 +578,46 @@ export const ProductForm = ({
             })}
           </Splide>
         </ImageListBox>
-        {images.length < 10 ? (
+        {imageUrls.length < 10 ? (
           <ImageLable mode={mode}>
             IMAGE ADD
             <Input multiple={true} type={'file'} onChange={imageInpuOnChange}></Input>
           </ImageLable>
         ) : (
           <></>
+        )}
+        {deletedImages.length > 0 && (
+          <>
+            <Label label="DELETE" mode={mode === 'dark' ? 'white' : 'dark'} label_weight="bold" />
+            <ImageListBox ref={imageAreaRef}>
+              <Splide
+                aria-label="new product imgs"
+                options={{
+                  arrows: false,
+                  perMove: 1,
+                  perPage: deletedImages.length > 5 ? 5 : deletedImages.length > 0 ? deletedImages.length : 1,
+                }}>
+                {deletedImages.map((image, i) => {
+                  return (
+                    <SplideSlide key={'delete image' + i}>
+                      <ImageBox>
+                        <Image
+                          alt="이미지"
+                          src={(image.image as ProductImg).url}
+                          fill
+                          style={{ objectFit: 'contain', objectPosition: 'center' }}
+                        />
+                      </ImageBox>
+
+                      <ImageButtonBox>
+                        <Button label="recover" size="large" onClick={recoverButton(i)} />
+                      </ImageButtonBox>
+                    </SplideSlide>
+                  );
+                })}
+              </Splide>
+            </ImageListBox>
+          </>
         )}
 
         <ContentInputBox>

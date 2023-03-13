@@ -25,7 +25,6 @@ export const ProductCheckedItem = ({
   product,
   size = 'xlarge',
 
-  mutate,
   checkBox_onChange,
   checkedProductList,
 }: Props) => {
