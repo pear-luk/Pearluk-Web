@@ -1,20 +1,22 @@
 import styled from 'styled-components';
-
-type Status = Record<string, { title: string; number: number }>;
+import { ProductStatusResponseDTO } from '../../../types/response/product';
 
 interface Props {
-  status: Status;
+  productStatus?: ProductStatusResponseDTO | null;
   storybook?: boolean;
 }
-export const ArchiveStatusCard_Admin = ({ status = {} }: Props) => {
+export const ProductStatusCard = ({ productStatus }: Props) => {
+  console.log('productStatus');
   return (
     <Container>
-      {Object.keys(status)?.map((key) => (
-        <ItemBox key={status[key]?.title}>
-          <Item>{status[key]?.title}</Item>
-          <Item>{status[key]?.number}</Item>
-        </ItemBox>
-      ))}
+      {productStatus &&
+        productStatus !== null &&
+        Object.keys(productStatus)?.map((key) => (
+          <ItemBox key={key}>
+            <Item>{key}</Item>
+            <Item>{productStatus[key]}</Item>
+          </ItemBox>
+        ))}
     </Container>
   );
 };

@@ -2,6 +2,7 @@ import { Product, ProductImg } from '../../../types/model/product';
 import { ProductListGetResponseDTO } from '../../../types/response/product';
 import { API } from '../../util/API';
 import { ProductCreateRequestDTO, ProductUpdateManyRequestDTO } from './../../../types/request/product';
+import { ProductStatusResponseDTO } from './../../../types/response/product';
 
 export const getProduct =
   ({ product_id }: { product_id: string }) =>
@@ -46,3 +47,6 @@ export const updateProduct = () => async (data: { product_id: string; mutationDa
 
   return (await API<Product>(`/products/${product_id}`, { method: 'patch', data: mutationData })).data;
 };
+
+export const getProductStatus = async () =>
+  (await API<ProductStatusResponseDTO>('/products/status', { method: 'get' })).data;

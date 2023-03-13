@@ -10,9 +10,10 @@ import {
 import { Archive } from '../../../types/model/archive';
 import { Category } from '../../../types/model/category';
 import { Product } from '../../../types/model/product';
+import { ProductStatusResponseDTO } from '../../../types/response/product';
 import { AdminArchiveListCard } from '../../modules_admin/ArchiveListCard';
 import { ArchiveProductSearchCard } from '../../modules_admin/ArchiveProductSearchCard';
-import { ArchiveStatusCard_Admin } from '../../modules_admin/ArchiveStatusCard';
+import { ProductStatusCard } from '../../modules_admin/ArchiveStatusCard';
 import { AdminCategoryListCard } from '../../modules_admin/CategoryListCard';
 import { AdminLayout } from '../../_layout/AdminLayout';
 
@@ -51,6 +52,7 @@ interface Props {
   categoryList: Category[];
   productList: Product[];
 
+  productStatus?: ProductStatusResponseDTO | null;
   storybook?: boolean;
   productTotalCount?: number;
   page?: string | string[] | undefined;
@@ -61,6 +63,7 @@ export const AdminArchiveTemplate = ({
   productList,
   storybook = false,
   productTotalCount,
+  productStatus,
   page,
 }: Props) => {
   const { mutateAsync: createArchive } = useCreateArchive();
@@ -95,7 +98,7 @@ export const AdminArchiveTemplate = ({
         <ContentBox>
           <Content>
             <Box>
-              <ArchiveStatusCard_Admin status={statusMock} storybook={storybook} />
+              <ProductStatusCard productStatus={productStatus as ProductStatusResponseDTO} storybook={storybook} />
             </Box>
             <Box>
               <ArchiveProductSearchCard

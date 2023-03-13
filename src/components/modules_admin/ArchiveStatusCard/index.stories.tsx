@@ -1,13 +1,13 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { ArchiveStatusCard_Admin } from '.';
+import { ProductStatusCard } from '.';
 
 export default {
-  title: 'Modules_admin/ArchiveStatusCard_Admin',
-  component: ArchiveStatusCard_Admin,
+  title: 'Modules_admin/ProductStatusCard',
+  component: ProductStatusCard,
   argTypes: {},
-} as ComponentMeta<typeof ArchiveStatusCard_Admin>;
+} as ComponentMeta<typeof ProductStatusCard>;
 
-const Template: ComponentStory<typeof ArchiveStatusCard_Admin> = (args) => <ArchiveStatusCard_Admin {...args} />;
+const Template: ComponentStory<typeof ProductStatusCard> = (args) => <ProductStatusCard {...args} />;
 
 export const EX = Template.bind({});
 EX.args = {

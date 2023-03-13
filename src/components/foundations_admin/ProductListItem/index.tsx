@@ -35,14 +35,7 @@ export const ProductListItem_Admin = ({
 }: Props) => {
   const [quantity, setQuantity] = useState(product.quantity);
   const [check, setCheck] = useState(false);
-  const minusButtonHandler = () => {
-    mutate && mutate(quantity - 1);
-    setQuantity(quantity - 1);
-  };
-  const plusButtonHandler = () => {
-    mutate && mutate(quantity + 1);
-    setQuantity(quantity + 1);
-  };
+
   useEffect(() => {
     checkedProductList &&
       setCheck(Boolean(checkedProductList.find((checkProduct) => checkProduct.product_id === product.product_id)));
@@ -84,31 +77,15 @@ export const ProductListItem_Admin = ({
               {product.archive?.title} / {product.category?.name}
             </P>
           </div>
-          {/* <Button label="↑" size="mini" /> */}
         </TopBox>
         <BottomBox>
           <InfoLeft>
-            <QuantityBox>
-              {quantity === 0 ? (
-                <Button size={'mini'} color={mode === 'white' ? 'grey' : 'dark_yellow'} label="-" />
-              ) : (
-                <Button
-                  size={'mini'}
-                  color={mode === 'white' ? 'black' : 'yellow'}
-                  onClick={minusButtonHandler}
-                  label="-"
-                />
-              )}
-              {quantity}
-              <Button size="mini" color={mode === 'white' ? 'black' : 'yellow'} onClick={plusButtonHandler} label="+" />
-            </QuantityBox>
+            <QuantityBox>수량: {quantity}</QuantityBox>
           </InfoLeft>
           <InfoRight>
-            <P></P>
             <P>{Number(product.price).toLocaleString()} KRW</P>
           </InfoRight>
           <Button label="EDIT" onClick={editButtonHandler} />
-          {/* <Button label="↓" size="mini" /> */}
         </BottomBox>
       </InfoBox>
     </Container>
@@ -170,7 +147,12 @@ const BottomBox = styled.div`
   justify-content: space-between;
 `;
 const InfoRight = styled.div`
-  text-align: right;
+  display: flex;
+  flex-direction: column-reverse;
+
+  button {
+    display: block;
+  }
 `;
 const InfoLeft = styled.div`
   display: flex;

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { AdminArchiveTemplate } from '../../../../components/prototypes_admin/ArchiveTemplate';
 import { useArchiveList } from '../../../../hooks/queries/archiveQuery';
 import { useCategoryList } from '../../../../hooks/queries/categoryQuery';
-import { useProjectList } from '../../../../hooks/queries/productQuery';
+import { useProductStatus, useProjectList } from '../../../../hooks/queries/productQuery';
 interface Props {
   storybook?: boolean;
 }
@@ -14,6 +14,7 @@ function Archive({ ...props }: Props) {
   const { archiveList } = useArchiveList();
   const { productList, totalCount } = useProjectList({ page, archive, search, parentCategory, childCategory });
   const { categoryList } = useCategoryList();
+  const { productStatus, refetchroductStatus } = useProductStatus();
 
   useEffect(() => {
     console.log(categoryList);
@@ -25,6 +26,7 @@ function Archive({ ...props }: Props) {
       productList={productList}
       categoryList={categoryList}
       productTotalCount={totalCount}
+      productStatus={productStatus}
       page={page}
       {...props}
     />
