@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Size } from '../../../styles/theme';
 import { ButtonColorType } from '../../../types/common/propsTypes';
 
 interface ButtonProps {
@@ -11,7 +10,7 @@ interface ButtonProps {
   /**
    * How large should the button be?
    */
-  size?: keyof Size['button'];
+  size?: keyof typeof size.button;
 
   /**
    * Button contents
@@ -26,7 +25,7 @@ interface ButtonProps {
   /**
    * Optional click handler
    */
-  onClick?: (() => void) | ((e: React.MouseEvent) => void);
+  onClick?: () => void | ((e: React.MouseEvent) => void);
 }
 
 export const Button = ({ color = 'black', label, ...props }: ButtonProps) => {

@@ -196,7 +196,9 @@ export const ProductEditCard = ({
       }
     }
   }, []);
+
   //작동은 하니 추후 리펙토링
+  //중복된코드가 엄청나게 많음.
   const changeImageSequenceButton = (index: number, type: '+' | '-') => () => {
     if (type === '+' && index !== imageUrls.length - 1) {
       setIamgeUrls([
@@ -374,8 +376,8 @@ export const ProductEditCard = ({
       alert('상품 가격은 1000원 이상으로 입력해주세요');
       return;
     }
-    if (Number(quantity) < 1) {
-      alert('상품 개수는 1개 이상으로 입력해주세요');
+    if (Number(quantity) < 0) {
+      alert('상품 개수는 0개 이상으로 입력해주세요');
       return;
     }
     if (!categoryId) {
